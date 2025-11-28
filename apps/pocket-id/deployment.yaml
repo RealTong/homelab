@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pocket-id
+  namespace: auth
+  labels:
+    app: pocket-id
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pocket-id
+  template:
+    metadata:
+      labels:
+        app: pocket-id
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containers:
+        - name: pocket-id
+          image: ghcr.io/pocket-id/pocket-id:v1.15.0
+          ports:
+            - containerPort: 1411
+          env:
+            - name: APP_URL
+              value: "https://id.wst.sh"
+            - name: APP_NAME
+              value: "RealTong's PocketID"
+            - name: TRUST_PROXY
+              value: "true"
+            - name: ALLOW_USER_SIGNUPS
+              value: "disabled"
+            - name: BACKGROUND_IMAGE
+              value: "https://assets.realtong.cn/homelab-assets/login-bg.jpg"
+            - name: GEOLITE_DB_URL
+              value: https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb
+            - name: DB_PROVIDER
+              value: "postgres"
+            - name: UPLOAD_PATH
+              value: "/data/uploads"
+            # 从 ExternalSecret 中获取
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pocket-id-secret
+                  key: ENCRYPTION_KEY
+            - name: DB_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: pocket-id-secret
+                  key: DB_CONNECTION_STRING
+          volumeMounts:
+            - name: pocket-id-storage
+              mountPath: /data/uploads
+      volumes:
+        - name: pocket-id-storage
+          persistentVolumeClaim:
+            claimName: pocket-id-storage
