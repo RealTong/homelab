@@ -5,3 +5,4 @@ resources:
   - ./pocket-id/
   - ./tinyauth/
   - ./grafana/
+  - ./kite/
