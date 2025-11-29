@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: grafana-data-pvc
+  name: grafana-pvc
   namespace: observability
 spec:
   accessModes:
