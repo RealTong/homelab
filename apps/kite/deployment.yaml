@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: kite
+    namespace: monitor
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: kite
+    strategy: {}
+    template:
+        metadata:
+            labels:
+                app: kite
+        spec:
+            serviceAccountName: cluster-admin-sa
+            nodeSelector:
+                kubernetes.io/hostname: "realtong-server"
+            containers:
+                - image: ghcr.io/zxh326/kite:v0.7.1
+                  imagePullPolicy: IfNotPresent
+                  name: kite
+                  resources:
+                      limits:
+                          cpu: 1000m
+                          memory: 512Mi
+                      requests:
+                          cpu: 100m
+                          memory: 128Mi
+                  ports:
+                      - containerPort: 8080
+                        protocol: TCP
+                  env:
+                    - name: HOST
+                      value: "https://kite.wst.sh"
+                    - name: NODE_EXTRA_CA_CERTS
+                      value: /etc/ssl/certs/ca-certificates.crt
+                    - name: SSL_CERT_FILE
+                      value: /etc/ssl/certs/ca-certificates.crt
+                    - name: REQUESTS_CA_BUNDLE
+                      value: /etc/ssl/certs/ca-certificates.crt
+                    - name: CURL_CA_BUNDLE
+                      value: /etc/ssl/certs/ca-certificates.crt
+                  envFrom:
+                  - secretRef:
+                      name: kite-secret
+                  volumeMounts:
+                    - name: ca-cert
+                      mountPath: /etc/ssl/certs/ca-certificates.crt
+                      readOnly: true
+            volumes:
+            - name: ca-cert
+              hostPath: 
+                path: /etc/ssl/certs/ca-certificates.crt
+                type: File
