@@ -10,4 +10,4 @@ data:
     
     [auth]
     oauth_allow_insecure_email_lookup = true
-    disable_login_form = true
+    disable_login_form = false
