@@ -51,9 +51,9 @@ spec:
                   name: pocket-id-secret
                   key: DB_CONNECTION_STRING
           volumeMounts:
-            - name: pocket-id-storage
+            - name: pocket-id-pvc
               mountPath: /data/uploads
       volumes:
-        - name: pocket-id-storage
+        - name: pocket-id-pvc
           persistentVolumeClaim:
-            claimName: pocket-id-storage
+            claimName: pocket-id-pvc
