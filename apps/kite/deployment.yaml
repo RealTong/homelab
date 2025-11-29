@@ -2,13 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: kite
-    namespace: monitor
+    namespace: observability
 spec:
     replicas: 1
     selector:
         matchLabels:
             app: kite
-    strategy: {}
     template:
         metadata:
             labels:
