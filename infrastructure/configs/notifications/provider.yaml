@@ -6,4 +6,4 @@ metadata:
 spec:
   type: telegram
   secretRef:
-    name: telegram-token-secret
+    name: notification-secret
