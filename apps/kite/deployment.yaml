@@ -42,9 +42,22 @@ spec:
                       value: /etc/ssl/certs/ca-certificates.crt
                     - name: CURL_CA_BUNDLE
                       value: /etc/ssl/certs/ca-certificates.crt
-                  envFrom:
-                  - secretRef:
-                      name: kite-secret
+                    
+                    - name: DB_DSN
+                      valueFrom:
+                        secretKeyRef:
+                          name: kite-secret
+                          key: DB_DSN
+                    - name: JWT_SECRET
+                      valueFrom:
+                        secretKeyRef:
+                          name: kite-secret
+                          key: JWT_SECRET
+                    - name: KITE_ENCRYPT_KEY
+                      valueFrom:
+                        secretKeyRef:
+                          name: kite-secret
+                          key: KITE_ENCRYPT_KEY
                   volumeMounts:
                     - name: ca-cert
                       mountPath: /etc/ssl/certs/ca-certificates.crt
