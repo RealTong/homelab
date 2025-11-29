@@ -7,7 +7,9 @@ metadata:
         app: kite
 spec:
     ports:
-        - port: 8080
+        - name: http
+          port: 80
+          protocol: TCP
           targetPort: 8080
     selector:
         app: kite
