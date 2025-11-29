@@ -4,3 +4,4 @@ resources:
   - ./_namespaces/
   - ./pocket-id/
   - ./tinyauth/
+  - ./grafana/
