@@ -41,7 +41,8 @@ spec:
                       value: /etc/ssl/certs/ca-certificates.crt
                     - name: CURL_CA_BUNDLE
                       value: /etc/ssl/certs/ca-certificates.crt
-                    
+                    - name: DB_TYPE
+                      value: "postgres"
                     - name: DB_DSN
                       valueFrom:
                         secretKeyRef:
