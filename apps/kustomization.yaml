@@ -10,3 +10,4 @@ resources:
   - ./glance/
   - ./prometheus/
   - ./glance-k8s/
+  - ./uptime-kuma/
