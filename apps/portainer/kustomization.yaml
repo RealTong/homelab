@@ -4,4 +4,6 @@ namespace: observability
 resources:  
   - deployment.yaml
   - pvc.yaml
-  - configmap.yaml
+  - ingress.yaml
+  - service.yaml
+  
