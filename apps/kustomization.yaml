@@ -12,3 +12,4 @@ resources:
   - ./glance-k8s/
   - ./uptime-kuma/
   - ./kube-state-metrics/
+  - ./portainer/
