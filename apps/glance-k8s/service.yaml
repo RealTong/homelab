@@ -4,10 +4,10 @@ metadata:
   name: glance-k8s
   namespace: observability
   labels:
-    app.kubernetes.io/name: glance-k8s
+    app: glance-k8s
 spec:
   selector:
-    app.kubernetes.io/name: glance-k8s
+    app: glance-k8s
   ports:
   - port: 8080
     targetPort: 8080
