@@ -7,3 +7,4 @@ resources:
   - ./grafana/
   - ./kite/
   - ./beszel-hub/
+  - ./glance/

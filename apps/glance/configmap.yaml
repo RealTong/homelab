@@ -1,0 +1,585 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glance-configmap
+  namespace: homelab
+data:
+  glance.yml: |
+    # yaml-language-server: $schema=https://raw.githubusercontent.com/not-first/glance-schema/master/schema.json
+
+    theme:
+      disable-picker: false
+      presets:
+        default-dark:
+          background-color: 225 14 15
+          primary-color: 157 47 65
+          contrast-multiplier: 1.0
+        default-light:
+          light: true
+          background-color: 220 23 95
+          contrast-multiplier: 1.0
+          primary-color: 220 91 54
+          positive-color: 109 58 40
+          negative-color: 347 87 44
+    pages:
+      - name: Home
+        # Optionally, if you only have a single page you can hide the desktop navigation for a cleaner look
+        # hide-desktop-navigation: true
+        head-widgets:
+          - type: markets
+            hide-header: true
+            markets:
+              - symbol: SPY
+                name: S&P 500
+              - symbol: BTC-USD
+                name: Bitcoin
+              - symbol: ZEC-USD
+                name: Zcash
+              - symbol: AAPL
+                name: Apple
+              - symbol: GOOG
+                name: Google
+        columns:
+          - size: small
+            widgets:
+              - type: clock
+                hour-format: 24h
+                timezones:
+                  - timezone: Asia/Shanghai
+                    label: Shanghai
+                  - timezone: America/New_York
+                    label: New York
+                  - timezone: Europe/Paris
+                    label: Paris
+                  - timezone: Asia/Tokyo
+                    label: Tokyo
+              - type: custom-api
+                title: Duolingo Stats
+                cache: 1h
+                url: https://www.duolingo.com/2023-05-23/users/${DUO_USER_ID}?fields=id,name,username,learningLanguage,creationDate,totalXp,gemsConfig,hasPlus,xpGoal,streak,email,fromLanguage,currentCourseId,lastResurrectionTimestamp,courses
+                headers:
+                  Authorization: Bearer ${DUO_JWT_TOKEN}
+                template: |
+                  <ul class="list list-gap-14 collapsible-container">
+                    <li class="separator margin-top-10 margin-bottom-10"></li>
+                    
+                    <li class="flex items-center gap-12">
+                      <div class="flex items-center justify-center shrink-0" style="width: 24px; height: 24px;">
+                        <svg width="20" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M6.77271 0.532617C7.336 -0.177539 8.414 -0.177539 8.97729 0.532616L14.0623 6.94342C15.1193 8.23421 15.75 9.86374 15.75 11.6351C15.75 15.8233 12.2242 19.2185 7.875 19.2185C3.52576 19.2185 0 15.8233 0 11.6351C0 11.3414 0.0173457 11.0515 0.0511046 10.7664L0.0333507 4.37841C0.0307386 3.43858 0.542464 2.74527 1.41725 2.89269C1.59157 2.92207 1.9601 3.0331 2.12522 3.12149L3.94611 4.09617L6.77271 0.532617Z" fill="#FF9600"/>
+                          <path d="M8.40677 8.24144C8.1299 7.86443 7.5667 7.86443 7.28982 8.24144L5.30202 10.9482C5.28343 10.9735 5.2689 11 5.25814 11.027C4.7842 11.5866 4.5 12.3011 4.5 13.0796C4.5 14.8745 6.01104 16.3296 7.875 16.3296C9.73896 16.3296 11.25 14.8745 11.25 13.0796C11.25 12.2008 10.8878 11.4035 10.2993 10.8185L8.40677 8.24144Z" fill="#FFC800"/>
+                        </svg>
+                      </div>
+                      <span class="color-highlight text-truncate block grow font-medium" style="line-height: 24px;">Streak</span>
+                      <span class="font-bold text-large color-warning" style="line-height: 24px;">{{ .JSON.Int "streak" }} days</span>
+                    </li>
+                    
+                    <li class="flex items-center gap-12">
+                      <div class="flex items-center justify-center shrink-0" style="width: 24px; height: 24px;">
+                        <svg width="20" height="20" viewBox="0 0 22 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M14.0367 2.67272C13.8379 0.718003 11.3282 0.0455378 10.1787 1.63898L0.717665 14.7538C-0.157342 15.9667 0.452676 17.6801 1.89732 18.0672L7.2794 19.5093L8.07445 27.3273C8.27323 29.282 10.7829 29.9545 11.9324 28.361L21.3935 15.2462C22.2685 14.0333 21.6585 12.3199 20.2138 11.9328L14.8317 10.4907L14.0367 2.67272Z" fill="#FFD900"/>
+                          <path d="M2.574 16.4882C2.08457 16.3561 2.03731 15.6803 2.50359 15.4813L6.24415 13.8853C6.58188 13.7412 6.96093 13.973 6.98654 14.3393L7.17226 16.9952C7.19787 17.3615 6.85477 17.6438 6.50027 17.5481L2.574 16.4882Z" fill="#F7C100"/>
+                          <path d="M19.717 13.2505C20.2064 13.3826 20.2537 14.0584 19.7874 14.2573L16.0469 15.8533C15.7091 15.9974 15.3301 15.7656 15.3045 15.3993L15.1188 12.7435C15.0931 12.3772 15.4362 12.0949 15.7907 12.1906L19.717 13.2505Z" fill="#FFEF8F"/>
+                        </svg>
+                      </div>
+                      <span class="color-highlight text-truncate block grow font-medium" style="line-height: 24px;">Total XP</span>
+                      <span class="font-bold text-large" style="line-height: 24px;">{{ .JSON.Int "totalXp" }} XP</span>
+                    </li>
+                    
+                    <li class="flex items-center gap-12">
+                      <div class="flex items-center justify-center shrink-0" style="width: 24px; height: 24px;">
+                        <svg width="20" height="20" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M3.12035 6.45972C1.80438 7.25391 1 8.67887 1 10.2159V19.8822C1 21.4192 1.80438 22.8442 3.12035 23.6384L9.59501 27.5458C10.9891 28.3872 12.7345 28.3872 14.1287 27.5459L20.6037 23.6384C21.9197 22.8442 22.7241 21.4192 22.7241 19.8821V10.216C22.7241 8.67889 21.9197 7.2539 20.6037 6.45972L14.1287 2.55221C12.7345 1.71089 10.9891 1.71091 9.59501 2.55226L3.12035 6.45972Z" fill="#1CB0F6" stroke="white" stroke-width="2"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.2449 5.45314C10.9645 5.01112 11.8902 5.52889 11.8902 6.37339V9.53852C11.8902 9.91649 11.6926 10.267 11.3692 10.4626L8.42194 12.2455C8.05585 12.4669 7.59354 12.4514 7.24315 12.2058L4.85711 10.5338C4.22068 10.0878 4.24944 9.13584 4.91163 8.7291L10.2449 5.45314Z" fill="#DDF4FF"/>
+                        </svg>
+                      </div>
+                      <span class="color-highlight text-truncate block grow font-medium" style="line-height: 24px;">Gems</span>
+                      <span class="font-bold color-info" style="line-height: 24px;">{{ .JSON.Int "gemsConfig.gems" }} Gems</span>
+                    </li>
+                    
+                    <li class="separator margin-top-10 margin-bottom-10"></li>
+                    
+                    <li class="collapsible-item">
+                      <details>
+                        <summary class="flex items-center gap-12 cursor-pointer">
+                          <span class="color-highlight text-truncate block grow font-medium">My Courses</span>
+                          <span class="text-muted">{{ .JSON.Array "courses" | len }} courses</span>
+                        </summary>
+                        <ul class="list list-gap-10 margin-top-14">
+                          {{ range .JSON.Array "courses" }}
+                            <li class="flex items-center gap-12 padding-left-24">
+                              <span class="text-truncate block grow">
+                                <span class="font-medium">
+                                  {{ if .String "title" }}
+                                    {{ .String "title" }}
+                                  {{ else }}
+                                    {{ if eq (.String "subject") "math" }}
+                                      Mathematics
+                                    {{ else if eq (.String "subject") "music" }}
+                                      Music Theory
+                                    {{ else if eq (.String "subject") "chess" }}
+                                      Chess
+                                    {{ else }}
+                                      {{ .String "subject" }}
+                                    {{ end }}
+                                  {{ end }}
+                                </span>
+                                <span class="text-muted text-small block">{{ .String "topic" }}</span>
+                              </span>
+                              <span class="text-right">
+                                <span class="font-bold">{{ .Int "xp" }}</span>
+                                <span class="text-muted text-small block">XP</span>
+                              </span>
+                            </li>
+                          {{ end }}
+                        </ul>
+                      </details>
+                    </li>
+                  </ul>
+              - type: calendar
+                first-day-of-week: monday
+
+              - type: custom-api
+                title: Uptime
+                title-url: ${UPTIME_KUMA_URL}
+                url: ${UPTIME_KUMA_URL}/api/status-page/${UPTIME_KUMA_STATUS_SLUG}
+                subrequests:
+                  heartbeats:
+                    url: ${UPTIME_KUMA_URL}/api/status-page/heartbeat/${UPTIME_KUMA_STATUS_SLUG}
+                cache: 10m
+                template: |
+                  {{ $hb := .Subrequest "heartbeats" }}
+                  {{ if not (.JSON.Exists "publicGroupList") }}
+                  <p class="color-negative">Error reading response</p>
+                  {{ else if eq (len (.JSON.Array "publicGroupList")) 0 }}
+                  <p>No monitors found</p>
+                  {{ else }}
+                  <ul class="dynamic-columns list-gap-8">
+                    {{ range .JSON.Array "publicGroupList" }}
+                    {{ range .Array "monitorList" }}
+                    {{ $id := .String "id" }}
+                    {{ $hbArray := $hb.JSON.Array (print "heartbeatList." $id) }}
+                    <div class="flex items-center gap-12">
+                      <a class="size-title-dynamic color-highlight text-truncate block grow" href="${UPTIME_KUMA_URL}/dashboard/{{ $id }}"
+                        target="_blank" rel="noreferrer">
+                        {{ .String "name" }} </a>
+                  
+                      {{ if gt (len $hbArray) 0 }}
+                        {{ $latest := index $hbArray (sub (len $hbArray) 1) }}
+                        {{ if eq ($latest.Int "status") 1 }}
+                        <div>{{ $latest.Int "ping" }}ms</div>
+                        <div class="monitor-site-status-icon-compact" title="OK">
+                          <svg fill="var(--color-positive)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                              d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
+                              clip-rule="evenodd"></path>
+                          </svg>
+                        </div>
+                        {{ else }}
+                        <div><span class="color-negative">DOWN</span></div>
+                        <div class="monitor-site-status-icon-compact" title="{{ if $latest.Exists "msg" }}{{ $latest.String "msg" }}{{ else
+                          }}Error{{ end }}">
+                          <svg fill="var(--color-negative)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                              d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+                              clip-rule="evenodd"></path>
+                          </svg>
+                        </div>
+                        {{ end }}
+                      {{ else }}
+                        <div><span class="color-negative">No data</span></div>
+                        <div class="monitor-site-status-icon-compact" title="No data available">
+                          <svg fill="var(--color-negative)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-2a6 6 0 1 0 0-12 6 6 0 0 0 0 12zm-.75-8a.75.75 0 0 1 1.5 0v3a.75.75 0 0 1-1.5 0V8zm.75 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                          </svg>
+                        </div>
+                      {{ end }}
+                    </div>
+                    {{ end }}
+                    {{ end }}
+                  </ul>
+                  {{ end }}
+            
+
+          - size: full
+            widgets:
+              - type: group
+                widgets:
+                  - type: monitor
+                    cache: 1m
+                    title: SelfHosted
+                    sites:
+                      - url: https://dash.wst.sh
+                        title: Grafana
+                        icon: sh:grafana
+                      - url: https://id.wst.sh
+                        title: PocketID
+                        icon: sh:pocket-id
+                      - url: https://auth.wst.sh
+                        title: TinyAuth
+                        icon: di:tinyauth
+                      - url: https://adg.wst.sh
+                        title: AdGuard Home
+                        icon: sh:adguard-home
+                      - url: https://nas.wst.sh
+                        title: Synology NAS
+                        icon: di:synology-dsm
+                      - url: https://kite.wst.sh
+                        title: Kubernetes
+                        icon: sh:kubernetes
+                      - url: https://portainer.wst.sh
+                        title: Portainer
+                        icon: sh:portainer
+                      - url: https://route.wst.sh
+                        title: OpenWRT
+                        icon: sh:openwrt
+                      - url: https://pwd.wst.sh
+                        title: Vaultwarden
+                        icon: sh:vaultwarden
+                  
+                  - type: monitor 
+                    cache: 1m
+                    title: External
+                    sites:
+                      - url: https://github.com/RealTong
+                        title: GitHub
+                        icon: sh:github
+                      - url: https://google.com
+                        title: Google
+                        icon: sh:google
+                      - url: https://vercel.com/realtongs-projects
+                        title: Vercel
+                        icon: si:vercel
+                      - url: https://railway.com/dashboard
+                        title: Railway
+                        icon: si:railway
+                      - url: https://dash.cloudflare.com
+                        title: Cloudflare
+                        icon: si:cloudflare
+                      - url: https://x.com/RealTong_run
+                        title: X
+                        icon: sh:x
+              - type: extension
+                title: RealTong's GitHub Contributions
+                url: https://glance-github-graph-production.up.railway.app/graph/RealTong
+                allow-potentially-dangerous-html: true
+                parameters:
+                  contrast-multiplier: 1.0
+                  svg-height: 150
+                  show-months: true
+                  show-weekdays: true
+                  font-size: 9
+                  transition-hue: false
+              - type: group
+                widgets:
+                  - type: custom-api
+                    title: Server Stats
+                    cache: 5m
+                    options:
+                      base-url: ${BESZEL_URL}
+                      api-key: ${BESZEL_TOKEN}
+                    template: |
+                      {{/* Required config options */}}
+                      {{ $baseURL := .Options.StringOr "base-url" "" }}
+                      {{ $apiKey := .Options.StringOr "api-key" "" }}
+
+                      {{/* Error message template */}}
+                      {{ define "errorMsg" }}
+                        <div class="widget-error-header">
+                          <div class="color-negative size-h3">ERROR</div>
+                          <svg class="widget-error-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"></path>
+                          </svg>
+                        </div>
+                        <p class="break-all">{{ . }}</p>
+                      {{ end }}
+
+                      {{ define "formatGigabytes" }}
+                        {{ $value := . }}
+                        {{ $label := "GB" }}
+                        {{- if lt $value 1.0 }}
+                          {{ $value = mul $value 1000.0 }}
+                          {{ $label = "MB" }}
+                        {{- else if lt $value 1000.0 }}
+                        {{ else }}
+                          {{ $value = div $value 1000.0 }}
+                          {{ $label = "TB" }}
+                        {{ end }}
+                        {{ printf "%.1f" $value }} <span class="color-base size-h5">{{ $label }}</span>
+                      {{ end }}
+
+                      {{/* Check required fields */}}
+                      {{ if or (eq $baseURL "") (eq $apiKey "") }}
+                        {{ template "errorMsg" "Some required options are not set." }}
+                      {{ else }}
+
+                        {{ $token := concat "Bearer " $apiKey }}
+
+                        {{ $systemsResponse := newRequest (print $baseURL "/api/collections/systems/records")
+                            | withHeader "Authorization" $token
+                            | getResponse }}
+                        {{ $systems := $systemsResponse.JSON.Array "items" }}
+
+
+                        {{ range $n, $system := $systems }}
+                          {{ $status := $system.String "status" }}
+
+                          {{ $systemStatsRequest := newRequest (print $baseURL "/api/collections/system_stats/records")
+                              | withHeader "Authorization" $token
+                              | withParameter "sort" "-created"
+                              | withParameter "page" "1"
+                              | withParameter "perPage" "1"
+                              | withParameter "filter" (print "type='1m'&&system='" ($system.String "id") "'")
+                              | getResponse }}
+                          {{ $systemStats := index ($systemStatsRequest.JSON.Array "items") 0 }}
+
+                          {{ $hostname := $system.String "name" }}
+                          {{ $uptimeSec := $system.Float "info.u" }}
+
+                          {{ $systemTemp := $system.Float "info.dt"}}
+
+                          {{ $cpuLoad := $system.Float "info.cpu" }}
+                          {{ $cpuLoad1m := $system.Float "info.l1" }}
+                          {{ $cpuLoad15m := $system.Float "info.l15" }}
+
+                          {{ $memoryUsedPercent := $system.Float "info.mp" }}
+                          {{ $memoryTotalGb := $systemStats.Float "stats.m" }}
+                          {{ $memoryUsedGb := $systemStats.Float "stats.mu" }}
+
+                          {{ $swapTotalGb := $systemStats.Float "stats.s" }}
+                          {{ $swapUsedGb := $systemStats.Float "stats.su" }}
+                          {{ $swapUsedPercent := mul (div $swapUsedGb $swapTotalGb) 100.0 }}
+
+                          {{ $rootUsedPercent := $system.Float "info.dp" }}
+                          {{ $rootTotalGb := $systemStats.Float "stats.d" }}
+                          {{ $rootUsedGb := $systemStats.Float "stats.du" }}
+
+                          <div class="server">
+                            <div class="server-info">
+                              <div class="server-details">
+                                <div class="server-name color-highlight size-h3">{{ $hostname }}</div>
+                                <div>
+                                  {{ if eq $status "up" }}
+                                    <span>{{ printf "%.1f" (mul $uptimeSec 0.000011574) }}d</span> uptime
+                                  {{ else }}
+                                    unreachable
+                                  {{ end }}
+                                </div>
+                              </div>
+                              <div class="shrink-0"{{ if eq $status "up" }} data-popover-type="html" data-popover-margin="0.2rem" data-popover-max-width="400px"{{ end }}>
+                                {{- if eq $status "up" }}
+                                <div data-popover-html>
+                                  <div class="flex">
+                                    <div class="size-h5 text-compact">Kernel</div>
+                                    <div class="value-separator"></div>
+                                    <div class="color-highlight">{{ $system.String "info.k" }}</div>
+                                  </div>
+                                  <div class="flex">
+                                    <div class="size-h5 text-compact">CPU</div>
+                                    <div class="value-separator"></div>
+                                    <div class="color-highlight">{{ $system.String "info.m" }}</div>
+                                  </div>
+                                </div>
+                                {{- end }}
+                                <svg class="server-icon" stroke="var(--color-{{ if eq $status "up" }}positive{{ else }}negative{{ end }})" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 0 0-.12-1.03l-2.268-9.64a3.375 3.375 0 0 0-3.285-2.602H7.923a3.375 3.375 0 0 0-3.285 2.602l-2.268 9.64a4.5 4.5 0 0 0-.12 1.03v.228m19.5 0a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3m19.5 0a3 3 0 0 0-3-3H5.25a3 3 0 0 0-3 3m16.5 0h.008v.008h-.008v-.008Zm-3 0h.008v.008h-.008v-.008Z" />
+                                </svg>
+                              </div>
+                            </div>
+
+                            <div class="server-stats">
+                              <div class="flex-1">
+                                <div class="flex items-end size-h5">
+                                  <div>CPU</div>
+                                  {{- if ge $systemTemp 80.0 }}
+                                  <svg class="server-spicy-cpu-icon" fill="var(--color-negative)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" >
+                                    <path fill-rule="evenodd" d="M8.074.945A4.993 4.993 0 0 0 6 5v.032c.004.6.114 1.176.311 1.709.16.428-.204.91-.61.7a5.023 5.023 0 0 1-1.868-1.677c-.202-.304-.648-.363-.848-.058a6 6 0 1 0 8.017-1.901l-.004-.007a4.98 4.98 0 0 1-2.18-2.574c-.116-.31-.477-.472-.744-.28Zm.78 6.178a3.001 3.001 0 1 1-3.473 4.341c-.205-.365.215-.694.62-.59a4.008 4.008 0 0 0 1.873.03c.288-.065.413-.386.321-.666A3.997 3.997 0 0 1 8 8.999c0-.585.126-1.14.351-1.641a.42.42 0 0 1 .503-.235Z" clip-rule="evenodd" />
+                                  </svg>
+                                  {{- end }}
+                                  <div class="color-highlight margin-left-auto text-very-compact">{{ $cpuLoad }} <span class="color-base">%</span></div>
+                                </div>
+                                <div data-popover-type="html">
+                                  <div data-popover-html>
+                                    <div class="flex">
+                                      <div class="size-h5">1M AVG</div>
+                                      <div class="value-separator"></div>
+                                      <div class="color-highlight text-very-compact">{{ printf "%.1f" $cpuLoad1m }} <span class="color-base size-h5">%</span></div>
+                                    </div>
+                                    <div class="flex margin-top-3">
+                                      <div class="size-h5">15M AVG</div>
+                                      <div class="value-separator"></div>
+                                      <div class="color-highlight text-very-compact">{{ printf "%.1f" $cpuLoad15m }} <span class="color-base size-h5">%</span></div>
+                                    </div>
+                                    <div class="flex margin-top-3">
+                                      <div class="size-h5">TEMP C</div>
+                                      <div class="value-separator"></div>
+                                      <div class="color-highlight text-very-compact">{{ printf "%.1f" $systemTemp }} <span class="color-base size-h5">°</span></div>
+                                    </div>
+                                  </div>
+
+                                  <div class="progress-bar progress-bar-combined">
+                                    <div class="progress-value{{ if ge $cpuLoad1m 85.0 }} progress-value-notice{{ end }}" style="--percent: {{ $cpuLoad1m }}"></div>
+                                    <div class="progress-value{{ if ge $cpuLoad15m 85.0 }} progress-value-notice{{ end }}" style="--percent: {{ $cpuLoad15m }}"></div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="flex-1">
+                                <div class="flex justify-between items-end size-h5">
+                                  <div>RAM</div>
+                                  <div class="color-highlight text-very-compact">{{ $memoryUsedPercent }} <span class="color-base">%</span></div>
+                                </div>
+                                <div data-popover-type="html">
+                                  <div data-popover-html>
+                                    <div class="flex">
+                                      <div class="size-h5">RAM</div>
+                                      <div class="value-separator"></div>
+                                      <div class="color-highlight text-very-compact">
+                                        {{ template "formatGigabytes" $memoryUsedGb }} <span class="color-base size-h5">/</span> {{ template "formatGigabytes" $memoryTotalGb }}
+                                      </div>
+                                    </div> 
+                                    {{- if gt $swapTotalGb 0.0 }}
+                                    <div class="flex margin-top-3">
+                                      <div class="size-h5">SWAP</div>
+                                      <div class="value-separator"></div>
+                                      <div class="color-highlight text-very-compact">
+                                        {{ template "formatGigabytes" $swapUsedGb }} <span class="color-base size-h5">/</span> {{ template "formatGigabytes" $swapTotalGb }}
+                                      </div>
+                                    </div>
+                                    {{- end }}
+                                  </div>
+                                  <div class="progress-bar progress-bar-combined">
+                                    <div class="progress-value{{ if ge $memoryUsedPercent 85.0 }} progress-value-notice{{ end }}" style="--percent: {{ $memoryUsedPercent }}"></div>
+                                    {{- if gt $swapTotalGb 0.0 }}
+                                    <div class="progress-value{{ if ge $swapUsedPercent 85.0 }} progress-value-notice{{ end }}" style="--percent: {{ $swapUsedPercent }}"></div>
+                                    {{- end }}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="flex-1">
+                                <div class="flex justify-between items-end size-h5">
+                                  <div>DISK</div>
+                                  <div class="color-highlight text-very-compact">{{ $rootUsedPercent }} <span class="color-base">%</span></div>
+                                </div>
+                                <div data-popover-type="html">
+                                  <div data-popover-html>
+                                    <ul class="list list-gap-2">
+                                      <li class="flex">
+                                        <div class="size-h5">/</div>
+                                        <div class="value-separator"></div>
+                                        <div class="color-highlight text-very-compact">
+                                          {{ template "formatGigabytes" $rootUsedGb }} <span class="color-base size-h5">/</span> {{ template "formatGigabytes" $rootTotalGb }}
+                                        </div>
+                                      </li>
+                                      {{ range $key, $efs := ($systemStats.Get "stats.efs").Map }}
+                                        <li class="flex">
+                                          <div class="size-h5">{{ $key }}</div>
+                                          <div class="value-separator"></div>
+                                          <div class="color-highlight text-very-compact">
+                                            {{ template "formatGigabytes" (($efs.Get "du").Float) }} <span class="color-base size-h5">/</span> {{ template "formatGigabytes" (($efs.Get "d").Float) }}
+                                          </div>
+                                        </li>
+                                      {{ end }}
+                                    </ul>
+                                  </div>
+                                  <div class="progress-bar progress-bar-combined">
+                                    <div class="progress-value{{ if ge $rootUsedPercent 85.0 }} progress-value-notice{{ end }}" style="--percent: {{ $rootUsedPercent }}"></div>
+                                    {{ range $key, $efs := ($systemStats.Get "stats.efs").Map }}
+                                      {{ $efsTotalGb := (($efs.Get "d").Float) }}
+                                      {{ $efsUsedGb := (($efs.Get "du").Float) }}
+                                      {{ $efsPercent := mul (div $efsUsedGb $efsTotalGb) 100 }}
+                                      <div class="progress-value{{ if ge $efsPercent 85.0 }} progress-value-notice{{ end }}" style="--percent: {{ $efsPercent }}"></div>
+                                    {{ end }}
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        {{ end }}
+                      {{ end }}
+                  - type: extension
+                    title: K3S Nodes
+                    url: ${GLANCE_K8S_URL}/extension/nodes
+                    allow-potentially-dangerous-html: true
+                    cache: 1s
+                  - type: extension
+                    title: K3S Apps
+                    url: ${GLANCE_K8S_URL}/extension/apps
+                    allow-potentially-dangerous-html: true
+                    cache: 1s
+
+                    parameters:
+                      # Parameters are sent to the extension as query parameters.
+                      # Since there is no browser or proxy between glance and glance-k8s there _should_ not be a size limit for the parameters,
+                      # apart from default buffer sizes.
+                      # But keep that in mind, when supplying large strings.
+
+                      # Show only workloads, that match an expression. 
+                      # See: https://github.com/expr-lang/expr
+                      #
+                      # Environment:
+                      #   namespace    Namespace of the workload
+                      #   name         Name of the workload
+                      #   annotations  Map of annotations
+                      show-if: |
+                        namespace != "kube-system" and
+                        ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+
+                      # You can also supply multiple expressions, which will evaluate to a logical conjunction (AND).
+                      # show-if:
+                      #   - |
+                      #     namespace != "kube-system"
+                      #   - |
+                      #     ("glance/hide" not in annotations || annotations["glance/hide"] != "true")
+          - size: small
+            widgets:
+              - type: weather
+                location: YunCheng, China
+                units: metric # alternatively "imperial"
+                hour-format: 12h # alternatively "24h"
+                # Optionally hide the location from being displayed in the widget
+                # hide-location: true
+
+              - type: videos
+                channels:
+                  - UCilwQlk62k1z7aUEZPOB6yw # 小 Lin 说
+                  - UC33VP_gIBzCVcEvaGKBocZA # 罗永浩的十字路口
+                  - UC2cRwTuSWxxEtrRnT4lrlQA # Mediastorm影视飓风
+                limit: 10
+                # style: horizontal-cards
+                style: vertical-list
+                collapse-after: 5
+
+
+              - type: rss
+                title: News
+                style: vertical-list
+                collapse-after: 5
+                limit: 3
+                feeds:
+                  - url: https://api.theblockbeats.news/v1/open-api/home-xml
+                    title: BlockBeats
+                  - url: https://moxie.foxbusiness.com/google-publisher/markets.xml
+                    title: Fox Business
+                  - url: https://moxie.foxbusiness.com/google-publisher/technology.xml
+                    title: Fox Business
+      # Add more pages here:
+      # - name: Your page name
+      #   columns:
+      #     - size: small
+      #       widgets:
+      #         # Add widgets here
+
+      #     - size: full
+      #       widgets:
+      #         # Add widgets here
+
+      #     - size: small
+      #       widgets:
+      #         # Add widgets here
+
+    branding:
+      custom-footer: " "
+      app-name: "RealTong's Dashboard"
