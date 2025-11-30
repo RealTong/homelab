@@ -3,7 +3,3 @@ kind: Kustomization
 namespace: observability
 resources:  
   - deployment.yaml
-  - service.yaml
-  - ingress.yaml
-  - configmap.yaml
-  
