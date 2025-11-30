@@ -9,3 +9,4 @@ resources:
   - ./beszel-hub/
   - ./glance/
   - ./prometheus/
+  - ./glance-k8s/
