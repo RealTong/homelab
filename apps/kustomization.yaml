@@ -6,3 +6,4 @@ resources:
   - ./tinyauth/
   - ./grafana/
   - ./kite/
+  - ./beszel-hub/

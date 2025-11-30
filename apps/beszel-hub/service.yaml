@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: beszel-hub
+  namespace: observability
+  labels:
+    app: beszel-hub
+spec:
+  selector:
+    app: beszel-hub
+  ports:
+    - name: http
+      port: 8090
+      targetPort: 8090
