@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: beszel-hub
+    namespace: beszel-hub
+    annotations:
+        glance/icon: di:beszel
+        glance/name: "Beszel Hub"
+        glance/url: https://monitor.wst.sh
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/proxy-body-size: "25m"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+        nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
+        cert-manager.io/cluster-issuer: mkcert-issuer
+spec:
+    ingressClassName: nginx
+    tls:
+        - hosts:
+              - monitor.wst.sh
+          secretName: monitor-wst-sh-tls
+    rules:
+        - host: monitor.wst.sh
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: beszel-hub
+                            port:
+                                number: 8090

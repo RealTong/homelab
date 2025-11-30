@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beszel-hub
+  namespace: observability
+  labels:
+    app: beszel-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beszel-hub
+  template:
+    metadata:
+      labels:
+        app: beszel-hub
+    spec:
+      containers:
+        - name: beszel-hub
+          image: henrygd/beszel:0.16.1
+          ports:
+            - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: beszel-hub-configmap
+          volumeMounts:
+            - name: beszel-data
+              mountPath: /beszel_data
+            - name: ca-cert
+              mountPath: /etc/ssl/certs/ca.crt
+              subPath: ca.crt
+              readOnly: true
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+        
+      volumes:
+        - name: beszel-data
+          persistentVolumeClaim:
+            claimName: beszel-hub-pvc
+        - name: ca-cert
+          configMap:
+            name: beszel-hub-configmap
+            items:
+            - key: ca.crt
+              path: ca.crt

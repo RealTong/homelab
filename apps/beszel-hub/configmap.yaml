@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: beszel-hub-configmap
+  namespace: observability
+data:
+  DISABLE_PASSWORD_AUTH: "true"
+  USER_CREATION: "true"
