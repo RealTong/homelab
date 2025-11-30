@@ -11,3 +11,4 @@ resources:
   - ./prometheus/
   - ./glance-k8s/
   - ./uptime-kuma/
+  - ./kube-state-metrics/
