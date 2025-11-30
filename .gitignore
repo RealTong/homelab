@@ -1,0 +1,15 @@
+/.private/
+/.task/
+/.tasks/
+/.venv/
+*.crt
+*.key
+*.pem
+*.env
+*.log
+*.iso
+.decrypted
+.DS_Store
+Brewfile.lock.json
+Thumbs.db
+kubeconfig
