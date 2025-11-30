@@ -3,7 +3,12 @@ kind: Deployment
 metadata:
   name: uptime-kuma
   namespace: observability
+  labels:
+    app: uptime-kuma
 spec:
+  selector:
+    matchLabels:
+      app: uptime-kuma
   template:
     metadata:
       labels:
