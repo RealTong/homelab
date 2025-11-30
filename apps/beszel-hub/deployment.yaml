@@ -27,8 +27,7 @@ spec:
             - name: beszel-data
               mountPath: /beszel_data
             - name: ca-cert
-              mountPath: /etc/ssl/certs/ca.crt
-              subPath: ca.crt
+              mountPath: /etc/ssl/certs/ca-certificates.crt
               readOnly: true
           resources:
             requests:
@@ -43,8 +42,6 @@ spec:
           persistentVolumeClaim:
             claimName: beszel-hub-pvc
         - name: ca-cert
-          configMap:
-            name: beszel-hub-configmap
-            items:
-            - key: ca.crt
-              path: ca.crt
+          hostPath:
+            path: /etc/ssl/certs/ca-certificates.crt
+            type: File
