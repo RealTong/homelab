@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glance-k8s
+  namespace: observability
+spec:
+  template:
+    spec:
+      serviceAccountName: cluster-admin-sa
+      containers:
+      - name: glance-k8s
+        image: ghcr.io/lukasdietrich/glance-k8s/glance-k8s:v0.4.1
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080

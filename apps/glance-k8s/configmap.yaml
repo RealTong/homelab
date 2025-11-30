@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glance-k8s-configmap
+  namespace: observability
+data:
+  APP_ENV: "production"
+  LOG_LEVEL: "info"
+  GLANCE_SETTING_1: "value1"
