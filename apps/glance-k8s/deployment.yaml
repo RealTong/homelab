@@ -4,7 +4,13 @@ metadata:
   name: glance-k8s
   namespace: observability
 spec:
+  selector:
+    matchLabels:
+      app: glance-k8s
   template:
+    metadata:
+      labels:
+        app: glance-k8s
     spec:
       serviceAccountName: cluster-admin-sa
       containers:
