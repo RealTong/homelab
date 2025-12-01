@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drizzle-gateway
+  namespace: databases
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: drizzle-gateway
+  template:
+    metadata:
+      labels:
+        app: drizzle-gateway
+    spec:
+      containers:
+      - name: drizzle-gateway
+        image: ghcr.io/drizzle-team/gateway:latest
+        ports:
+        - containerPort: 4983
+        env:
+        - name: MASTERPASS
+          valueFrom:
+            secretKeyRef:
+              name: drizzle-gateway-secret
+              key: MASTERPASS
+        - name: STORE_PATH
+          value: "/app"
+        volumeMounts:
+        - name: drizzle-gateway-storage
+          mountPath: /app
+
+      volumes:
+      - name: drizzle-gateway-storage
+        persistentVolumeClaim:
+          claimName: drizzle-gateway-pvc

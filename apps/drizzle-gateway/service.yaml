@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: drizzle-gateway
+    namespace: databases
+    labels:
+        app: drizzle-gateway
+spec:
+    selector:
+        app: drizzle-gateway
+    ports:
+        - name: http
+          port: 4983
+          targetPort: 4983
+

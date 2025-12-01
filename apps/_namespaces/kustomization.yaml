@@ -4,3 +4,4 @@ resources:
   - auth.yaml
   - observability.yaml
   - homelab.yaml
+  - databases.yaml
