@@ -15,3 +15,5 @@ resources:
   - ./portainer/
   - ./vaultwarden/
   - ./drizzle-gateway/
+  - ./postgres/
+  - ./redis/
