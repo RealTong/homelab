@@ -5,7 +5,7 @@ metadata:
   namespace: databases
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: local-path
   resources:
     requests:
