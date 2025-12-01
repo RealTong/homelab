@@ -13,3 +13,4 @@ resources:
   - ./uptime-kuma/
   - ./kube-state-metrics/
   - ./portainer/
+  - ./vaultwarden/
