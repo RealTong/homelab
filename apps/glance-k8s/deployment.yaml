@@ -15,7 +15,7 @@ spec:
       serviceAccountName: cluster-admin-sa
       containers:
       - name: glance-k8s
-        image: ghcr.io/lukasdietrich/glance-k8s/glance-k8s:v0.4.2
+        image: ghcr.io/lukasdietrich/glance-k8s/glance-k8s:v0.4.3
         ports:
         - containerPort: 8080
           protocol: TCP
