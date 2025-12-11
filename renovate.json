@@ -1,0 +1,50 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+      "config:base",
+      ":timezone(Asia/Shanghai)", 
+      ":dependencyDashboard"
+    ],
+    "flux": {
+      "fileMatch": ["clusters/**", "apps/**", "infrastructure/**"]
+    },
+    "kubernetes": {
+      "fileMatch": ["apps/**", "infrastructure/**"]
+    },
+    "packageRules": [
+      {
+        "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+        "automerge": false,
+        "description": "小版本更新虽然安全，但建议手动合并。"
+      },
+      {
+        "matchDatasources": ["docker"],
+        "matchPackageNames": ["ghcr.io/pocket-id/pocket-id"],
+        "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+      },
+      {
+        "matchManagers": ["flux"],
+        "matchPackageNames": ["external-secrets"],
+        "versioning": "helm"
+      }
+    ],
+    "regexManagers": [
+      {
+        "description": "处理 HelmRelease 中的 chart version",
+        "fileMatch": ["(?i)release.yaml$"],
+        "matchStrings": [
+          "version: \"?(?<currentValue>.*?)\"?\\s"
+        ],
+        "datasourceTemplate": "helm",
+        "versioningTemplate": "helm"
+      },
+      {
+        "description": "处理普通的 Kubernetes YAML 中的 image tag",
+        "fileMatch": ["(?i)(deployment|cronjob|job|daemonset|statefulset)\\.yaml$"],
+        "matchStrings": [
+          "image: (?<depName>.*?):(?<currentValue>.*?)\\s"
+        ],
+        "datasourceTemplate": "docker"
+      }
+    ]
+  }
