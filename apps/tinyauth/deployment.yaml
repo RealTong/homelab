@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: tinyauth
-          image: ghcr.io/steveiliop56/tinyauth:v3
+          image: ghcr.io/steveiliop56/tinyauth:v4
           ports:
             - containerPort: 3000
           env:
