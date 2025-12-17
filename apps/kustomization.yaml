@@ -17,3 +17,4 @@ resources:
   - ./drizzle-gateway/
   - ./postgres/
   - ./redis/
+  - ./n8n/
