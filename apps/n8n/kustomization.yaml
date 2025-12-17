@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: homelab
 resources:  
   - external-secret.yaml
-  - init-db-job.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml

@@ -16,6 +16,113 @@ spec:
       labels:
         app: n8n
     spec:
+      initContainers:
+        - name: init-db
+          image: postgres:16-alpine
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              
+              # Wait for secret environment variables to be populated
+              echo "Waiting for secret environment variables..."
+              MAX_WAIT=120
+              WAIT_COUNT=0
+              while [ $WAIT_COUNT -lt $MAX_WAIT ]; do
+                if [ -n "$POSTGRES_USER" ] && [ -n "$POSTGRES_PASSWORD" ] && \
+                   [ -n "$DB_POSTGRESDB_DATABASE" ] && [ -n "$DB_POSTGRESDB_USER" ] && \
+                   [ -n "$DB_POSTGRESDB_PASSWORD" ] && [ -n "$DB_POSTGRESDB_SCHEMA" ]; then
+                  echo "All environment variables are set"
+                  break
+                fi
+                echo "Waiting for environment variables... ($WAIT_COUNT/$MAX_WAIT)"
+                sleep 2
+                WAIT_COUNT=$((WAIT_COUNT + 1))
+              done
+              
+              if [ $WAIT_COUNT -eq $MAX_WAIT ]; then
+                echo "ERROR: Environment variables not set after waiting"
+                exit 1
+              fi
+              
+              echo "Waiting for PostgreSQL to be ready..."
+              until PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres.databases.svc.cluster.local -U $POSTGRES_USER -d postgres -c '\q' 2>/dev/null; do
+                echo "PostgreSQL is unavailable - sleeping"
+                sleep 2
+              done
+              echo "PostgreSQL is up - executing init script"
+              
+              # Create database if not exists
+              PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres.databases.svc.cluster.local -U $POSTGRES_USER -d postgres <<EOF
+              SELECT 'CREATE DATABASE $DB_POSTGRESDB_DATABASE'
+              WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '$DB_POSTGRESDB_DATABASE')\gexec
+              EOF
+              
+              # Create user if not exists
+              PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres.databases.svc.cluster.local -U $POSTGRES_USER -d postgres <<EOF
+              DO \$\$
+              BEGIN
+                IF NOT EXISTS (SELECT FROM pg_user WHERE usename = '$DB_POSTGRESDB_USER') THEN
+                  CREATE USER $DB_POSTGRESDB_USER WITH PASSWORD '$DB_POSTGRESDB_PASSWORD';
+                END IF;
+              END
+              \$\$;
+              EOF
+              
+              # Grant privileges
+              PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres.databases.svc.cluster.local -U $POSTGRES_USER -d postgres <<EOF
+              GRANT ALL PRIVILEGES ON DATABASE $DB_POSTGRESDB_DATABASE TO $DB_POSTGRESDB_USER;
+              ALTER DATABASE $DB_POSTGRESDB_DATABASE OWNER TO $DB_POSTGRESDB_USER;
+              EOF
+              
+              # Create schema if specified and not public
+              if [ "$DB_POSTGRESDB_SCHEMA" != "public" ]; then
+                PGPASSWORD=$DB_POSTGRESDB_PASSWORD psql -h postgres.databases.svc.cluster.local -U $DB_POSTGRESDB_USER -d $DB_POSTGRESDB_DATABASE <<EOF
+                CREATE SCHEMA IF NOT EXISTS $DB_POSTGRESDB_SCHEMA;
+                GRANT ALL ON SCHEMA $DB_POSTGRESDB_SCHEMA TO $DB_POSTGRESDB_USER;
+                EOF
+              fi
+              
+              echo "Database initialization completed successfully"
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secret
+                  key: POSTGRES_ADMIN_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secret
+                  key: POSTGRES_ADMIN_PASSWORD
+            - name: DB_POSTGRESDB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secret
+                  key: DB_POSTGRESDB_DATABASE
+            - name: DB_POSTGRESDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secret
+                  key: DB_POSTGRESDB_USER
+            - name: DB_POSTGRESDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secret
+                  key: DB_POSTGRESDB_PASSWORD
+            - name: DB_POSTGRESDB_SCHEMA
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-secret
+                  key: DB_POSTGRESDB_SCHEMA
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
       containers:
         - name: n8n
           image: docker.n8n.io/n8nio/n8n:latest
