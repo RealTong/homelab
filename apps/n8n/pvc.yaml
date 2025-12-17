@@ -5,7 +5,7 @@ metadata:
   namespace: homelab
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: nfs-client
   resources:
     requests:
