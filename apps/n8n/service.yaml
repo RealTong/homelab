@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: n8n
+  namespace: homelab
+  labels:
+    app: n8n
+spec:
+  selector:
+    app: n8n
+  ports:
+    - name: http
+      port: 5678
+      targetPort: 5678
+
