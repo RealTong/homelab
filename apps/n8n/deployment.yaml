@@ -16,6 +16,8 @@ spec:
       labels:
         app: n8n
     spec:
+      nodeSelector:
+                  kubernetes.io/hostname: "realtong-server"
       initContainers:
         - name: init-db
           image: postgres:16-alpine
