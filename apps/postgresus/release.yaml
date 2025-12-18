@@ -14,6 +14,8 @@ spec:
         name: postgresus-repository
         namespace: flux-system
   values:
+    nodeSelector:
+      kubernetes.io/hostname: "realtong-server"
     customRootCA: "my-root-ca"
     persistence:
       enabled: true
