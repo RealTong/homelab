@@ -18,26 +18,6 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: "realtong-server"
-      initContainers:
-        - name: create-n8n-db
-          image: postgres:16-alpine
-          command: ["sh", "-c", "psql -h postgres.databases.svc.cluster.local -U $POSTGRES_USER -d $DB_POSTGRESDB_DATABASE -c 'CREATE USER $DB_POSTGRESDB_USER WITH PASSWORD $DB_POSTGRESDB_PASSWORD'"]
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-secret
-                  key: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-secret
-                  key: POSTGRES_PASSWORD
-            - name: DB_POSTGRESDB_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: n8n-secret
-                  key: DB_POSTGRESDB_DATABASE
       containers:
         - name: n8n
           image: docker.n8n.io/n8nio/n8n:latest
