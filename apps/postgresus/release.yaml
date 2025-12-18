@@ -14,17 +14,29 @@ spec:
         name: postgresus-repository
         namespace: flux-system
   values:
-    customRootCA: my-root-ca
+    customRootCA: "my-root-ca"
     persistence:
       enabled: true
-      storageClassName: nfs-client
+      storageClassName: "nfs-client"
       size: 20Gi
       accessModes: ReadWriteMany
     ingress:
       enabled: true
+      className: nginx
       annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/proxy-body-size: "25m"
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+        nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+        nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
+        cert-manager.io/cluster-issuer: mkcert-issuer
       hosts:
         - host: dbb.wst.sh
           paths:
             - path: /
               pathType: Prefix
+      tls:
+        - secretName: dbb-wst-sh-tls
+          hosts:
+            - dbb.wst.sh
