@@ -18,3 +18,4 @@ resources:
   - ./postgres/
   - ./redis/
   - ./n8n/
+  - ./postgresus/
