@@ -17,7 +17,7 @@ spec:
             nodeSelector:
                 kubernetes.io/hostname: "realtong-server"
             containers:
-                - image: ghcr.io/zxh326/kite:v0.7.3
+                - image: ghcr.io/zxh326/kite:v0.7.6
                   imagePullPolicy: IfNotPresent
                   name: kite
                   livenessProbe:
