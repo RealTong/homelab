@@ -5,14 +5,14 @@ metadata:
   namespace: auth
 data:
   APP_URL: "https://auth.wst.sh"
-  APP_TITLE: "RealTong's Auth"
+  APP_TITLE: "RealTong's TinyAuth"
   BACKGROUND_IMAGE: "https://assets.realtong.cn/homelab-assets/login-bg.jpg"
-  COOKIE_SECURE: "true"
+  SECURE_COOKIE: "true"
 
-  GENERIC_NAME: "Pocket ID"
-  GENERIC_AUTH_URL: "https://id.wst.sh/authorize"
-  GENERIC_TOKEN_URL: "https://id.wst.sh/api/oidc/token"
-  GENERIC_USER_URL: "https://id.wst.sh/api/oidc/userinfo"
-  GENERIC_SCOPES: "openid email profile groups"
+  PROVIDERS_GENERIC_NAME: "Pocket ID"
+  PROVIDERS_GENERIC_AUTH_URL: "https://id.wst.sh/authorize"
+  PROVIDERS_GENERIC_TOKEN_URL: "https://id.wst.sh/api/oidc/token"
+  PROVIDERS_GENERIC_USER_URL: "https://id.wst.sh/api/oidc/userinfo"
+  PROVIDERS_GENERIC_SCOPES: "openid email profile groups"
   DISABLE_CONTINUE: "true"
   OAUTH_WHITELIST: "i@realtong.cn,i@realtong.com,i@wst.sh"
