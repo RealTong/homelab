@@ -24,16 +24,16 @@ spec:
                 secretKeyRef:
                   name: tinyauth-secret
                   key: SECRET
-            - name: GENERIC_CLIENT_ID
+            - name: PROVIDERS_GENERIC_CLIENT_ID
               valueFrom:
                 secretKeyRef:
                   name: tinyauth-secret
-                  key: GENERIC_CLIENT_ID
-            - name: GENERIC_CLIENT_SECRET
+                  key: PROVIDERS_GENERIC_CLIENT_ID
+            - name: PROVIDERS_GENERIC_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: tinyauth-secret
-                  key: GENERIC_CLIENT_SECRET
+                  key: PROVIDERS_GENERIC_CLIENT_SECRET
 
             - name: NODE_EXTRA_CA_CERTS
               value: /etc/ssl/certs/ca-certificates.crt
