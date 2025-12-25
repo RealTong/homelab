@@ -54,11 +54,11 @@ spec:
             readOnly: true
           livenessProbe:
             httpGet:
-              path: /api/healthcheck
+              path: /api/healthz
               port: 3000
           readinessProbe:
             httpGet:
-              path: /api/healthcheck
+              path: /api/healthz
               port: 3000
           resources:
             requests:
