@@ -13,6 +13,8 @@ spec:
       labels:
         app: tinyauth
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: "realtong-server"
       containers:
         - name: tinyauth
           image: ghcr.io/steveiliop56/tinyauth:v4
