@@ -6,3 +6,5 @@ metadata:
 data:
   DOMAIN: "https://pwd.wst.sh"
   WEBSOCKET_ENABLED: "true"
+  SSO_ENABLED: "true"
+  SSO_AUTHORITY: "https://id.wst.sh"
