@@ -17,7 +17,7 @@ spec:
         spec:
             containers:
                 - name: vaultwarden
-                  image: vaultwarden/server:latest
+                  image: vaultwarden/server:1.35.0
                   ports:
                       - containerPort: 80
                   env:
@@ -26,6 +26,16 @@ spec:
                             secretKeyRef:
                                 name: vaultwarden-secret
                                 key: ADMIN_TOKEN
+                      - name: SSO_CLIENT_ID
+                        valueFrom:
+                            secretKeyRef:
+                                name: vaultwarden-secret
+                                key: SSO_CLIENT_ID
+                      - name: SSO_CLIENT_SECRET
+                        valueFrom:
+                            secretKeyRef:
+                                name: vaultwarden-secret
+                                key: SSO_CLIENT_SECRET
                   envFrom: 
                   - configMapRef:
                       name: vaultwarden-configmap
