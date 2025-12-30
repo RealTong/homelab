@@ -15,8 +15,8 @@ spec:
             labels:
                 app: vaultwarden
         spec:
-          nodeSelector:
-            kubernetes.io/hostname: "realtong-server"
+            nodeSelector:
+                kubernetes.io/hostname: "realtong-server"
             containers:
                 - name: vaultwarden
                   image: vaultwarden/server:1.35.0
