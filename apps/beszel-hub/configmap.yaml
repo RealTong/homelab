@@ -4,5 +4,5 @@ metadata:
   name: beszel-hub-configmap
   namespace: observability
 data:
-  DISABLE_PASSWORD_AUTH: "false"
+  DISABLE_PASSWORD_AUTH: "true"
   USER_CREATION: "true"
