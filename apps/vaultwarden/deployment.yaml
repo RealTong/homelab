@@ -19,7 +19,7 @@ spec:
                 kubernetes.io/hostname: "realtong-server"
             containers:
                 - name: vaultwarden
-                  image: vaultwarden/server:1.35.0
+                  image: vaultwarden/server:1.35.2
                   ports:
                       - containerPort: 80
                   env:
