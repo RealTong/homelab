@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: beszel-hub
-          image: henrygd/beszel:0.17.0
+          image: henrygd/beszel:0.18.2
           ports:
             - containerPort: 8090
           envFrom:
