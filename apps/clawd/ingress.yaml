@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: clawd-ingress
+  namespace: homelab
+  annotations:
+    glance/icon: carbon:ibm-watson-assistant
+    glance/name: "Clawd"
+    glance/url: https://clawd.wst.sh
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "25m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
+    cert-manager.io/cluster-issuer: mkcert-issuer
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - clawd.wst.sh
+      secretName: clawd-wst-sh-tls
+  rules:
+    - host: clawd.wst.sh
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: clawd
+                port:
+                  number: 18789

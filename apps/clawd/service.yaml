@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clawd
+  namespace: homelab
+  labels:
+    app: clawd
+spec:
+  ports:
+    - name: http
+      port: 18789
+      protocol: TCP
+      targetPort: 18789
+  # 注意: 由于这是外部服务,我们不使用 selector
+  # 而是通过 endpoints.yaml 手动定义目标地址

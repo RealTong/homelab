@@ -19,3 +19,4 @@ resources:
   - ./redis/
   - ./n8n/
   - ./postgresus/
+  - ./clawd/
