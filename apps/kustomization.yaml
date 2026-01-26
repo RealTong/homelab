@@ -20,3 +20,4 @@ resources:
   - ./n8n/
   - ./postgresus/
   - ./clawd/
+  - ./sub2api/
