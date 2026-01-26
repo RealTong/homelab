@@ -27,16 +27,16 @@ spec:
             - |
               export PGPASSWORD="$POSTGRES_ADMIN_PASSWORD"
 
-              # Create database if not exists
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_POSTGRESDB_DATABASE'" | grep -q 1 || \
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -c "CREATE DATABASE $DB_POSTGRESDB_DATABASE;"
+              # Create database if not exists (use postgres default database)
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_POSTGRESDB_DATABASE'" | grep -q 1 || \
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -c "CREATE DATABASE $DB_POSTGRESDB_DATABASE;"
 
               # Create user if not exists
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -tc "SELECT 1 FROM pg_user WHERE usename = '$DB_POSTGRESDB_USER'" | grep -q 1 || \
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -c "CREATE USER $DB_POSTGRESDB_USER WITH PASSWORD '$DB_POSTGRESDB_PASSWORD';"
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -tc "SELECT 1 FROM pg_user WHERE usename = '$DB_POSTGRESDB_USER'" | grep -q 1 || \
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -c "CREATE USER $DB_POSTGRESDB_USER WITH PASSWORD '$DB_POSTGRESDB_PASSWORD';"
 
               # Grant privileges
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -c "GRANT ALL PRIVILEGES ON DATABASE $DB_POSTGRESDB_DATABASE TO $DB_POSTGRESDB_USER;"
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_POSTGRESDB_DATABASE TO $DB_POSTGRESDB_USER;"
 
               # Grant schema privileges
               psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d "$DB_POSTGRESDB_DATABASE" -c "GRANT ALL ON SCHEMA public TO $DB_POSTGRESDB_USER;"
@@ -71,6 +71,7 @@ spec:
       containers:
         - name: sub2api
           image: ghcr.io/wei-shaw/sub2api:latest
+          command: ["/bin/sh", "/scripts/start.sh"]
           ports:
             - containerPort: 8080
           env:
@@ -85,47 +86,6 @@ spec:
                 secretKeyRef:
                   name: sub2api-secret
                   key: SIMPLE_MODE_CONFIRM
-
-            # Database configuration
-            - name: DB_TYPE
-              value: postgres
-            - name: DB_HOST
-              value: postgres.databases.svc.cluster.local
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: sub2api-secret
-                  key: DB_POSTGRESDB_DATABASE
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: sub2api-secret
-                  key: DB_POSTGRESDB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: sub2api-secret
-                  key: DB_POSTGRESDB_PASSWORD
-
-            # Redis configuration
-            - name: REDIS_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: sub2api-secret
-                  key: REDIS_HOST
-            - name: REDIS_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: sub2api-secret
-                  key: REDIS_PORT
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: sub2api-secret
-                  key: REDIS_PASSWORD
-
             # Admin credentials
             - name: ADMIN_USERNAME
               valueFrom:
@@ -154,6 +114,8 @@ spec:
           volumeMounts:
             - name: sub2api-data
               mountPath: /app/data
+            - name: config
+              mountPath: /etc/sub2api
           resources:
             requests:
               cpu: 200m
@@ -163,7 +125,7 @@ spec:
               memory: 2Gi
           livenessProbe:
             httpGet:
-              path: /health
+              path: /setup/status
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 10
@@ -171,7 +133,7 @@ spec:
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /health
+              path: /setup/status
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
@@ -181,3 +143,5 @@ spec:
         - name: sub2api-data
           persistentVolumeClaim:
             claimName: sub2api-pvc
+        - name: config
+          emptyDir: {}
