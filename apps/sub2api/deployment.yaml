@@ -20,7 +20,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       initContainers:
         - name: init-db
-          image: postgres:15-alpine
+          image: postgres:18-alpine
           command:
             - sh
             - -c
