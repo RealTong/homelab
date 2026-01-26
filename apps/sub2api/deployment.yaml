@@ -71,7 +71,6 @@ spec:
       containers:
         - name: sub2api
           image: ghcr.io/wei-shaw/sub2api:latest
-          command: ["/bin/sh", "/scripts/start.sh"]
           ports:
             - containerPort: 8080
           env:
