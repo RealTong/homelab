@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: clawd
+  name: molt
   namespace: homelab
   labels:
-    app: clawd
+    app: molt
 subsets:
   - addresses:
       - ip: 10.0.0.110
