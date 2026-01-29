@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: clawd-ingress
+  name: molt-ingress
   namespace: homelab
   annotations:
     glance/icon: carbon:ibm-watson-assistant
-    glance/name: "Clawd"
-    glance/url: https://clawd.wst.sh
+    glance/name: "molt"
+    glance/url: https://molt.wst.sh
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "25m"
@@ -18,16 +18,16 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - clawd.wst.sh
-      secretName: clawd-wst-sh-tls
+        - molt.wst.sh
+      secretName: molt-wst-sh-tls
   rules:
-    - host: clawd.wst.sh
+    - host: molt.wst.sh
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: clawd
+                name: molt
                 port:
                   number: 18789
