@@ -19,5 +19,5 @@ resources:
   - ./redis/
   - ./n8n/
   - ./postgresus/
-  - ./molt/
+  - ./openclaw/
   - ./sub2api/
