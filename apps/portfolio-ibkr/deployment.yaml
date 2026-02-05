@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-ibkr
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portfolio-ibkr
+  template:
+    metadata:
+      labels:
+        app: portfolio-ibkr
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "realtong-server"
+      containers:
+        - name: portfolio-ibkr
+          image: ghcr.io/realtong/portfolio-ibkr:sha-b101ae0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "3000"
+            - name: PORTFOLIO_TITLE
+              value: "IBKR Portfolio"
+            - name: IBKR_OAUTH_PATH
+              value: "/config/oauth.json"
+            - name: PORTFOLIO_DB_PATH
+              value: "/data/ibkr-portfolio.sqlite"
+            - name: IBKR_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio-ibkr-secret
+                  key: IBKR_ACCOUNT_ID
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /config
+              readOnly: true
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: portfolio-ibkr-data
+        - name: config
+          secret:
+            secretName: portfolio-ibkr-secret
+            items:
+              - key: OAUTH_JSON
+                path: oauth.json
