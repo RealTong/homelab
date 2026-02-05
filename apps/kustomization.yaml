@@ -21,3 +21,4 @@ resources:
   - ./postgresus/
   - ./openclaw/
   - ./sub2api/
+  - ./portfolio-ibkr/
