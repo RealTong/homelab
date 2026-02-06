@@ -22,3 +22,4 @@ resources:
   - ./openclaw/
   - ./sub2api/
   - ./portfolio-ibkr/
+  - ./clash-master/
