@@ -49,7 +49,6 @@ spec:
               mountPath: /app/data
             - name: ca-cert
               mountPath: /etc/ssl/certs/ca-certificates.crt
-              subPath: ca-certificates.crt
               readOnly: true
           resources:
             limits:
