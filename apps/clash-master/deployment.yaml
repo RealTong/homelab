@@ -18,7 +18,7 @@ spec:
       containers:
         - name: clash-master
           # 使用官方发布的镜像
-          image: ghcr.io/foru17/clash-master:latest
+          image: ghcr.io/foru17/clash-master:main
           imagePullPolicy: Always
           ports:
             - name: web
