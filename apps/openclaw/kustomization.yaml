@@ -5,3 +5,5 @@ resources:
   - ./openclaw-service.yaml
   - ./openclaw-endpoints.yaml
   - ./openclaw-ingress.yaml
+  - ./clash-api-service.yaml
+  - ./route-ingress.yaml
