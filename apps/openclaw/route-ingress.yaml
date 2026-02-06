@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: route-ingress
+  namespace: homelab
+  annotations:
+    cert-manager.io/cluster-issuer: mkcert-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "25m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    # Clash Dashboard 需要重写路径
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - route.wst.sh
+      secretName: route-wst-sh-tls
+  rules:
+    - host: route.wst.sh
+      http:
+        paths:
+          # Clash Dashboard - 必须放在前面，更具体的路径优先
+          - path: /ui(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: clash-api
+                port:
+                  number: 9090
+          # OpenWRT 主界面
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homelab
+                port:
+                  number: 80
