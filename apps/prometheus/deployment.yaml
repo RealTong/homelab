@@ -21,19 +21,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090
-          env:
-            - name: NODE_EXTRA_CA_CERTS
-              value: /etc/ssl/certs/ca-certificates.crt
-            - name: SSL_CERT_FILE
-              value: /etc/ssl/certs/ca-certificates.crt
-            - name: REQUESTS_CA_BUNDLE
-              value: /etc/ssl/certs/ca-certificates.crt
-            - name: CURL_CA_BUNDLE
-              value: /etc/ssl/certs/ca-certificates.crt
           volumeMounts:
-            - name: ca-cert
-              mountPath: /etc/ssl/certs/ca-certificates.crt
-              readOnly: true
             - name: prometheus-data
               mountPath: /prometheus
             - name: prometheus-config
@@ -56,7 +44,3 @@ spec:
             items:
             - key: prometheus.yml
               path: prometheus.yml
-        - name: ca-cert
-          hostPath: 
-            path: /etc/ssl/certs/ca-certificates.crt
-            type: File

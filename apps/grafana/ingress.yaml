@@ -13,13 +13,12 @@ metadata:
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
         nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
         nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-        cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
     ingressClassName: nginx
     tls:
         - hosts:
               - dash.wst.sh
-          secretName: dash-wst-sh-tls
+          secretName: wst-sh-wildcard-tls
     rules:
         - host: dash.wst.sh
           http:
