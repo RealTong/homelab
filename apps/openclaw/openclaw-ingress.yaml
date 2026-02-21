@@ -13,13 +13,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
         - claw.wst.sh
-      secretName: claw-wst-sh-tls
+      secretName: wst-sh-wildcard-tls
   rules:
     - host: claw.wst.sh
       http:

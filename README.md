@@ -28,6 +28,6 @@ This philosophy is supported by several key principles:
 - **Operating Systems**: [Ubuntu](https://www.ubuntu.com/), [Proxmox](https://www.proxmox.com/)
 - **Container Orchestration:** [Kubernetes](https://kubernetes.io/)
 - **Automation:** [FluxCD](https://fluxcd.io/), [Renovate](https://docs.renovatebot.com/)
-- **Security:** [PocketID](https://pocket-id.org/), [TinyAuth](https://tinyauth.app/), [Cert-Manager](https://cert-manager.io/), [Mkcert](https://github.com/FiloSottile/mkcert)
+- **Security:** [PocketID](https://pocket-id.org/), [TinyAuth](https://tinyauth.app/), [acme.sh](https://github.com/acmesh-official/acme.sh)
 - **Networking:** [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/), [WireGuard](https://www.wireguard.com/), [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/)
 - **Observability:** [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), [Grafana](https://grafana.com/), [Uptime Kuma](https://github.com/louislam/uptime-kuma)

@@ -37,21 +37,9 @@ spec:
                   name: tinyauth-secret
                   key: PROVIDERS_GENERIC_CLIENT_SECRET
 
-            - name: NODE_EXTRA_CA_CERTS
-              value: /etc/ssl/certs/ca-certificates.crt
-            - name: SSL_CERT_FILE
-              value: /etc/ssl/certs/ca-certificates.crt
-            - name: REQUESTS_CA_BUNDLE
-              value: /etc/ssl/certs/ca-certificates.crt
-            - name: CURL_CA_BUNDLE
-              value: /etc/ssl/certs/ca-certificates.crt
           envFrom: 
           - configMapRef:
               name: tinyauth-configmap
-          volumeMounts:
-          - name: ca-cert
-            mountPath: /etc/ssl/certs/ca-certificates.crt
-            readOnly: true
           livenessProbe:
             httpGet:
               path: /api/healthz
@@ -67,8 +55,3 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
-      volumes:
-      - name: ca-cert
-        hostPath: 
-          path: /etc/ssl/certs/ca-certificates.crt
-          type: File

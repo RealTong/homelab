@@ -16,7 +16,6 @@ spec:
   values:
     nodeSelector:
       kubernetes.io/hostname: "realtong-server"
-    customRootCA: "my-root-ca"
     persistence:
       enabled: true
       storageClassName: "nfs-client"
@@ -32,13 +31,12 @@ spec:
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
         nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
         nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-        cert-manager.io/cluster-issuer: mkcert-issuer
       hosts:
         - host: dbb.wst.sh
           paths:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: dbb-wst-sh-tls
+        - secretName: wst-sh-wildcard-tls
           hosts:
             - dbb.wst.sh
