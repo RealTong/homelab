@@ -32,6 +32,10 @@ spec:
               value: wst-sh-wildcard-tls
             - name: ACME_TARGET_NAMESPACES
               value: auth,homelab,observability,databases,beszel-hub
+            - name: ACME_EXPORT_DIR
+              value: /export
+            - name: ACME_EXPORT_ENABLED
+              value: "true"
             - name: CF_Token
               valueFrom:
                 secretKeyRef:
@@ -52,6 +56,8 @@ spec:
               mountPath: /acme.sh
             - name: scripts
               mountPath: /scripts
+            - name: acme-sh-export
+              mountPath: /export
           resources:
             requests:
               cpu: 50m
@@ -63,6 +69,9 @@ spec:
         - name: acme-sh-data
           persistentVolumeClaim:
             claimName: acme-sh-data
+        - name: acme-sh-export
+          persistentVolumeClaim:
+            claimName: acme-sh-export
         - name: scripts
           configMap:
             name: acme-sh-scripts
