@@ -13,6 +13,8 @@ data:
     : "${ACME_SERVER:=letsencrypt}"
     : "${ACME_SECRET_NAME:=wst-sh-wildcard-tls}"
     : "${ACME_TARGET_NAMESPACES:=auth,homelab,observability,databases,beszel-hub}"
+    : "${ACME_EXPORT_DIR:=/export}"
+    : "${ACME_EXPORT_ENABLED:=true}"
 
     if [ -z "${ACME_EMAIL:-}" ]; then
       echo "ACME_EMAIL is required" >&2
@@ -53,8 +55,11 @@ data:
     set -eu
 
     : "${LE_CONFIG_HOME:=/acme.sh}"
+    : "${ACME_DOMAIN:=wst.sh}"
     : "${ACME_SECRET_NAME:=wst-sh-wildcard-tls}"
     : "${ACME_TARGET_NAMESPACES:=auth,homelab,observability,databases,beszel-hub}"
+    : "${ACME_EXPORT_DIR:=/export}"
+    : "${ACME_EXPORT_ENABLED:=true}"
 
     cert_dir="${LE_CONFIG_HOME}/certs"
     tls_crt="${cert_dir}/tls.crt"
@@ -75,3 +80,32 @@ data:
         --key="${tls_key}" \
         --dry-run=client -o yaml | kubectl apply -f -
     done
+
+    if [ "${ACME_EXPORT_ENABLED}" = "true" ]; then
+      if [ ! -d "${ACME_EXPORT_DIR}" ]; then
+        echo "Export directory not found: ${ACME_EXPORT_DIR}" >&2
+        exit 1
+      fi
+      export_path="${ACME_EXPORT_DIR%/}/${ACME_DOMAIN}"
+      mkdir -p "${export_path}"
+
+      cp -f "${tls_key}" "${export_path}/privkey.pem"
+      if ! chmod 600 "${export_path}/privkey.pem"; then
+        echo "Warning: could not chmod privkey.pem" >&2
+      fi
+      cp -f "${tls_crt}" "${export_path}/fullchain.pem"
+      if ! chmod 644 "${export_path}/fullchain.pem"; then
+        echo "Warning: could not chmod fullchain.pem" >&2
+      fi
+
+      cp -f "${tls_crt}" "${export_path}/tls.crt"
+      if ! chmod 644 "${export_path}/tls.crt"; then
+        echo "Warning: could not chmod tls.crt" >&2
+      fi
+      cp -f "${tls_key}" "${export_path}/tls.key"
+      if ! chmod 600 "${export_path}/tls.key"; then
+        echo "Warning: could not chmod tls.key" >&2
+      fi
+
+      date -u +"%Y-%m-%dT%H:%M:%SZ" > "${export_path}/last_synced.txt"
+    fi
