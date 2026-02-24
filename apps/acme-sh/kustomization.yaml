@@ -5,7 +5,6 @@ resources:
   - serviceaccount.yaml
   - rbac.yaml
   - pvc.yaml
-  - export-pvc.yaml
   - configmap.yaml
   - external-secret.yaml
   - deployment.yaml
