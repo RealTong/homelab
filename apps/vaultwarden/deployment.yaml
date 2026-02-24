@@ -38,13 +38,22 @@ spec:
                             secretKeyRef:
                                 name: vaultwarden-secret
                                 key: SSO_CLIENT_SECRET
+                      - name: SSL_CERT_DIR
+                        value: /etc/ssl/certs
                   envFrom: 
                   - configMapRef:
                       name: vaultwarden-configmap
                   volumeMounts:
                       - name: vaultwarden-data
                         mountPath: /data
+                      - name: ca-cert
+                        mountPath: /etc/ssl/certs/ca-certificates.crt
+                        readOnly: true
             volumes:
                 - name: vaultwarden-data
                   persistentVolumeClaim:
                       claimName: vaultwarden-pvc
+                - name: ca-cert
+                  hostPath: 
+                    path: /etc/ssl/certs/ca-certificates.crt
+                    type: File

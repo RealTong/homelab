@@ -13,12 +13,13 @@ metadata:
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
         nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
         nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
+        cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
     ingressClassName: nginx
     tls:
         - hosts:
               - glance.wst.sh
-          secretName: wst-sh-wildcard-tls
+          secretName: glance-wst-sh-tls
     rules:
         - host: glance.wst.sh
           http:

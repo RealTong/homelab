@@ -9,12 +9,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "10m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
         - portfolio.wst.sh
-      secretName: wst-sh-wildcard-tls
+      secretName: portfolio-wst-sh-tls
   rules:
     - host: portfolio.wst.sh
       http:

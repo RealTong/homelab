@@ -12,12 +12,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "25m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
         - n8n.wst.sh
-      secretName: wst-sh-wildcard-tls
+      secretName: n8n-wst-sh-tls
   rules:
     - host: n8n.wst.sh
       http:

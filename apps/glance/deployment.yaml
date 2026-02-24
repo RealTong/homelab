@@ -18,6 +18,15 @@ spec:
           image: glanceapp/glance:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: NODE_EXTRA_CA_CERTS
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: SSL_CERT_FILE
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: REQUESTS_CA_BUNDLE
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: CURL_CA_BUNDLE
+              value: /etc/ssl/certs/ca-certificates.crt
           envFrom:
             - secretRef:
                 name: glance-secret
@@ -25,6 +34,9 @@ spec:
             - name: glance-config
               mountPath: /app/config/glance.yml
               subPath: glance.yml
+              readOnly: true
+            - name: ca-cert
+              mountPath: /etc/ssl/certs/ca-certificates.crt
               readOnly: true
           resources:
             requests:
@@ -37,3 +49,7 @@ spec:
         - name: glance-config
           configMap:
             name: glance-configmap
+        - name: ca-cert
+          hostPath: 
+            path: /etc/ssl/certs/ca-certificates.crt
+            type: File

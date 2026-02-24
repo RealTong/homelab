@@ -17,6 +17,15 @@ spec:
       - name: portainer
         image: portainer/portainer-ce:latest
         imagePullPolicy: Always
+        env:
+          - name: NODE_EXTRA_CA_CERTS
+            value: /etc/ssl/certs/ca-certificates.crt
+          - name: SSL_CERT_FILE
+            value: /etc/ssl/certs/ca-certificates.crt
+          - name: REQUESTS_CA_BUNDLE
+            value: /etc/ssl/certs/ca-certificates.crt
+          - name: CURL_CA_BUNDLE
+            value: /etc/ssl/certs/ca-certificates.crt
         ports:
         - containerPort: 9000
           protocol: TCP
@@ -25,7 +34,14 @@ spec:
         volumeMounts:
         - name: portainer-data
           mountPath: /data
+        - name: ca-cert
+          mountPath: /etc/ssl/certs/ca-certificates.crt
+          readOnly: true
       volumes:
       - name: portainer-data
         persistentVolumeClaim:
           claimName: portainer-pvc
+      - name: ca-cert
+        hostPath: 
+          path: /etc/ssl/certs/ca-certificates.crt
+          type: File
