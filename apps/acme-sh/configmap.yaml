@@ -30,15 +30,7 @@ data:
       acme.sh --issue --dns dns_cf -d "${ACME_DOMAIN}" -d "*.${ACME_DOMAIN}" --server "${ACME_SERVER}" --home "${LE_CONFIG_HOME}"
     fi
 
-    cert_dir="${LE_CONFIG_HOME}/certs"
-    mkdir -p "${cert_dir}"
-
-    ecc_flag=""
-    if [ -d "${LE_CONFIG_HOME}/${ACME_DOMAIN}_ecc" ]; then
-      ecc_flag="--ecc"
-    fi
-
-    acme.sh --install-cert -d "${ACME_DOMAIN}" ${ecc_flag} \
+    acme.sh --install-cert -d "${ACME_DOMAIN}" \
       --key-file "${LE_CONFIG_HOME}/certs/tls.key" \
       --fullchain-file "${LE_CONFIG_HOME}/certs/tls.crt" \
       --reloadcmd "/scripts/deploy.sh" \
