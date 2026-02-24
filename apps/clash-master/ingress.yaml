@@ -11,12 +11,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
     # WebSocket 支持 - 使用标准注解而非 snippet
     nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
         - clash.wst.sh
-      secretName: wst-sh-wildcard-tls
+      secretName: clash-wst-sh-tls
   rules:
     - host: clash.wst.sh
       http:

@@ -21,12 +21,24 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
+          env:
+            - name: NODE_EXTRA_CA_CERTS
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: SSL_CERT_FILE
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: REQUESTS_CA_BUNDLE
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: CURL_CA_BUNDLE
+              value: /etc/ssl/certs/ca-certificates.crt
           envFrom:
             - configMapRef:
                 name: grafana-configmap
           volumeMounts:
             - mountPath: /var/lib/grafana
               name: grafana-data
+            - name: ca-cert
+              mountPath: /etc/ssl/certs/ca-certificates.crt
+              readOnly: true
             - name: grafana-ini
               mountPath: /etc/grafana/grafana.ini
               subPath: grafana.ini
@@ -38,6 +50,10 @@ spec:
         - name: grafana-data
           persistentVolumeClaim:
             claimName: grafana-pvc
+        - name: ca-cert
+          hostPath: 
+            path: /etc/ssl/certs/ca-certificates.crt
+            type: File
         - name: grafana-ini
           configMap:
             name: grafana-configmap

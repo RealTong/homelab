@@ -10,12 +10,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
+    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
         - db.wst.sh
-      secretName: wst-sh-wildcard-tls
+      secretName: db-wst-sh-tls
   rules:
     - host: db.wst.sh
       http:
