@@ -1,0 +1,4 @@
+## 2024-05-23 - Missing Resource Limits and Probes in Critical Infrastructure
+**Vulnerability:** Vaultwarden (password manager) deployment lacked resource limits and liveness/readiness probes, and ran with default privileges.
+**Learning:** Even critical security infrastructure can be deployed insecurely if default manifests are used without hardening. Missing resource limits creates a trivial DoS vector where a single service can starve the node. Missing probes means the orchestrator cannot detect or recover from application hangs.
+**Prevention:** Enforce a policy where all deployments must have `resources` (at least limits), `livenessProbe`, `readinessProbe`, and a basic `securityContext` (dropping capabilities). Use linters like `kube-linter` or admission controllers like OPA/Kyverno to enforce this.
