@@ -1,0 +1,4 @@
+## 2024-03-02 - SQL Injection in K8s Init Container psql Script
+**Vulnerability:** A script running within an init container in Kubernetes used string concatenation to execute `psql` queries, exposing it to SQL Injection attacks if any bound variables contain malicious payloads.
+**Learning:** `psql` execution directly via shell scripts is vulnerable to SQL Injection, just like server-side application logic. Kubernetes secrets bound as environment variables must be treated cautiously if they are directly injected into SQL query strings. `psql` provides a `-v` (or `--set`) flag to safely interpolate variables without string concatenation.
+**Prevention:** Always use parameterized variable execution, such as `psql -v my_var="value" -c "SELECT :'my_var'"`, which safely handles literals with `:'var'` and identifiers with `:"var"`. Avoid string concatenation in scripts that assemble SQL commands.
