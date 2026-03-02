@@ -17,7 +17,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       containers:
         - name: tinyauth
-          image: ghcr.io/steveiliop56/tinyauth:v4
+          image: ghcr.io/steveiliop56/tinyauth:v5
           ports:
             - containerPort: 3000
           env:
