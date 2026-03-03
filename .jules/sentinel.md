@@ -1,0 +1,4 @@
+## 2024-05-20 - [SQL Injection in K8s Init Container psql Script]
+**Vulnerability:** SQL injection vulnerability found in `apps/sub2api/deployment.yaml` init container. Bash environment variables containing database credentials and configuration were directly interpolated into string arguments for `psql -c` commands. If an attacker could control these environment variable values (e.g. from an improperly managed K8s Secret), they could inject malicious SQL.
+**Learning:** Even within K8s initialization scripts running internal cluster tools, user inputs (or in this case, values sourced from Secrets) must be treated as untrusted and properly escaped when constructing database queries. The bash interpolation was fundamentally unsafe.
+**Prevention:** Use `psql -v param="value"` for variable interpolation instead of bash variable interpolation. This safely escapes string literals using `:'param'` and identifiers using `:"param"`.
