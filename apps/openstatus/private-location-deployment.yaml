@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openstatus-private-location
+  namespace: observability
+  labels:
+    app: openstatus-private-location
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openstatus-private-location
+  template:
+    metadata:
+      labels:
+        app: openstatus-private-location
+    spec:
+      containers:
+        - name: openstatus-private-location
+          image: ghcr.io/realtong/openstatus-private-location:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              value: http://openstatus-libsql:8080
+            - name: DB_AUTH_TOKEN
+              value: ""
+            - name: SERVER_URL
+              value: http://openstatus-server:3000
+            - name: GIN_MODE
+              value: release
+            - name: PORT
+              value: "8080"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi

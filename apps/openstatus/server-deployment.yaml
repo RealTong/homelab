@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openstatus-server
+  namespace: observability
+  labels:
+    app: openstatus-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openstatus-server
+  template:
+    metadata:
+      labels:
+        app: openstatus-server
+    spec:
+      containers:
+        - name: openstatus-server
+          image: ghcr.io/realtong/openstatus-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: NODE_ENV
+              value: production
+            - name: DATABASE_URL
+              value: http://openstatus-libsql:8080
+            - name: DATABASE_AUTH_TOKEN
+              value: ""
+            - name: CRON_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-secret
+                  key: CRON_SECRET
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-secret
+                  key: RESEND_API_KEY
+            - name: SUPER_ADMIN_TOKEN
+              value: ""
+            - name: SCREENSHOT_SERVICE_URL
+              value: ""
+            - name: DATA_RETENTION_DAYS
+              value: "90"
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
