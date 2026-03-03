@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: observability
 resources:
   - external-secret.yaml
+  - external-secret-oidc.yaml
   - pvc.yaml
   - libsql-deployment.yaml
   - libsql-service.yaml
