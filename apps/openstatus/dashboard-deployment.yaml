@@ -64,13 +64,29 @@ spec:
             - name: AUTH_GOOGLE_SECRET
               value: ""
             - name: OIDC_ISSUER
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-oidc-secret
+                  key: OIDC_ISSUER
+                  optional: true
             - name: OIDC_CLIENT_ID
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-oidc-secret
+                  key: OIDC_CLIENT_ID
+                  optional: true
             - name: OIDC_CLIENT_SECRET
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-oidc-secret
+                  key: OIDC_CLIENT_SECRET
+                  optional: true
             - name: OIDC_DISPLAY_NAME
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-oidc-secret
+                  key: OIDC_DISPLAY_NAME
+                  optional: true
           readinessProbe:
             httpGet:
               path: /
