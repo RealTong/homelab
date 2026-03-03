@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openstatus-status-page
+  namespace: observability
+  labels:
+    app: openstatus-status-page
+spec:
+  selector:
+    app: openstatus-status-page
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000

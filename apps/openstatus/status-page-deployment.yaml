@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openstatus-status-page
+  namespace: observability
+  labels:
+    app: openstatus-status-page
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openstatus-status-page
+  template:
+    metadata:
+      labels:
+        app: openstatus-status-page
+    spec:
+      containers:
+        - name: openstatus-status-page
+          image: ghcr.io/realtong/openstatus-status-page:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: HOSTNAME
+              value: 0.0.0.0
+            - name: NODE_ENV
+              value: production
+            - name: AUTH_TRUST_HOST
+              value: "true"
+            - name: SELF_HOST
+              value: "true"
+            - name: DATABASE_URL
+              value: http://openstatus-libsql:8080
+            - name: DATABASE_AUTH_TOKEN
+              value: ""
+            - name: NEXT_PUBLIC_URL
+              value: https://status.wst.sh
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-secret
+                  key: AUTH_SECRET
+            - name: CRON_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-secret
+                  key: CRON_SECRET
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openstatus-secret
+                  key: RESEND_API_KEY
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 40
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi

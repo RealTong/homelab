@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: openstatus-libsql
+  namespace: observability
+  labels:
+    app: openstatus-libsql
+spec:
+  selector:
+    app: openstatus-libsql
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: grpc
+      port: 5001
+      targetPort: 5001

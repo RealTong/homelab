@@ -11,6 +11,7 @@ resources:
   - ./prometheus/
   - ./glance-k8s/
   - ./uptime-kuma/
+  - ./openstatus/
   - ./kube-state-metrics/
   - ./portainer/
   - ./vaultwarden/

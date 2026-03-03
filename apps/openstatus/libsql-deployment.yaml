@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openstatus-libsql
+  namespace: observability
+  labels:
+    app: openstatus-libsql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openstatus-libsql
+  template:
+    metadata:
+      labels:
+        app: openstatus-libsql
+    spec:
+      containers:
+        - name: libsql
+          image: ghcr.io/tursodatabase/libsql-server:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: grpc
+              containerPort: 5001
+          env:
+            - name: SQLD_NODE
+              value: primary
+          volumeMounts:
+            - name: libsql-data
+              mountPath: /var/lib/sqld
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: libsql-data
+          persistentVolumeClaim:
+            claimName: openstatus-libsql-pvc
