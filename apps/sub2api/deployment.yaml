@@ -28,18 +28,18 @@ spec:
               export PGPASSWORD="$POSTGRES_ADMIN_PASSWORD"
 
               # Create database if not exists (use postgres default database)
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -tc "SELECT 1 FROM pg_database WHERE datname = '$DB_POSTGRESDB_DATABASE'" | grep -q 1 || \
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -c "CREATE DATABASE $DB_POSTGRESDB_DATABASE;"
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -v dbname="$DB_POSTGRESDB_DATABASE" -tc "SELECT 1 FROM pg_database WHERE datname = :'dbname'" | grep -q 1 || \
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -v dbname="$DB_POSTGRESDB_DATABASE" -c 'CREATE DATABASE :"dbname";'
 
               # Create user if not exists
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -tc "SELECT 1 FROM pg_user WHERE usename = '$DB_POSTGRESDB_USER'" | grep -q 1 || \
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -c "CREATE USER $DB_POSTGRESDB_USER WITH PASSWORD '$DB_POSTGRESDB_PASSWORD';"
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -v dbuser="$DB_POSTGRESDB_USER" -v dbpass="$DB_POSTGRESDB_PASSWORD" -tc "SELECT 1 FROM pg_user WHERE usename = :'dbuser'" | grep -q 1 || \
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -v dbuser="$DB_POSTGRESDB_USER" -v dbpass="$DB_POSTGRESDB_PASSWORD" -c "CREATE USER :\"dbuser\" WITH PASSWORD :'dbpass';"
 
               # Grant privileges
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -c "GRANT ALL PRIVILEGES ON DATABASE $DB_POSTGRESDB_DATABASE TO $DB_POSTGRESDB_USER;"
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d postgres -v dbname="$DB_POSTGRESDB_DATABASE" -v dbuser="$DB_POSTGRESDB_USER" -c 'GRANT ALL PRIVILEGES ON DATABASE :"dbname" TO :"dbuser";'
 
               # Grant schema privileges
-              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d "$DB_POSTGRESDB_DATABASE" -c "GRANT ALL ON SCHEMA public TO $DB_POSTGRESDB_USER;"
+              psql -h postgres.databases.svc.cluster.local -U "$POSTGRES_ADMIN_USER" -d "$DB_POSTGRESDB_DATABASE" -v dbuser="$DB_POSTGRESDB_USER" -c 'GRANT ALL ON SCHEMA public TO :"dbuser";'
 
               echo "Database initialization completed successfully"
           env:
