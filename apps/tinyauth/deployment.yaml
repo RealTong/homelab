@@ -17,7 +17,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       containers:
         - name: tinyauth
-          image: ghcr.io/steveiliop56/tinyauth:v4
+          image: ghcr.io/steveiliop56/tinyauth:v5
           ports:
             - containerPort: 3000
           env:
@@ -26,16 +26,16 @@ spec:
                 secretKeyRef:
                   name: tinyauth-secret
                   key: SECRET
-            - name: PROVIDERS_GENERIC_CLIENT_ID
+            - name: TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID
               valueFrom:
                 secretKeyRef:
                   name: tinyauth-secret
-                  key: PROVIDERS_GENERIC_CLIENT_ID
-            - name: PROVIDERS_GENERIC_CLIENT_SECRET
+                  key: TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID
+            - name: TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRET
               valueFrom:
                 secretKeyRef:
                   name: tinyauth-secret
-                  key: PROVIDERS_GENERIC_CLIENT_SECRET
+                  key: TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRET
 
             - name: NODE_EXTRA_CA_CERTS
               value: /etc/ssl/certs/ca-certificates.crt
