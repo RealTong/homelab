@@ -4,15 +4,17 @@ metadata:
   name: tinyauth-configmap
   namespace: auth
 data:
-  APP_URL: "https://auth.wst.sh"
-  APP_TITLE: "RealTong's TinyAuth"
-  BACKGROUND_IMAGE: "https://assets.realtong.cn/homelab-assets/login-bg.jpg"
-  SECURE_COOKIE: "true"
+  TINYAUTH_APPURL: "https://auth.wst.sh"
+  TINYAUTH_UI_TITLE: "RealTong's TinyAuth"
+  TINYAUTH_ANALYTICS_ENABLED: "false" 
 
-  PROVIDERS_GENERIC_NAME: "Pocket ID"
-  PROVIDERS_GENERIC_AUTH_URL: "https://id.wst.sh/authorize"
-  PROVIDERS_GENERIC_TOKEN_URL: "https://id.wst.sh/api/oidc/token"
-  PROVIDERS_GENERIC_USER_INFO_URL: "https://id.wst.sh/api/oidc/userinfo"
-  PROVIDERS_GENERIC_SCOPES: "openid email profile groups"
-  DISABLE_CONTINUE: "true"
-  OAUTH_WHITELIST: "i@realtong.cn,i@realtong.com,i@wst.sh"
+  TINYAUTH_BACKGROUND_IMAGE: "https://assets.realtong.cn/homelab-assets/login-bg.jpg"
+  TINYAUTH_SECURE_COOKIE: "true"
+
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME: "Pocket ID"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: "https://id.wst.sh/authorize"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://id.wst.sh/api/oidc/token"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://id.wst.sh/api/oidc/userinfo"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL: "https://auth.wst.sh/api/oauth/callback/pocketid"
+  TINYAUTH_OAUTH_WHITELIST: "i@realtong.cn,i@realtong.com,i@wst.sh"
