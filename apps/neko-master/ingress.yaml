@@ -14,10 +14,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - neko-master.wst.sh
-      secretName: neko-master-wst-sh-tls
+        - clash.wst.sh
+      secretName: clash-wst-sh-tls
   rules:
-    - host: neko-master.wst.sh
+    - host: clash.wst.sh
       http:
         paths:
           - path: /
