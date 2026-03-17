@@ -15,6 +15,11 @@ spec:
       labels:
         app: prometheus
     spec:
+      securityContext:
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        runAsNonRoot: true
       containers:
         - name: prometheus
           image: prom/prometheus:v3.10.0
@@ -30,6 +35,12 @@ spec:
               value: /etc/ssl/certs/ca-certificates.crt
             - name: CURL_CA_BUNDLE
               value: /etc/ssl/certs/ca-certificates.crt
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - name: ca-cert
               mountPath: /etc/ssl/certs/ca-certificates.crt
@@ -39,6 +50,8 @@ spec:
             - name: prometheus-config
               mountPath: /etc/prometheus/prometheus.yml
               subPath: prometheus.yml
+            - name: tmp
+              mountPath: /tmp
           resources:
             requests:
               cpu: 250m
@@ -60,3 +73,5 @@ spec:
           hostPath: 
             path: /etc/ssl/certs/ca-certificates.crt
             type: File
+        - name: tmp
+          emptyDir: {}
