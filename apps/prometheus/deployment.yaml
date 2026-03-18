@@ -15,8 +15,16 @@ spec:
       labels:
         app: prometheus
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
       containers:
         - name: prometheus
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: prom/prometheus:v3.10.0
           imagePullPolicy: IfNotPresent
           ports:
@@ -39,6 +47,8 @@ spec:
             - name: prometheus-config
               mountPath: /etc/prometheus/prometheus.yml
               subPath: prometheus.yml
+            - name: tmp-volume
+              mountPath: /tmp
           resources:
             requests:
               cpu: 250m
@@ -60,3 +70,5 @@ spec:
           hostPath: 
             path: /etc/ssl/certs/ca-certificates.crt
             type: File
+        - name: tmp-volume
+          emptyDir: {}
