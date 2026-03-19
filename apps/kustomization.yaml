@@ -23,4 +23,7 @@ resources:
   - ./openclaw/
   - ./sub2api/
   - ./portfolio-ibkr/
+  - ./clickhouse/
   - ./neko-master/
+  - ./synology-media-proxy/
+  - ./qui/

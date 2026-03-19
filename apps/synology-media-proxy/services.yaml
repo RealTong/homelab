@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: moviepilot-external
+  namespace: homelab
+spec:
+  ports:
+    - name: http
+      port: 13000
+      protocol: TCP
+      targetPort: 13000
+  clusterIP: None
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: moviepilot-external
+  namespace: homelab
+subsets:
+  - addresses:
+      - ip: 10.0.0.100 # 群晖 LAN IP
+    ports:
+      - name: http
+        port: 13000
+        protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emby-external
+  namespace: homelab
+spec:
+  ports:
+    - name: http
+      port: 28096
+      protocol: TCP
+      targetPort: 28096
+  clusterIP: None
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: emby-external
+  namespace: homelab
+subsets:
+  - addresses:
+      - ip: 10.0.0.100 # 群晖 LAN IP
+    ports:
+      - name: http
+        port: 28096
+        protocol: TCP
