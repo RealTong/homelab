@@ -15,8 +15,19 @@ spec:
       labels:
         app: grafana
     spec:
+      securityContext:
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
+        runAsNonRoot: true
       containers:
         - name: grafana
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           image: grafana/grafana:12.3.3
           imagePullPolicy: IfNotPresent
           ports:
@@ -34,6 +45,8 @@ spec:
             - configMapRef:
                 name: grafana-configmap
           volumeMounts:
+            - mountPath: /tmp
+              name: tmp-vol
             - mountPath: /var/lib/grafana
               name: grafana-data
             - name: ca-cert
@@ -47,6 +60,8 @@ spec:
               cpu: 250m
               memory: 750Mi
       volumes:
+        - name: tmp-vol
+          emptyDir: {}
         - name: grafana-data
           persistentVolumeClaim:
             claimName: grafana-pvc
