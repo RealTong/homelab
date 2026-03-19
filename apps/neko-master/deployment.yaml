@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neko-master
+  namespace: homelab
+  annotations:
+    glance/name: "Neko Master"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neko-master
+  template:
+    metadata:
+      labels:
+        app: neko-master
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "realtong-server"
+      containers:
+        - name: neko-master
+          image: foru17/neko-master:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: web
+            - containerPort: 3001
+              name: api
+            - containerPort: 3002
+              name: ws
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: WEB_PORT
+              value: "3000"
+            - name: API_PORT
+              value: "3001"
+            - name: COLLECTOR_WS_PORT
+              value: "3002"
+            - name: DB_PATH
+              value: /app/data/stats.db
+            - name: COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: neko-master-secret
+                  key: COOKIE_SECRET
+            - name: CH_ENABLED
+              value: "1"
+            - name: CH_REQUIRED
+              value: "0"
+            - name: CH_SECURE
+              value: "0"
+            - name: CH_HOST
+              value: clickhouse.databases.svc.cluster.local
+            - name: CH_PORT
+              value: "8123"
+            - name: CH_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: neko-master-secret
+                  key: CH_DATABASE
+            - name: CH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: neko-master-secret
+                  key: CH_USER
+            - name: CH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: neko-master-secret
+                  key: CH_PASSWORD
+            - name: CH_WRITE_ENABLED
+              value: "1"
+            - name: CH_AUTO_CREATE_TABLES
+              value: "1"
+            - name: STATS_QUERY_SOURCE
+              value: "auto"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 45
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1500m
+              memory: 1Gi
+          volumeMounts:
+            - name: neko-master-data
+              mountPath: /app/data
+      volumes:
+        - name: neko-master-data
+          persistentVolumeClaim:
+            claimName: neko-master-data-pvc

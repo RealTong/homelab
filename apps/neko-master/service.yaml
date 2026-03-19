@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: neko-master
+  namespace: homelab
+  labels:
+    app: neko-master
+spec:
+  selector:
+    app: neko-master
+  ports:
+    - name: web
+      port: 3000
+      targetPort: 3000
+    - name: api
+      port: 3001
+      targetPort: 3001
+    - name: ws
+      port: 3002
+      targetPort: 3002
