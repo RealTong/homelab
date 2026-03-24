@@ -16,10 +16,20 @@ spec:
       labels:
         app: n8n
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       nodeSelector:
         kubernetes.io/hostname: "realtong-server"
       containers:
         - name: n8n
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
           image: docker.n8n.io/n8nio/n8n:latest
           ports:
             - containerPort: 5678
@@ -67,6 +77,8 @@ spec:
           volumeMounts:
             - name: n8n-data
               mountPath: /home/node/.n8n
+            - name: tmp
+              mountPath: /tmp
           resources:
             requests:
               cpu: 100m
@@ -78,4 +90,6 @@ spec:
         - name: n8n-data
           persistentVolumeClaim:
             claimName: n8n-pvc
+        - name: tmp
+          emptyDir: {}
 
