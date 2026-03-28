@@ -15,14 +15,26 @@ spec:
             labels:
                 app: vaultwarden
         spec:
+            securityContext:
+                runAsNonRoot: true
+                runAsUser: 1000
+                runAsGroup: 1000
+                fsGroup: 1000
             nodeSelector:
                 kubernetes.io/hostname: "realtong-server"
             containers:
                 - name: vaultwarden
                   image: vaultwarden/server:1.35.4
+                  securityContext:
+                      allowPrivilegeEscalation: false
+                      readOnlyRootFilesystem: true
+                      capabilities:
+                          drop: ["ALL"]
                   ports:
-                      - containerPort: 80
+                      - containerPort: 8080
                   env:
+                      - name: ROCKET_PORT
+                        value: "8080"
                       - name: ADMIN_TOKEN
                         valueFrom:
                             secretKeyRef:
@@ -49,6 +61,8 @@ spec:
                       - name: ca-cert
                         mountPath: /etc/ssl/certs/ca-certificates.crt
                         readOnly: true
+                      - name: tmp
+                        mountPath: /tmp
             volumes:
                 - name: vaultwarden-data
                   persistentVolumeClaim:
@@ -57,3 +71,5 @@ spec:
                   hostPath: 
                     path: /etc/ssl/certs/ca-certificates.crt
                     type: File
+                - name: tmp
+                  emptyDir: {}
