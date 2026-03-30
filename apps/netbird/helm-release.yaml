@@ -26,37 +26,50 @@ spec:
       enabled: true
       ingress:
         enabled: false
+      env:
+        NETBIRD_MGMT_API_ENDPOINT: "https://netbird.wst.sh"
+        NETBIRD_MGMT_GRPC_API_ENDPOINT: "https://netbird.wst.sh"
+        NETBIRD_MGMT_CERT_FILE: "/etc/netbird/certs/wildcard.wst.sh.crt"
+        NETBIRD_MGMT_CERT_KEY_FILE: "/etc/netbird/certs/wildcard.wst.sh.key"
+        LETSENCRYPT_DOMAIN: "none"
     
     management:
+      enabled: true
       type: deployment
-      configmap: |
-        {
-          "DATABASE_TYPE": "postgres",
-          "DATABASE_URL": "postgresql://netbird:RealTong233.@postgresus.databases.svc:5432/netbird?sslmode=disable",
-          "MANAGEMENT_URL": "https://netbird.wst.sh",
-          "METRICS_URL": "http://netbird-management:9090",
-          "CERT_MANAGER_ENABLED": true,
-          "CERT_MANAGER_CLUSTER_ISSUER": "mkcert-issuer",
-          "SINGLE_ACCOUNT_MODE_DOMAIN": "netbird.selfhosted",
-          "DNS_DOMAIN": "netbird.selfhosted",
-          "ENABLE_USER_ENDPOINT_GROUPS": false,
-          "ENABLE_GROUP_PROPAGATION": false,
-          "ENABLE_SINGLE_ACCOUNT_MODE": false,
-          "TURN_PORT_RANGE_START": 50000,
-          "TURN_PORT_RANGE_END": 60000,
-          "TURN_MIN_SECRET": "RealTong233.",
-          "TURN_MAX_SECRET": "RealTong233.",
-          "REDIS_URL": "redis://redis.databases.svc:6379",
-          "REDIS_PASSWORD": "",
-          "JWT_SECRET": "isLvGvmveNCP51H+/BJlQ9fUXbF6QkI1ENMY0sivfEg="
-        }
+      podCommand:
+        args:
+          - --port=80
+          - --log-file=console
+          - --log-level=info
+          - --disable-anonymous-metrics=false
+          - --single-account-mode-domain=netbird.selfhosted
+          - --dns-domain=netbird.selfhosted
+      env:
+        NETBIRD_STORE_ENGINE_POSTGRES_DSN: "postgresql://netbird:RealTong233.@postgresus.databases.svc:5432/netbird?sslmode=disable"
+        NETBIRD_DATABASE_TYPE: "postgres"
+        NETBIRD_JWT_SECRET: "isLvGvmveNCP51H+/BJlQ9fUXbF6QkI1ENMY0sivfEg="
+        NETBIRD_TURN_MIN_SECRET: "RealTong233."
+        NETBIRD_TURN_MAX_SECRET: "RealTong233."
+        NETBIRD_SIGNAL_ADDRESS: "signal.netbird.wst.sh:443"
+        NETBIRD_RELAY_ADDRESS: "relay.netbird.wst.sh:443"
+        NETBIRD_TURN_PORT_START: "50000"
+        NETBIRD_TURN_PORT_END: "60000"
+        NETBIRD_REDIS_URL: "redis://redis.databases.svc:6379"
+        NB_CERT_MANAGER_ENABLED: "true"
+        NB_CERT_MANAGER_CLUSTER_ISSUER: "mkcert-issuer"
+      envFromSecret:
+        NETBIRD_STORE_ENGINE_POSTGRES_DSN: "netbird-creds/NB_DATABASE_URL"
+        NETBIRD_JWT_SECRET: "netbird-creds/NB_MANAGEMENT_JWT_SECRET"
+        NETBIRD_TURN_MIN_SECRET: "netbird-creds/NB_TURN_MIN_SECRET"
+        NETBIRD_TURN_MAX_SECRET: "netbird-creds/NB_TURN_MAX_SECRET"
         
     signal:
+      enabled: true
       type: deployment
       replicaCount: 1
     
-    turn:
-      type: deployment
+    relay:
+      enabled: true
       replicaCount: 1
     
     postgresql:
