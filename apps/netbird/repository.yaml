@@ -6,7 +6,5 @@ metadata:
 spec:
   interval: 1h
   url: https://github.com/netbirdio/helms
-  ref: main
-  ignore: |
-    # exclude charts directory, we only need the netbird chart
-    charts/netbird/**
+  ref:
+    branch: main
