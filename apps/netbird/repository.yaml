@@ -1,8 +1,12 @@
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: GitRepository
 metadata:
   name: netbird
   namespace: netbird
 spec:
   interval: 1h
-  url: https://io.netbird.io/helm
+  url: https://github.com/netbirdio/helms
+  ref: main
+  ignore: |
+    # exclude charts directory, we only need the netbird chart
+    charts/netbird/**

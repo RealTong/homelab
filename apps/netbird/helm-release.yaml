@@ -7,10 +7,10 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: netbird
-      version: 0.30.0
+      chart: charts/netbird
+      reconcileStrategy: Revision
       sourceRef:
-        kind: HelmRepository
+        kind: GitRepository
         name: netbird
         namespace: netbird
   maxHistory: 3
