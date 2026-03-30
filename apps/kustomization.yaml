@@ -27,4 +27,3 @@ resources:
   - ./neko-master/
   - ./synology-media-proxy/
   - ./qui/
-  - ./netbird/

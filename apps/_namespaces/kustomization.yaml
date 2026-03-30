@@ -5,4 +5,3 @@ resources:
   - observability.yaml
   - homelab.yaml
   - databases.yaml
-  - netbird.yaml
