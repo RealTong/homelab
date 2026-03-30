@@ -16,7 +16,7 @@ spec:
   maxHistory: 3
   install:
     createNamespace: true
-    crds: Replace
+    crds: CreateReplace
   upgrade:
     crds: CreateReplace
   values:
