@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: tinyauth
+  namespace: auth
+  annotations:
+    glance/icon: di:tinyauth
+    glance/name: "TinyAuth"
+    glance/url: https://auth.wst.sh
+spec:
+  hostnames:
+    - auth.wst.sh
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - kind: Service
+          name: tinyauth
+          port: 3000
+          weight: 1

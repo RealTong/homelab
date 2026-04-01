@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ./external-secrets/
   - ./nfs-provisioner/
+  - ./gateway-api/
