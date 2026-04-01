@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - auth-pocket-id.yaml
+  - auth-tinyauth.yaml
+  - homelab-n8n.yaml
+  - homelab-vaultwarden.yaml
+  - homelab-qui.yaml
+  - homelab-openclaw.yaml
+  - homelab-route.yaml
+  - homelab-glance.yaml
+  - homelab-sub2api.yaml
+  - homelab-neko-master.yaml
+  - homelab-portfolio-ibkr.yaml
+  - homelab-synology-media-proxy.yaml
+  - observability-portainer.yaml
+  - observability-grafana.yaml
+  - observability-kite.yaml
+  - observability-openstatus-dashboard.yaml
+  - observability-openstatus-status-page.yaml
+  - observability-uptime-kuma.yaml
+  - databases-drizzle-gateway.yaml
+  - observability-beszel-hub.yaml

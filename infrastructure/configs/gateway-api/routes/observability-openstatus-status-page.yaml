@@ -1,0 +1,18 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: openstatus-status-page
+  namespace: observability
+spec:
+  hostnames:
+    - "*.status.wst.sh"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - kind: Service
+          name: openstatus-status-page
+          port: 3000
+          weight: 1

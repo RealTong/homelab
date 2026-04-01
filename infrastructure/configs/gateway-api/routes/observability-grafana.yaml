@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: observability
+  annotations:
+    glance/icon: di:grafana
+    glance/name: "Grafana"
+    glance/url: https://dash.wst.sh
+spec:
+  hostnames:
+    - dash.wst.sh
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - kind: Service
+          name: grafana
+          port: 3000
+          weight: 1

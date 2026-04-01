@@ -1,0 +1,65 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-gateway
+  namespace: gateway-system
+spec:
+  gatewayClassName: envoy-gateway
+  listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: wildcard-tls
+            kind: Secret
+            group: ""
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wildcard-tls
+  namespace: gateway-system
+type: kubernetes.io/tls
+data:
+  tls.crt: placeholder
+  tls.key: placeholder
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-tls
+  namespace: gateway-system
+spec:
+  secretName: wildcard-tls
+  issuerRef:
+    name: mkcert-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - "*.wst.sh"
+    - "wst.sh"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-status-tls
+  namespace: gateway-system
+spec:
+  secretName: wildcard-status-tls
+  issuerRef:
+    name: mkcert-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  dnsNames:
+    - "*.status.wst.sh"

@@ -4,3 +4,4 @@ resources:
   - ./external-secrets
   - ./notifications
   - ./postgresus
+  - ./gateway-api
