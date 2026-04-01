@@ -20,4 +20,9 @@ resources:
   - observability-openstatus-status-page.yaml
   - observability-uptime-kuma.yaml
   - databases-drizzle-gateway.yaml
+  - databases-postgresus.yaml
   - observability-beszel-hub.yaml
+  - homelab-homeassistant.yaml
+  - homelab-wol.yaml
+  - homelab-adg.yaml
+  - default-pve.yaml

@@ -25,16 +25,6 @@ spec:
         namespaces:
           from: All
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: wildcard-tls
-  namespace: gateway-system
-type: kubernetes.io/tls
-data:
-  tls.crt: placeholder
-  tls.key: placeholder
----
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
