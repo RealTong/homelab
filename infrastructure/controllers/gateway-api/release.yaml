@@ -1,21 +1,29 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: envoy-gateway
+  name: traefik
   namespace: gateway-system
 spec:
   interval: 1h
   chart:
     spec:
-      chart: envoy-gateway
-      version: "1.0.0"
+      chart: traefik
+      version: "26.0.0"
       sourceRef:
         kind: HelmRepository
-        name: envoy-gateway
+        name: traefik
         namespace: flux-system
-      interval: 24h
   install:
     createNamespace: true
   values:
+    gatewayAPI:
+      enabled: true
+    ingressClass:
+      enabled: false
+    ingressRoute:
+      enabled: true
+    providers:
+      kubernetesGateway:
+        enabled: true
     metrics:
       enabled: true
