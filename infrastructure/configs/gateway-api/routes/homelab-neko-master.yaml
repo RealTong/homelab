@@ -1,0 +1,18 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: neko-master
+  namespace: homelab
+spec:
+  hostnames:
+    - clash.wst.sh
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - kind: Service
+          name: neko-master
+          port: 3000
+          weight: 1

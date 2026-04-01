@@ -1,0 +1,29 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+  namespace: gateway-system
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: traefik
+      version: "39.0.7"
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+        namespace: flux-system
+  install:
+    createNamespace: true
+  values:
+    gatewayAPI:
+      enabled: true
+    ingressClass:
+      enabled: false
+    ingressRoute:
+      enabled: true
+    providers:
+      kubernetesGateway:
+        enabled: true
+    metrics:
+      enabled: true
