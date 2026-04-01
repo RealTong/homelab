@@ -19,7 +19,7 @@ spec:
           kubernetes.io/hostname: "realtong-server"
       containers:
         - name: beszel-hub
-          image: henrygd/beszel:0.18.4
+          image: henrygd/beszel:0.18.6
           ports:
             - containerPort: 8090
           envFrom:
