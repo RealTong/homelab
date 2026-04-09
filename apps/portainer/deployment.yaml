@@ -15,7 +15,7 @@ spec:
       serviceAccountName: cluster-admin-sa
       containers:
       - name: portainer
-        image: portainer/portainer-ce:2.39.1
+        image: portainer/portainer-ce:2.40.0
         imagePullPolicy: Always
         env:
           - name: NODE_EXTRA_CA_CERTS
