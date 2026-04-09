@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: clickhouse-init-db
+  namespace: databases
+spec:
+  backoffLimit: 6
+  template:
+    spec:
+      restartPolicy: OnFailure
+      nodeSelector:
+        kubernetes.io/hostname: "realtong-server"
+      containers:
+        - name: clickhouse-init-db
+          image: clickhouse/clickhouse-server:24.8
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: CLICKHOUSE_DB
+              valueFrom:
+                secretKeyRef:
+                  name: neko-master-clickhouse-secret
+                  key: CH_DATABASE
+            - name: CLICKHOUSE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: neko-master-clickhouse-secret
+                  key: CH_USER
+            - name: CLICKHOUSE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: neko-master-clickhouse-secret
+                  key: CH_PASSWORD
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              until wget -qO- http://clickhouse.databases.svc.cluster.local:8123/ping >/dev/null 2>&1; do
+                echo "waiting for ClickHouse..."
+                sleep 2
+              done
+
+              clickhouse-client \
+                --host clickhouse.databases.svc.cluster.local \
+                --port 9000 \
+                --user "$CLICKHOUSE_USER" \
+                --password "$CLICKHOUSE_PASSWORD" \
+                --query "CREATE DATABASE IF NOT EXISTS \`$CLICKHOUSE_DB\`"
