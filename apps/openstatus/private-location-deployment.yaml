@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: openstatus-private-location
-          image: ghcr.io/realtong/openstatus-private-location:latest
+          image: ghcr.io/realtong/openstatus-private-location:96a9619
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

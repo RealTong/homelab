@@ -70,7 +70,7 @@ spec:
                   key: DB_POSTGRESDB_PASSWORD
       containers:
         - name: sub2api
-          image: ghcr.io/wei-shaw/sub2api:latest
+          image: ghcr.io/wei-shaw/sub2api:0.1.110
           ports:
             - containerPort: 443
           env:

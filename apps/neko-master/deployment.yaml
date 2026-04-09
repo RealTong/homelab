@@ -19,7 +19,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       containers:
         - name: neko-master
-          image: ghcr.io/foru17/neko-master:latest
+          image: ghcr.io/foru17/neko-master:1.3.6
           imagePullPolicy: Always
           ports:
             - containerPort: 3000

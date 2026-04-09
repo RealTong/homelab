@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: openstatus-dashboard
-          image: ghcr.io/realtong/openstatus-dashboard:latest
+          image: ghcr.io/realtong/openstatus-dashboard:1443a5b
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
