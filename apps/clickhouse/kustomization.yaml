@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: databases
 resources:
   - external-secret.yaml
+  - pvc.yaml
   - service.yaml
-  - statefulset.yaml
+  - deployment.yaml
