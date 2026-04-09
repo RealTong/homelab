@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: openstatus-server
-          image: ghcr.io/realtong/openstatus-server:latest
+          image: ghcr.io/realtong/openstatus-server:96a9619
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
