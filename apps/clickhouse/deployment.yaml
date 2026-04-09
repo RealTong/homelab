@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: clickhouse
   namespace: databases
+  annotations:
+    glance/name: "ClickHouse"
 spec:
-  serviceName: clickhouse
   replicas: 1
   selector:
     matchLabels:
@@ -67,12 +68,7 @@ spec:
           volumeMounts:
             - name: clickhouse-data
               mountPath: /var/lib/clickhouse
-  volumeClaimTemplates:
-    - metadata:
-        name: clickhouse-data
-      spec:
-        accessModes: ["ReadWriteMany"]
-        storageClassName: nfs-client
-        resources:
-          requests:
-            storage: 20Gi
+      volumes:
+        - name: clickhouse-data
+          persistentVolumeClaim:
+            claimName: clickhouse-pvc
