@@ -4,7 +4,7 @@ metadata:
   name: tinyauth-configmap
   namespace: auth
 data:
-  TINYAUTH_APPURL: "https://auth.wst.sh"
+  TINYAUTH_APPURL: "https://auth.realtong.cn"
   TINYAUTH_UI_TITLE: "RealTong's TinyAuth"
   TINYAUTH_ANALYTICS_ENABLED: "false" 
 
@@ -12,9 +12,9 @@ data:
   TINYAUTH_SECURE_COOKIE: "true"
 
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_NAME: "Pocket ID"
-  TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: "https://id.wst.sh/authorize"
-  TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://id.wst.sh/api/oidc/token"
-  TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://id.wst.sh/api/oidc/userinfo"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL: "https://id.realtong.cn/authorize"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://id.realtong.cn/api/oidc/token"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://id.realtong.cn/api/oidc/userinfo"
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
-  TINYAUTH_OAUTH_PROVIDERS_POCKETID_INSECURE: "true"
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_INSECURE: "false"
   TINYAUTH_OAUTH_WHITELIST: "i@realtong.cn,i@realtong.com,i@wst.sh"
