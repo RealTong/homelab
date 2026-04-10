@@ -6,7 +6,7 @@ metadata:
   annotations:
     glance/icon: di:pocket-id
     glance/name: "Pocket ID"
-    glance/url: https://id.wst.sh
+    glance/url: https://id.realtong.cn
     nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -14,15 +14,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - id.wst.sh
-      secretName: id-wst-sh-tls
+        - id.realtong.cn
   rules:
-    - host: id.wst.sh
+    - host: id.realtong.cn
       http:
         paths:
           - path: /

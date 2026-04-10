@@ -24,7 +24,7 @@ spec:
             - containerPort: 1411
           env:
             - name: APP_URL
-              value: "https://id.wst.sh"
+              value: "https://id.realtong.cn"
             - name: APP_NAME
               value: "RealTong's PocketID"
             - name: TRUST_PROXY
