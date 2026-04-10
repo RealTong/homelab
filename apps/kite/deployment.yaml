@@ -44,7 +44,7 @@ spec:
                         protocol: TCP
                   env:
                     - name: HOST
-                      value: "https://kite.wst.sh"
+                      value: "https://kite.realtong.cn"
                     - name: NODE_EXTRA_CA_CERTS
                       value: /etc/ssl/certs/ca-certificates.crt
                     - name: SSL_CERT_FILE

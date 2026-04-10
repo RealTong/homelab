@@ -6,7 +6,7 @@ metadata:
   annotations:
     glance/icon: di:tinyauth
     glance/name: "TinyAuth"
-    glance/url: "https://auth.wst.sh"
+    glance/url: "https://auth.realtong.cn"
     nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -14,15 +14,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - auth.wst.sh
-      secretName: auth-wst-sh-tls
+        - auth.realtong.cn
   rules:
-    - host: auth.wst.sh
+    - host: auth.realtong.cn
       http:
         paths:
           - path: /

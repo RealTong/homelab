@@ -26,4 +26,7 @@ resources:
   - ./clickhouse/
   - ./neko-master/
   - ./synology-media-proxy/
+  - ./homeassistant/
+  - ./adguard-home/
+  - ./pve/
   - ./qui/

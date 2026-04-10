@@ -209,25 +209,25 @@ data:
                     cache: 1m
                     title: SelfHosted
                     sites:
-                      - url: https://dash.wst.sh
+                      - url: https://dash.realtong.cn
                         title: Grafana
                         icon: sh:grafana
-                      - url: https://id.wst.sh
+                      - url: https://id.realtong.cn
                         title: PocketID
                         icon: sh:pocket-id
-                      - url: https://auth.wst.sh
+                      - url: https://auth.realtong.cn
                         title: TinyAuth
                         icon: di:tinyauth
-                      - url: https://adg.wst.sh
+                      - url: https://adg.realtong.cn
                         title: AdGuard Home
                         icon: sh:adguard-home
-                      - url: https://nas.wst.sh
+                      - url: https://nas.realtong.cn
                         title: Synology NAS
                         icon: di:synology-dsm
-                      - url: https://kite.wst.sh
+                      - url: https://kite.realtong.cn
                         title: Kubernetes
                         icon: sh:kubernetes
-                      - url: https://portainer.wst.sh
+                      - url: https://portainer.realtong.cn
                         title: Portainer
                         icon: sh:portainer
                       - url: https://route.wst.sh
