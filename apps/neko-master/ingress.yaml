@@ -9,15 +9,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "25m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - clash.wst.sh
-      secretName: clash-wst-sh-tls
+        - clash.realtong.cn
   rules:
-    - host: clash.wst.sh
+    - host: clash.realtong.cn
       http:
         paths:
           - path: /

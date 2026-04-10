@@ -230,10 +230,10 @@ data:
                       - url: https://portainer.realtong.cn
                         title: Portainer
                         icon: sh:portainer
-                      - url: https://route.wst.sh
+                      - url: https://route.realtong.cn
                         title: OpenWRT
                         icon: sh:openwrt
-                      - url: https://pwd.wst.sh
+                      - url: https://pwd.realtong.cn
                         title: Vaultwarden
                         icon: sh:vaultwarden
                   

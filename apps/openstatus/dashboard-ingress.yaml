@@ -6,22 +6,20 @@ metadata:
   annotations:
     glance/icon: di:openstatus
     glance/name: "OpenStatus"
-    glance/url: https://status.wst.sh
+    glance/url: https://status.realtong.cn
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "25m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - status.wst.sh
-      secretName: status-wst-sh-tls
+        - status.realtong.cn
   rules:
-    - host: status.wst.sh
+    - host: status.realtong.cn
       http:
         paths:
           - path: /

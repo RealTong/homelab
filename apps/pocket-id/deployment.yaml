@@ -7,6 +7,8 @@ metadata:
     app: pocket-id
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: pocket-id

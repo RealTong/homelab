@@ -15,5 +15,6 @@ resources:
   - dashboard-service.yaml
   - status-page-deployment.yaml
   - status-page-service.yaml
+  - wildcard-status-certificate.yaml
   - dashboard-ingress.yaml
   - status-page-ingress.yaml

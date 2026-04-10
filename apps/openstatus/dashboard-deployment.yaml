@@ -37,9 +37,9 @@ spec:
             - name: DATABASE_AUTH_TOKEN
               value: ""
             - name: NEXT_PUBLIC_URL
-              value: https://status.wst.sh
+              value: https://status.realtong.cn
             - name: NEXT_PUBLIC_STATUS_PAGE_DOMAIN
-              value: status.wst.sh
+              value: status.realtong.cn
             - name: AUTH_SECRET
               valueFrom:
                 secretKeyRef:

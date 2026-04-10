@@ -15,7 +15,7 @@ spec:
         namespace: flux-system
   values:
     nfs:
-      server: nas.realtong.cn
+      server: 10.0.0.100
       path: /volume1/k3s-volume
     storageClass:
       name: nfs-client

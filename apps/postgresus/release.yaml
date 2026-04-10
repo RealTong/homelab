@@ -32,13 +32,13 @@ spec:
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
         nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
         nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-        cert-manager.io/cluster-issuer: mkcert-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-cloudflare
       hosts:
-        - host: dbb.wst.sh
+        - host: dbb.realtong.cn
           paths:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: dbb-wst-sh-tls
+        - secretName: dbb-realtong-cn-tls
           hosts:
-            - dbb.wst.sh
+            - dbb.realtong.cn
