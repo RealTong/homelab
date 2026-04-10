@@ -4,7 +4,7 @@ metadata:
   name: vaultwarden-configmap
   namespace: homelab
 data:
-  DOMAIN: "https://pwd.wst.sh"
+  DOMAIN: "https://pwd.realtong.cn"
   WEBSOCKET_ENABLED: "true"
   SSO_ENABLED: "true"
   SSO_AUTHORITY: "https://id.realtong.cn"

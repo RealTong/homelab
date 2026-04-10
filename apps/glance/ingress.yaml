@@ -6,22 +6,20 @@ metadata:
     annotations:
         glance/icon: di:glance
         glance/name: "Glance"
-        glance/url: https://glance.wst.sh
+        glance/url: https://glance.realtong.cn
         nginx.ingress.kubernetes.io/ssl-redirect: "true"
         nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
         nginx.ingress.kubernetes.io/proxy-body-size: "25m"
         nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
         nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
         nginx.ingress.kubernetes.io/upstream-hash-by: "$request_uri"
-        cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
     ingressClassName: nginx
     tls:
         - hosts:
-              - glance.wst.sh
-          secretName: glance-wst-sh-tls
+              - glance.realtong.cn
     rules:
-        - host: glance.wst.sh
+        - host: glance.realtong.cn
           http:
               paths:
                   - path: /

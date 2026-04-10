@@ -6,22 +6,20 @@ metadata:
   annotations:
     glance/icon: simple-icons:openai
     glance/name: "Sub2API"
-    glance/url: "https://ai.wst.sh"
+    glance/url: "https://ai.realtong.cn"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
-    cert-manager.io/cluster-issuer: mkcert-issuer
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - ai.wst.sh
-      secretName: ai-wst-sh-tls
+        - ai.realtong.cn
   rules:
-    - host: ai.wst.sh
+    - host: ai.realtong.cn
       http:
         paths:
           - path: /

@@ -4,7 +4,6 @@ metadata:
   name: synology-media-proxy-ingress
   namespace: homelab
   annotations:
-    cert-manager.io/cluster-issuer: mkcert-issuer
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
@@ -14,13 +13,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - mp.wst.sh
-      secretName: mp-wst-sh-tls
+        - mp.realtong.cn
     - hosts:
-        - emby.wst.sh
-      secretName: emby-wst-sh-tls
+        - emby.realtong.cn
   rules:
-    - host: mp.wst.sh
+    - host: mp.realtong.cn
       http:
         paths:
           - path: /
@@ -30,7 +27,7 @@ spec:
                 name: moviepilot-external
                 port:
                   number: 13000
-    - host: emby.wst.sh
+    - host: emby.realtong.cn
       http:
         paths:
           - path: /
