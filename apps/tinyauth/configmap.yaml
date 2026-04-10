@@ -17,4 +17,4 @@ data:
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://id.realtong.cn/api/oidc/userinfo"
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_INSECURE: "false"
-  TINYAUTH_OAUTH_WHITELIST: "i@realtong.cn,i@realtong.com,i@wst.sh"
+  TINYAUTH_OAUTH_WHITELIST: "i@realtong.cn,i@realtong.com"
