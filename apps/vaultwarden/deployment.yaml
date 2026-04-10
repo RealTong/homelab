@@ -46,14 +46,7 @@ spec:
                   volumeMounts:
                       - name: vaultwarden-data
                         mountPath: /data
-                      - name: ca-cert
-                        mountPath: /etc/ssl/certs/ca-certificates.crt
-                        readOnly: true
             volumes:
                 - name: vaultwarden-data
                   persistentVolumeClaim:
                       claimName: vaultwarden-pvc
-                - name: ca-cert
-                  hostPath: 
-                    path: /etc/ssl/certs/ca-certificates.crt
-                    type: File
