@@ -28,8 +28,16 @@ spec:
             - name: APP_URL
               value: "https://id.realtong.cn"
             - name: APP_NAME
-              value: "RealTong's PocketID"
+              value: "RealTong's ID"
             - name: TRUST_PROXY
+              value: "true"
+            - name: UI_CONFIG_DISABLED
+              value: "true"
+            - name: HOME_PAGE_URL
+              value: "/settings/account"
+            - name: EMAILS_VERIFIED
+              value: "true"
+            - name: ALLOW_OWN_ACCOUNT_EDIT
               value: "true"
             - name: ALLOW_USER_SIGNUPS
               value: "disabled"
