@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: uptime-kuma
-          image: louislam/uptime-kuma:1.23.17
+          image: louislam/uptime-kuma:2.2.1
           ports:
             - containerPort: 3001
           env:
