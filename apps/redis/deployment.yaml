@@ -16,13 +16,22 @@ spec:
       labels:
         app: redis
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
       containers:
         - name: redis
           image: redis:8-alpine
           command:
             - redis-server
             - /usr/local/etc/redis/redis.conf
-
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
           envFrom:
             - secretRef:
                 name: redis-secret
@@ -34,6 +43,8 @@ spec:
               mountPath: /usr/local/etc/redis
             - name: redis-storage
               mountPath: /data
+            - name: tmp
+              mountPath: /tmp
           resources:
             requests:
               memory: "128Mi"
@@ -48,3 +59,5 @@ spec:
         - name: redis-storage
           persistentVolumeClaim:
             claimName: redis-pvc
+        - name: tmp
+          emptyDir: {}
