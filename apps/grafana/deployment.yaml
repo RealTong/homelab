@@ -28,7 +28,7 @@ spec:
             capabilities:
               drop:
                 - ALL
-          image: grafana/grafana:12.4.2
+          image: grafana/grafana:12.4.3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
