@@ -19,7 +19,6 @@ resources:
   - ./redis/
   - ./n8n/
   - ./postgresus/
-  - ./openclaw/
   - ./sub2api/
   - ./portfolio-ibkr/
   - ./clickhouse/
