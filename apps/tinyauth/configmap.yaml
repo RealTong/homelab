@@ -16,5 +16,6 @@ data:
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL: "https://id.wst.sh/api/oidc/token"
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL: "https://id.wst.sh/api/oidc/userinfo"
   TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES: "openid email profile groups"
-  TINYAUTH_OAUTH_PROVIDERS_POCKETID_INSECURE: "true"
+  # Security fix: Ensure TLS validation is not bypassed
+  TINYAUTH_OAUTH_PROVIDERS_POCKETID_INSECURE: "false"
   TINYAUTH_OAUTH_WHITELIST: "i@realtong.cn,i@realtong.com,i@wst.sh"
