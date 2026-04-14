@@ -12,7 +12,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       containers:
         - name: clickhouse-init-db
-          image: clickhouse/clickhouse-server:24.8
+          image: clickhouse/clickhouse-server:24.12
           imagePullPolicy: IfNotPresent
           env:
             - name: CLICKHOUSE_DB
