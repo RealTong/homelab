@@ -27,6 +27,8 @@ spec:
               value: /etc/ssl/certs/ca-certificates.crt
             - name: CURL_CA_BUNDLE
               value: /etc/ssl/certs/ca-certificates.crt
+            - name: BESZEL_URL
+              value: https://monitor.realtong.cn
           envFrom:
             - secretRef:
                 name: glance-secret
