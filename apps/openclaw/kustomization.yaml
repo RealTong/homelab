@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: homelab
-resources:
-  - ./openclaw-service.yaml
-  - ./openclaw-endpoints.yaml
-  - ./openclaw-ingress.yaml
-  - ./clash-api-service.yaml
-  - ./route-ingress.yaml
