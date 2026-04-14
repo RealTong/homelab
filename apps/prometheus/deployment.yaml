@@ -25,7 +25,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: prom/prometheus:v3.11.1
+          image: prom/prometheus:v3.11.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9090
