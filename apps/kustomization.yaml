@@ -17,7 +17,6 @@ resources:
   - ./drizzle-gateway/
   - ./postgres/
   - ./redis/
-  - ./n8n/
   - ./postgresus/
   - ./sub2api/
   - ./portfolio-ibkr/
