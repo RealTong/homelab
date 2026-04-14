@@ -9,5 +9,5 @@ data:
     root_url = https://dash.realtong.cn/
     
     [auth]
-    oauth_allow_insecure_email_lookup = true
+    oauth_allow_insecure_email_lookup = false
     disable_login_form = false

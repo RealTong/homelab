@@ -15,19 +15,43 @@ spec:
       labels:
         app: grafana
     spec:
+      securityContext:
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
+        runAsNonRoot: true
       containers:
         - name: grafana
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           image: grafana/grafana:12.4.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           env:
+            - name: NODE_EXTRA_CA_CERTS
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: SSL_CERT_FILE
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: REQUESTS_CA_BUNDLE
+              value: /etc/ssl/certs/ca-certificates.crt
+            - name: CURL_CA_BUNDLE
+              value: /etc/ssl/certs/ca-certificates.crt
           envFrom:
             - configMapRef:
                 name: grafana-configmap
           volumeMounts:
+            - mountPath: /tmp
+              name: tmp-vol
             - mountPath: /var/lib/grafana
               name: grafana-data
+            - name: ca-cert
+              mountPath: /etc/ssl/certs/ca-certificates.crt
+              readOnly: true
             - name: grafana-ini
               mountPath: /etc/grafana/grafana.ini
               subPath: grafana.ini
@@ -36,9 +60,15 @@ spec:
               cpu: 250m
               memory: 750Mi
       volumes:
+        - name: tmp-vol
+          emptyDir: {}
         - name: grafana-data
           persistentVolumeClaim:
             claimName: grafana-pvc
+        - name: ca-cert
+          hostPath: 
+            path: /etc/ssl/certs/ca-certificates.crt
+            type: File
         - name: grafana-ini
           configMap:
             name: grafana-configmap
