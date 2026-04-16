@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: headplane
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: headplane
+  template:
+    metadata:
+      labels:
+        app: headplane
+    spec:
+      containers:
+        - name: headplane
+          image: ghcr.io/tale/headplane:v0.6.2
+          env:
+            - name: HEADPLANE_LOAD_ENV_OVERRIDES
+              value: "true"
+            - name: HEADPLANE_SERVER__COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: headplane-secret
+                  key: HEADPLANE_SERVER__COOKIE_SECRET
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: headplane-config
+              mountPath: /etc/headplane/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: headplane-data
+              mountPath: /var/lib/headplane
+            - name: headscale-config
+              mountPath: /etc/headscale/config.yaml
+              subPath: config.yaml
+              readOnly: true
+      volumes:
+        - name: headplane-config
+          configMap:
+            name: headplane-config
+        - name: headplane-data
+          persistentVolumeClaim:
+            claimName: headplane-pvc
+        - name: headscale-config
+          configMap:
+            name: headscale-config

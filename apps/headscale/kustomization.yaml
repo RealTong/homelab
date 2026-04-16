@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: homelab
+resources:
+  - ./configmap-headscale.yaml
+  - ./configmap-headplane.yaml
+  - ./external-secret.yaml
+  - ./pvc-headscale.yaml
+  - ./pvc-headplane.yaml
+  - ./deployment-headscale.yaml
+  - ./deployment-headplane.yaml
+  - ./service-headscale.yaml
+  - ./service-headplane.yaml
+  - ./ingress.yaml

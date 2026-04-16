@@ -27,3 +27,4 @@ resources:
   - ./adguard-home/
   - ./pve/
   - ./qui/
+  - ./headscale/
