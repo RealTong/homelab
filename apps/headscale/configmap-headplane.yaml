@@ -22,9 +22,11 @@ data:
     integration:
       agent:
         enabled: false
+        pre_authkey: ""
       docker:
         enabled: false
       kubernetes:
         enabled: false
+        pod_name: headscale
       proc:
         enabled: false
