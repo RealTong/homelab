@@ -17,13 +17,31 @@ spec:
         - name: headplane
           image: ghcr.io/tale/headplane:0.6.2
           env:
-            - name: HEADPLANE_LOAD_ENV_OVERRIDES
-              value: "true"
             - name: HEADPLANE_SERVER__COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
                   name: headplane-secret
                   key: HEADPLANE_SERVER__COOKIE_SECRET
+            - name: HEADPLANE_OIDC__ISSUER
+              valueFrom:
+                secretKeyRef:
+                  name: headplane-secret
+                  key: HEADPLANE_OIDC__ISSUER
+            - name: HEADPLANE_OIDC__CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: headplane-secret
+                  key: HEADPLANE_OIDC__CLIENT_ID
+            - name: HEADPLANE_OIDC__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: headplane-secret
+                  key: HEADPLANE_OIDC__CLIENT_SECRET
+            - name: HEADPLANE_HEADSCALE__API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: headplane-secret
+                  key: HEADPLANE_HEADSCALE__API_KEY
           ports:
             - containerPort: 3000
           startupProbe:
@@ -54,10 +72,6 @@ spec:
               readOnly: true
             - name: headplane-data
               mountPath: /var/lib/headplane
-            - name: headscale-config
-              mountPath: /etc/headscale/config.yaml
-              subPath: config.yaml
-              readOnly: true
       volumes:
         - name: headplane-config
           configMap:
@@ -65,6 +79,3 @@ spec:
         - name: headplane-data
           persistentVolumeClaim:
             claimName: headplane-pvc
-        - name: headscale-config
-          configMap:
-            name: headscale-config

@@ -16,8 +16,11 @@ data:
     headscale:
       url: http://headscale:8080
       public_url: https://headscale.realtong.cn
-      config_path: /etc/headscale/config.yaml
       config_strict: true
+
+    oidc:
+      enabled: true
+      use_pkce: true
 
     integration:
       agent:
