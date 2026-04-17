@@ -4,7 +4,7 @@ metadata:
   name: headscale-config
   namespace: homelab
 data:
-  config.yaml: |
+  config.yaml.tmpl: |
     server_url: https://headscale.realtong.cn
     listen_addr: 0.0.0.0:8080
     metrics_listen_addr: 0.0.0.0:9090
@@ -44,6 +44,17 @@ data:
     policy:
       mode: database
       path: ""
+
+    oidc:
+      only_start_if_oidc_is_available: true
+      issuer: "__OIDC_ISSUER__"
+      client_id: "__OIDC_CLIENT_ID__"
+      client_secret_path: /etc/headscale/oidc-secrets/OIDC_CLIENT_SECRET
+      scope: ["openid", "profile", "email"]
+      email_verified_required: false
+      pkce:
+        enabled: true
+        method: S256
 
     dns:
       magic_dns: true
