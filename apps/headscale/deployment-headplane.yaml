@@ -42,6 +42,11 @@ spec:
                 secretKeyRef:
                   name: headplane-secret
                   key: HEADPLANE_HEADSCALE__API_KEY
+            - name: HEADPLANE_OIDC__HEADSCALE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: headplane-secret
+                  key: HEADPLANE_HEADSCALE__API_KEY
           ports:
             - containerPort: 3000
           startupProbe:
