@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: headplane
-          image: ghcr.io/tale/headplane:v0.6.2
+          image: ghcr.io/tale/headplane:0.6.2
           env:
             - name: HEADPLANE_LOAD_ENV_OVERRIDES
               value: "true"
@@ -26,14 +26,20 @@ spec:
                   key: HEADPLANE_SERVER__COOKIE_SECRET
           ports:
             - containerPort: 3000
+          startupProbe:
+            exec:
+              command:
+                - /bin/hp_healthcheck
+            failureThreshold: 30
+            periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 3000
+            exec:
+              command:
+                - /bin/hp_healthcheck
           readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 3000
+            exec:
+              command:
+                - /bin/hp_healthcheck
           resources:
             requests:
               cpu: 100m
