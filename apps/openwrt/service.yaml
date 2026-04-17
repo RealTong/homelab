@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: homelab
+  namespace: homelab
+spec:
+  ports:
+    - name: openwrt
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    - name: adguard-home
+      port: 3000
+      protocol: TCP
+      targetPort: 3000

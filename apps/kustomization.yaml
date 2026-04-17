@@ -25,6 +25,7 @@ resources:
   - ./synology-media-proxy/
   - ./homeassistant/
   - ./adguard-home/
+  - ./openwrt/
   - ./pve/
   - ./qui/
   - ./headscale/
