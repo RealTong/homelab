@@ -32,7 +32,7 @@ spec:
             - name: TRUST_PROXY
               value: "true"
             - name: UI_CONFIG_DISABLED
-              value: "true"
+              value: "false"
             - name: HOME_PAGE_URL
               value: "/settings/account"
             - name: EMAILS_VERIFIED
