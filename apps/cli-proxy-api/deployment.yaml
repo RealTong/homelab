@@ -20,7 +20,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       containers:
         - name: cli-proxy-api
-          image: eceasy/cli-proxy-api:v6.9.29
+          image: ttl.sh/realtong-cli-proxy-api-amd64-1776507854:24h
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8317
