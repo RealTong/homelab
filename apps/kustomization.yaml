@@ -18,7 +18,7 @@ resources:
   - ./postgres/
   - ./redis/
   - ./postgresus/
-  - ./sub2api/
+  - ./cli-proxy-api/
   - ./portfolio-ibkr/
   - ./clickhouse/
   - ./neko-master/

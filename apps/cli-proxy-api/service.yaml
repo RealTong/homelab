@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sub2api
+  name: cli-proxy-api
   namespace: homelab
   labels:
-    app: sub2api
+    app: cli-proxy-api
 spec:
   selector:
-    app: sub2api
+    app: cli-proxy-api
   ports:
     - name: http
-      port: 8080
-      targetPort: 443
+      port: 8317
+      targetPort: 8317

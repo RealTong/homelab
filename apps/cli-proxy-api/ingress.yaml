@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: sub2api-ingress
+  name: cli-proxy-api-ingress
   namespace: homelab
   annotations:
     glance/icon: simple-icons:openai
-    glance/name: "Sub2API"
+    glance/name: "CLIProxyAPI"
     glance/url: "https://ai.realtong.cn"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -26,6 +26,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: sub2api
+                name: cli-proxy-api
                 port:
-                  number: 8080
+                  number: 8317
