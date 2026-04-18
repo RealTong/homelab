@@ -20,3 +20,16 @@ spec:
         loadBalancerIP: 10.0.0.145
       extraArgs:
         default-ssl-certificate: default/realtong-cn-wildcard-tls
+      config:
+        custom-http-errors: "404,500,502,503,504"
+    defaultBackend:
+      enabled: true
+      image:
+        registry: ghcr.io
+        image: tarampampam/error-pages
+        tag: "3.8.1"
+      extraEnvs:
+        - name: TEMPLATE_NAME
+          value: lost-in-space
+        - name: SHOW_DETAILS
+          value: "true"
