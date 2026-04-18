@@ -432,14 +432,6 @@
       <li><span data-l10n>Original URI</span>: <code>{{ original_uri }}</code></li>
       <!-- {{- end }}{{ if forwarded_for -}} -->
       <li><span data-l10n>Client IP</span>: <code>{{ index (strFields (strReplace forwarded_for "," " ")) 0 }}</code></li>
-      <!-- {{- end }}{{ if namespace -}} -->
-      <li><span data-l10n>Namespace</span>: <code>{{ namespace }}</code></li>
-      <!-- {{- end }}{{ if ingress_name -}} -->
-      <li><span data-l10n>Ingress name</span>: <code>{{ ingress_name }}</code></li>
-      <!-- {{- end }}{{ if service_name -}} -->
-      <li><span data-l10n>Service name</span>: <code>{{ service_name }}</code></li>
-      <!-- {{- end }}{{ if service_port -}} -->
-      <li><span data-l10n>Service port</span>: <code>{{ service_port }}</code></li>
       <!-- {{- end }}{{ if request_id -}} -->
       <li><span data-l10n>Request ID</span>: <code>{{ request_id }}</code></li>
       <!-- {{- end -}} -->
