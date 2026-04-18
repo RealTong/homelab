@@ -1,11 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-generatorOptions:
-  disableNameSuffixHash: true
-configMapGenerator:
-  - name: ingress-nginx-error-pages-templates
-    files:
-      - lost-in-space-realtong.html=lost-in-space-realtong.html
 resources:
   - repository.yaml
   - release.yaml
+  - error-pages-template-configmap.yaml
