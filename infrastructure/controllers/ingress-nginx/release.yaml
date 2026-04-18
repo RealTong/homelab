@@ -28,10 +28,34 @@ spec:
         registry: ghcr.io
         image: tarampampam/error-pages
         tag: "3.8.1"
+      extraArgs:
+        add-template: /opt/error-pages/lost-in-space-realtong.html
+      extraVolumeMounts:
+        - name: error-pages-templates
+          mountPath: /opt/error-pages
+          readOnly: true
+      extraVolumes:
+        - name: error-pages-templates
+          configMap:
+            name: ingress-nginx-error-pages-templates
       extraEnvs:
         - name: TEMPLATE_NAME
-          value: lost-in-space
+          value: lost-in-space-realtong
         - name: SHOW_DETAILS
           value: "true"
         - name: SEND_SAME_HTTP_CODE
           value: "true"
+        - name: RESPONSE_PLAINTEXT_FORMAT
+          value: |-
+            Error {{ code }}: {{ message }}
+            {{ description }}
+            {{- if host }}
+
+            Host: {{ host }}{{ end }}{{- if original_uri }}
+            Original URI: {{ original_uri }}{{ end }}{{- if forwarded_for }}
+            Client IP: {{ index (strFields (strReplace forwarded_for "," " ")) 0 }}{{ end }}{{- if namespace }}
+            Namespace: {{ namespace }}{{ end }}{{- if ingress_name }}
+            Ingress name: {{ ingress_name }}{{ end }}{{- if service_name }}
+            Service name: {{ service_name }}{{ end }}{{- if service_port }}
+            Service port: {{ service_port }}{{ end }}{{- if request_id }}
+            Request ID: {{ request_id }}{{ end }}
