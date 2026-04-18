@@ -18,6 +18,7 @@ spec:
       service:
         type: LoadBalancer
         loadBalancerIP: 10.0.0.145
+        externalTrafficPolicy: Local
       extraArgs:
         default-ssl-certificate: default/realtong-cn-wildcard-tls
       config:
