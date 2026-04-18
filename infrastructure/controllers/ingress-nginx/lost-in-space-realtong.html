@@ -431,7 +431,7 @@
       <!-- {{- end }}{{ if original_uri -}} -->
       <li><span data-l10n>Original URI</span>: <code>{{ original_uri }}</code></li>
       <!-- {{- end }}{{ if forwarded_for -}} -->
-      <li><span data-l10n>Client IP</span>: <code>{{ index (strFields (strReplace forwarded_for "," " ")) 0 }}</code></li>
+      <li><span data-l10n>来源 IP</span>: <code>{{ index (strFields (strReplace forwarded_for "," " ")) 0 }}</code></li>
       <!-- {{- end }}{{ if request_id -}} -->
       <li><span data-l10n>Request ID</span>: <code>{{ request_id }}</code></li>
       <!-- {{- end -}} -->

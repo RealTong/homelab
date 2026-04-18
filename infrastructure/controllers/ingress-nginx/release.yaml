@@ -54,5 +54,5 @@ spec:
 
             Host: {{ host }}{{ end }}{{- if original_uri }}
             Original URI: {{ original_uri }}{{ end }}{{- if forwarded_for }}
-            Client IP: {{ index (strFields (strReplace forwarded_for "," " ")) 0 }}{{ end }}{{- if request_id }}
+            来源 IP: {{ index (strFields (strReplace forwarded_for "," " ")) 0 }}{{ end }}{{- if request_id }}
             Request ID: {{ request_id }}{{ end }}
