@@ -460,15 +460,16 @@
     if (!Number.isFinite(ts)) return
 
     const date = new Date(ts * 1000)
-    const local = date.toLocaleString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZoneName: 'short',
-    })
+    const pad = (value) => String(value).padStart(2, '0')
+    const local = [
+      date.getFullYear(),
+      pad(date.getMonth() + 1),
+      pad(date.getDate()),
+    ].join('-') + ' ' + [
+      pad(date.getHours()),
+      pad(date.getMinutes()),
+      pad(date.getSeconds()),
+    ].join(':')
     const utc = date.toISOString().replace('T', ' ').replace('.000Z', ' UTC')
 
     node.textContent = `${local} (${utc})`
