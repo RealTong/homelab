@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: manifest
+  namespace: homelab
+  annotations:
+    glance/icon: simple-icons:openai
+    glance/name: "Manifest"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manifest
+  template:
+    metadata:
+      labels:
+        app: manifest
+    spec:
+      containers:
+        - name: manifest
+          image: manifestdotbuild/manifest:5.47.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - secretRef:
+                name: manifest-secret
+          env:
+            - name: PORT
+              value: "3001"
+            - name: BIND_ADDRESS
+              value: "0.0.0.0"
+            - name: NODE_ENV
+              value: production
+            - name: MANIFEST_MODE
+              value: cloud
+            - name: AUTO_MIGRATE
+              value: "true"
+            - name: SEED_DATA
+              value: "false"
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 3001
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 3001
+            initialDelaySeconds: 40
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi

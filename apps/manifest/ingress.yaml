@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cli-proxy-api-ingress
+  name: manifest-ingress
   namespace: homelab
   annotations:
     glance/icon: simple-icons:openai
-    glance/name: "CLIProxyAPI"
+    glance/name: "Manifest"
     glance/url: "https://ai.realtong.cn"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -26,6 +26,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: cli-proxy-api
+                name: manifest
                 port:
-                  number: 8317
+                  number: 3001
