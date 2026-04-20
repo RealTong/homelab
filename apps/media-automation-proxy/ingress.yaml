@@ -19,6 +19,8 @@ spec:
         - radarr.realtong.cn
     - hosts:
         - sonarr.realtong.cn
+    - hosts:
+        - prowlarr.realtong.cn
   rules:
     - host: radarr.realtong.cn
       http:
@@ -40,3 +42,13 @@ spec:
                 name: sonarr-external
                 port:
                   number: 18989
+    - host: prowlarr.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prowlarr-external
+                port:
+                  number: 19696
