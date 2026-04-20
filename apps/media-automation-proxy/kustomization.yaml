@@ -4,3 +4,4 @@ namespace: homelab
 resources:
   - ./services.yaml
   - ./ingress.yaml
+  - ./ingress-public.yaml
