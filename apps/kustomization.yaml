@@ -23,6 +23,7 @@ resources:
   - ./clickhouse/
   - ./neko-master/
   - ./synology-media-proxy/
+  - ./media-automation-proxy/
   - ./homeassistant/
   - ./adguard-home/
   - ./openwrt/

@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: media-automation-proxy-ingress
+  namespace: homelab
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - radarr.realtong.cn
+    - hosts:
+        - sonarr.realtong.cn
+    - hosts:
+        - seerr.realtong.cn
+    - hosts:
+        - tmm.realtong.cn
+  rules:
+    - host: radarr.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: radarr-external
+                port:
+                  number: 17878
+    - host: sonarr.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sonarr-external
+                port:
+                  number: 18989
+    - host: seerr.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: seerr-external
+                port:
+                  number: 15055
+    - host: tmm.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tinymediamanager-external
+                port:
+                  number: 14000
