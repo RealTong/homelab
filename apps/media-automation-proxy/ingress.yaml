@@ -4,6 +4,9 @@ metadata:
   name: media-automation-proxy-ingress
   namespace: homelab
   annotations:
+    nginx.ingress.kubernetes.io/auth-url: "http://tinyauth.auth.svc.cluster.local:3000/api/auth/nginx"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.realtong.cn/login"
+    nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
@@ -16,10 +19,6 @@ spec:
         - radarr.realtong.cn
     - hosts:
         - sonarr.realtong.cn
-    - hosts:
-        - seerr.realtong.cn
-    - hosts:
-        - tmm.realtong.cn
   rules:
     - host: radarr.realtong.cn
       http:
@@ -41,23 +40,3 @@ spec:
                 name: sonarr-external
                 port:
                   number: 18989
-    - host: seerr.realtong.cn
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: seerr-external
-                port:
-                  number: 15055
-    - host: tmm.realtong.cn
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: tinymediamanager-external
-                port:
-                  number: 14000
