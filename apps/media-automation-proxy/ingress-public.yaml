@@ -13,11 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - seerr.realtong.cn
-    - hosts:
+        - watch.realtong.cn
         - tmm.realtong.cn
   rules:
-    - host: seerr.realtong.cn
+    - host: watch.realtong.cn
       http:
         paths:
           - path: /
