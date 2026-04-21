@@ -51,13 +51,13 @@ spec:
               readOnly: true
           readinessProbe:
             httpGet:
-              path: /api/server-info/ping
+              path: /api/server/ping
               port: 2283
             initialDelaySeconds: 20
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /api/server-info/ping
+              path: /api/server/ping
               port: 2283
             initialDelaySeconds: 60
             periodSeconds: 15
