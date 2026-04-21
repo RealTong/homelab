@@ -1,0 +1,137 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: immich
+  namespace: homelab
+  annotations:
+    glance/icon: simple-icons:immich
+    glance/name: "Immich"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: immich
+  template:
+    metadata:
+      labels:
+        app: immich
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "k3s-agent-1"
+      containers:
+        - name: immich
+          image: ghcr.io/immich-app/immich-server:v2.7.5
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: immich-secret
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: IMMICH_HOST
+              value: 0.0.0.0
+            - name: IMMICH_PORT
+              value: "2283"
+            - name: IMMICH_ENV
+              value: production
+            - name: IMMICH_LOG_LEVEL
+              value: log
+            - name: IMMICH_HELMET_FILE
+              value: "true"
+            - name: IMMICH_TRUSTED_PROXIES
+              value: 10.42.0.0/16,10.43.0.0/16,10.0.0.0/24
+          ports:
+            - containerPort: 2283
+              protocol: TCP
+          volumeMounts:
+            - name: immich-data
+              mountPath: /data
+            - name: immich-external-library
+              mountPath: /external/Vlog-Backup
+              readOnly: true
+          readinessProbe:
+            httpGet:
+              path: /api/server-info/ping
+              port: 2283
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/server-info/ping
+              port: 2283
+            initialDelaySeconds: 60
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 4000m
+              memory: 4Gi
+      volumes:
+        - name: immich-data
+          persistentVolumeClaim:
+            claimName: immich-data-pvc
+        - name: immich-external-library
+          persistentVolumeClaim:
+            claimName: immich-external-library-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: immich-machine-learning
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: immich-machine-learning
+  template:
+    metadata:
+      labels:
+        app: immich-machine-learning
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "k3s-agent-1"
+      containers:
+        - name: immich-machine-learning
+          image: ghcr.io/immich-app/immich-machine-learning:v2.7.5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: IMMICH_HOST
+              value: 0.0.0.0
+            - name: IMMICH_PORT
+              value: "3003"
+            - name: IMMICH_ENV
+              value: production
+            - name: IMMICH_LOG_LEVEL
+              value: log
+          ports:
+            - containerPort: 3003
+              protocol: TCP
+          volumeMounts:
+            - name: model-cache
+              mountPath: /cache
+          readinessProbe:
+            tcpSocket:
+              port: 3003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 3003
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: immich-model-cache-pvc

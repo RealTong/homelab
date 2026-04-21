@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: immich-vlog-backup-pv
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  nfs:
+    server: nas.realtong.cn
+    path: /volume1/Vlog-Backup
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-external-library-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: ""
+  volumeName: immich-vlog-backup-pv
+  resources:
+    requests:
+      storage: 1Ti

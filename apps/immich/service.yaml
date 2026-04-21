@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich
+  namespace: homelab
+spec:
+  selector:
+    app: immich
+  ports:
+    - name: http
+      port: 2283
+      targetPort: 2283
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-machine-learning
+  namespace: homelab
+spec:
+  selector:
+    app: immich-machine-learning
+  ports:
+    - name: http
+      port: 3003
+      targetPort: 3003
