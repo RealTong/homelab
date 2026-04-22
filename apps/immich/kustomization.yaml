@@ -6,7 +6,7 @@ resources:
   - ./postgres-pvc.yaml
   - ./postgres-service.yaml
   - ./postgres-deployment.yaml
-  - ./pvc.yaml
+  - ./pvc-nfs.yaml
   - ./external-library.yaml
   - ./service.yaml
   - ./deployment.yaml
