@@ -71,7 +71,7 @@ spec:
       volumes:
         - name: immich-data
           persistentVolumeClaim:
-            claimName: immich-data-pvc
+            claimName: immich-data-pvc-nfs
         - name: immich-external-library
           persistentVolumeClaim:
             claimName: immich-external-library-pvc
@@ -134,4 +134,4 @@ spec:
       volumes:
         - name: model-cache
           persistentVolumeClaim:
-            claimName: immich-model-cache-pvc
+            claimName: immich-model-cache-pvc-nfs
