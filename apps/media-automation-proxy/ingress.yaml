@@ -16,13 +16,13 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - radarr.realtong.cn
+        - movie.realtong.cn
     - hosts:
-        - sonarr.realtong.cn
+        - tv.realtong.cn
     - hosts:
-        - prowlarr.realtong.cn
+        - pt.realtong.cn
   rules:
-    - host: radarr.realtong.cn
+    - host: movie.realtong.cn
       http:
         paths:
           - path: /
@@ -32,7 +32,7 @@ spec:
                 name: radarr-external
                 port:
                   number: 17878
-    - host: sonarr.realtong.cn
+    - host: tv.realtong.cn
       http:
         paths:
           - path: /
@@ -42,7 +42,7 @@ spec:
                 name: sonarr-external
                 port:
                   number: 18989
-    - host: prowlarr.realtong.cn
+    - host: pt.realtong.cn
       http:
         paths:
           - path: /
