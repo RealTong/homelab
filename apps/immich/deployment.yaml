@@ -7,7 +7,7 @@ metadata:
     glance/icon: simple-icons:immich
     glance/name: "Immich"
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: immich
@@ -82,7 +82,7 @@ metadata:
   name: immich-machine-learning
   namespace: homelab
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: immich-machine-learning
