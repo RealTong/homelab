@@ -11,6 +11,7 @@ spec:
     requests:
       storage: 20Gi
   volumeName: pvc-c2c6f329-d39d-4fc5-b8da-6746c48269b4
+  volumeMode: Filesystem
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -25,3 +26,4 @@ spec:
     requests:
       storage: 10Gi
   volumeName: pvc-636fae0c-acc9-4aa3-a452-82edc3e829c1
+  volumeMode: Filesystem

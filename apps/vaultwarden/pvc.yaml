@@ -11,3 +11,4 @@ spec:
     requests:
       storage: 256Mi
   volumeName: pvc-e633e54f-b691-43a9-822a-27c5ef142eed
+  volumeMode: Filesystem

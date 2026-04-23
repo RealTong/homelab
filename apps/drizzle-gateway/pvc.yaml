@@ -5,9 +5,10 @@ metadata:
   namespace: databases
 spec:
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
   storageClassName: nfs-client
   volumeName: pvc-6f5bfd56-a337-4026-acb5-d58ec1f5fe3d
+  volumeMode: Filesystem

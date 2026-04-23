@@ -11,3 +11,4 @@ spec:
       storage: 1Gi
   storageClassName: nfs-client
   volumeName: pvc-5ec1adb3-bc0f-4beb-85e6-3a68c9341ea3
+  volumeMode: Filesystem

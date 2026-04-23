@@ -11,3 +11,4 @@ spec:
       storage: 10Gi
   storageClassName: nfs-client
   volumeName: pvc-278ba20c-9409-475b-9bfc-7d5d404e7efe
+  volumeMode: Filesystem

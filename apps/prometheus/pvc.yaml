@@ -11,3 +11,4 @@ spec:
     requests:
       storage: 5Gi
   volumeName: pvc-f7089f71-7fb2-42d9-947b-83dbcd7c129a
+  volumeMode: Filesystem

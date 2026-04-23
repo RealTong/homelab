@@ -10,3 +10,5 @@ spec:
     requests:
       storage: 5Gi
   volumeName: pvc-ca235abb-4b6f-48c0-a93c-f60feb22011a
+  storageClassName: nfs-client
+  volumeMode: Filesystem

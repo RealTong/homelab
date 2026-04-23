@@ -6,9 +6,9 @@ spec:
   capacity:
     storage: 1Ti
   accessModes:
-    - ReadOnlyMany
+  - ReadOnlyMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
+  storageClassName: ''
   nfs:
     server: nas.realtong.cn
     path: /volume1/Vlog-Backup
@@ -20,9 +20,10 @@ metadata:
   namespace: homelab
 spec:
   accessModes:
-    - ReadOnlyMany
-  storageClassName: ""
+  - ReadOnlyMany
+  storageClassName: ''
   volumeName: immich-vlog-backup-pv
   resources:
     requests:
       storage: 1Ti
+  volumeMode: Filesystem
