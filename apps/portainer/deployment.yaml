@@ -13,6 +13,8 @@ spec:
         app: portainer
     spec:
       serviceAccountName: cluster-admin-sa
+      nodeSelector:
+        kubernetes.io/hostname: "realtong-server"
       containers:
       - name: portainer
         image: portainer/portainer-ce:2.40.0
