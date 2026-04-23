@@ -17,7 +17,6 @@ resources:
   - ./drizzle-gateway/
   - ./postgres/
   - ./redis/
-  - ./postgresus/
   - ./manifest/
   - ./portfolio-ibkr/
   - ./clickhouse/

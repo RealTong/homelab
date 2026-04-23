@@ -4,4 +4,3 @@ resources:
   - ./external-secrets
   - ./cert-manager
   - ./notifications
-  - ./postgresus
