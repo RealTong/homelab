@@ -17,7 +17,7 @@ spec:
         app: immich
     spec:
       nodeSelector:
-        kubernetes.io/hostname: "k3s-agent-2"
+        kubernetes.io/hostname: "k3s-agent-1"
       containers:
         - name: immich
           image: ghcr.io/immich-app/immich-server:v2.7.5
@@ -92,7 +92,7 @@ spec:
         app: immich-machine-learning
     spec:
       nodeSelector:
-        kubernetes.io/hostname: "k3s-agent-2"
+        kubernetes.io/hostname: "k3s-agent-1"
       containers:
         - name: immich-machine-learning
           image: ghcr.io/immich-app/immich-machine-learning:v2.7.5
