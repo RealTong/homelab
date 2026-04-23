@@ -7,7 +7,7 @@ metadata:
     glance/icon: simple-icons:immich
     glance/name: "Immich"
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: immich
@@ -17,7 +17,7 @@ spec:
         app: immich
     spec:
       nodeSelector:
-        kubernetes.io/hostname: "k3s-agent-1"
+        kubernetes.io/hostname: "k3s-agent-2"
       containers:
         - name: immich
           image: ghcr.io/immich-app/immich-server:v2.7.5
@@ -82,7 +82,7 @@ metadata:
   name: immich-machine-learning
   namespace: homelab
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: immich-machine-learning
@@ -92,7 +92,7 @@ spec:
         app: immich-machine-learning
     spec:
       nodeSelector:
-        kubernetes.io/hostname: "k3s-agent-1"
+        kubernetes.io/hostname: "k3s-agent-2"
       containers:
         - name: immich-machine-learning
           image: ghcr.io/immich-app/immich-machine-learning:v2.7.5
