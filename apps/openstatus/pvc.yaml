@@ -5,8 +5,9 @@ metadata:
   namespace: observability
 spec:
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   storageClassName: nfs-client
   resources:
     requests:
       storage: 5Gi
+  volumeName: pvc-b6b7eea2-963f-4be7-96a3-bddfe6225437

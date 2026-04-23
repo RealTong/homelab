@@ -5,8 +5,9 @@ metadata:
   namespace: homelab
 spec:
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   storageClassName: nfs-client
   resources:
     requests:
       storage: 1Gi
+  volumeName: pvc-04e38919-829f-419b-8cf6-dbb553a77e8f

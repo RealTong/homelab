@@ -5,8 +5,9 @@ metadata:
   namespace: databases
 spec:
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   storageClassName: local-path
   resources:
     requests:
       storage: 20Gi
+  volumeName: pvc-e4b2d541-52b0-4307-b902-54054b38c652
