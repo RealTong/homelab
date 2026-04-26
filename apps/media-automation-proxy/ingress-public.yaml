@@ -14,7 +14,6 @@ spec:
   tls:
     - hosts:
         - watch.realtong.cn
-        - tmm.realtong.cn
   rules:
     - host: watch.realtong.cn
       http:
@@ -26,13 +25,3 @@ spec:
                 name: seerr-external
                 port:
                   number: 15055
-    - host: tmm.realtong.cn
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: tinymediamanager-external
-                port:
-                  number: 14000
