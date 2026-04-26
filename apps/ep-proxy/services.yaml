@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ep-external
+  namespace: homelab
+spec:
+  ports:
+    - name: http
+      port: 10307
+      protocol: TCP
+      targetPort: 10307
+  clusterIP: None
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: ep-external
+  namespace: homelab
+subsets:
+  - addresses:
+      - ip: 10.0.0.100
+    ports:
+      - name: http
+        port: 10307
+        protocol: TCP
