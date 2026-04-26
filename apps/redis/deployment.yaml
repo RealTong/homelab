@@ -21,31 +21,6 @@ spec:
         runAsUser: 999
         runAsGroup: 999
         fsGroup: 999
-      initContainers:
-        - name: fix-data-permissions
-          image: alpine:3.20
-          command:
-            - sh
-            - -lc
-            - |
-              set -eu
-              mkdir -p /data/appendonlydir
-              chown -R 999:999 /data
-              chmod 775 /data /data/appendonlydir
-              find /data -type d -exec chmod 775 {} \;
-              find /data -type f -exec chmod 664 {} \;
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop: ["ALL"]
-          volumeMounts:
-            - name: redis-storage
-              mountPath: /data
-            - name: tmp
-              mountPath: /tmp
       containers:
         - name: redis
           image: redis:8-alpine
@@ -60,7 +35,6 @@ spec:
           envFrom:
             - secretRef:
                 name: redis-secret
-                key: REDIS_PASSWORD
           ports:
             - containerPort: 6379
           volumeMounts:
