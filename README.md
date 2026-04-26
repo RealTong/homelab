@@ -8,6 +8,12 @@ The kubernetes cluster of RealTong's Homelab
 
 </div>
 
+## Topology
+
+![RealTong HomeLab network topology](./assets/homelab-topology.jpg)
+
+This diagram summarizes the high-level traffic flow and operational layers of the HomeLab: public/LAN entry points, ingress routing, authentication, application groups, observability, GitOps reconciliation, secrets synchronization, and persistent storage.
+
 ## Guiding Principles
 
 This project is, first and foremost, a platform for learning and exploration. The core philosophy is to maintain a resilient and reproducible test environment where experimentation is encouraged. While this approach can sometimes lead to over-engineering (here's [the counter-argument](https://frenck.dev/the-enterprise-smart-home-syndrome/)), the primary goal is to guarantee that any component can be rebuilt from code.
