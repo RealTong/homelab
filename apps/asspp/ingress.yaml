@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: asspp-ingress
+  namespace: homelab
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: "http://tinyauth.auth.svc.cluster.local:3000/api/auth/nginx"
+    nginx.ingress.kubernetes.io/auth-signin: "https://auth.realtong.cn/login"
+    nginx.ingress.kubernetes.io/auth-signin-redirect-param: redirect_uri
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - asspp.realtong.cn
+  rules:
+    - host: asspp.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: asspp
+                port:
+                  number: 8080

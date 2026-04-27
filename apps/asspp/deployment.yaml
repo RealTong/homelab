@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asspp
+  namespace: homelab
+  labels:
+    app: asspp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asspp
+  template:
+    metadata:
+      labels:
+        app: asspp
+    spec:
+      containers:
+        - name: asspp
+          image: ghcr.io/lakr233/assppweb:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "8080"
+            - name: DATA_DIR
+              value: /data
+            - name: PUBLIC_BASE_URL
+              value: https://asspp.realtong.cn
+            - name: DOWNLOAD_THREADS
+              value: "8"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          readinessProbe:
+            httpGet:
+              path: /api/settings
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /api/settings
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: asspp-data
