@@ -15,10 +15,31 @@ spec:
         namespace: flux-system
   values:
     controller:
+      replicaCount: 3
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: controller
+                    app.kubernetes.io/instance: nginx-ingress
+                    app.kubernetes.io/name: ingress-nginx
+                topologyKey: kubernetes.io/hostname
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: controller
+              app.kubernetes.io/instance: nginx-ingress
+              app.kubernetes.io/name: ingress-nginx
       service:
         type: LoadBalancer
         loadBalancerIP: 10.0.0.145
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
       extraArgs:
         default-ssl-certificate: default/realtong-cn-wildcard-tls
       config:
