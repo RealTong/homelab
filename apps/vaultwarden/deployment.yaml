@@ -24,7 +24,7 @@ spec:
                 kubernetes.io/hostname: "realtong-server"
             containers:
                 - name: vaultwarden
-                  image: vaultwarden/server:1.35.7
+                  image: vaultwarden/server:1.36.0
                   securityContext:
                       allowPrivilegeEscalation: false
                       readOnlyRootFilesystem: true
