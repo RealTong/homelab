@@ -26,14 +26,14 @@ This philosophy is supported by several key principles:
 ## Core Infrastructure
 
 **Hardware:**
-- **Servers:** 3 servers – (N5105 16C16G), (Oracle Cloud VM.Standard.2.1), (Ugreen DXP4800)
+- **Servers:** 4 servers/nodes – (N5105 16C16G), (Oracle Cloud VM.Standard.2.1), (Ugreen DXP4800), and a Mac mini worker node
 - **Management:** UPS (APC Back-UPS 500VA)
 - **Storage:** 4x 4TB HDD, 1x 256GB SSD
 
 **Software Stack:**
-- **Operating Systems**: [Ubuntu](https://www.ubuntu.com/), [Proxmox](https://www.proxmox.com/)
+- **Operating Systems**: [Ubuntu](https://www.ubuntu.com/), [Proxmox](https://www.proxmox.com/), macOS
 - **Container Orchestration:** [Kubernetes](https://kubernetes.io/)
 - **Automation:** [FluxCD](https://fluxcd.io/), [Renovate](https://docs.renovatebot.com/)
 - **Security:** [PocketID](https://pocket-id.org/), [TinyAuth](https://tinyauth.app/), [Cert-Manager](https://cert-manager.io/), [Mkcert](https://github.com/FiloSottile/mkcert)
-- **Networking:** [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/), [WireGuard](https://www.wireguard.com/), [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/)
+- **Networking:** [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/), [WireGuard](https://www.wireguard.com/), [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/), [NetBird](https://netbird.io/), [Tailscale](https://tailscale.com/) / [Headscale](https://headscale.net/)
 - **Observability:** [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack), [Grafana](https://grafana.com/), [Uptime Kuma](https://github.com/louislam/uptime-kuma)
