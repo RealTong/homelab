@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: multica-postgres
+  namespace: homelab
+spec:
+  selector:
+    app: multica-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+      protocol: TCP
+  type: ClusterIP

@@ -31,3 +31,4 @@ resources:
   - ./pve/
   - ./qui/
   - ./immich/
+  - ./multica/

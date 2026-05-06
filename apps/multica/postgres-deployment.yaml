@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multica-postgres
+  namespace: homelab
+  annotations:
+    glance/icon: di:postgres
+    glance/name: "Multica PostgreSQL"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multica-postgres
+  template:
+    metadata:
+      labels:
+        app: multica-postgres
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "realtong-server"
+      containers:
+        - name: postgres
+          image: pgvector/pgvector:pg17
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: multica
+            - name: POSTGRES_USER
+              value: multica
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: multica-secret
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - multica
+                - -d
+                - multica
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: multica-postgres-pvc
