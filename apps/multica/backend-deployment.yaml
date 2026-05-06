@@ -19,12 +19,21 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          command:
+            - /bin/sh
+            - -c
+            - |
+              export DATABASE_URL="host=multica-postgres.homelab.svc.cluster.local port=5432 user=multica password=${POSTGRES_PASSWORD} dbname=multica sslmode=disable"
+              echo "Running database migrations..."
+              ./migrate up
+              echo "Starting server..."
+              exec ./server
           env:
-            - name: DATABASE_URL
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: multica-secret
-                  key: DATABASE_URL
+                  key: POSTGRES_PASSWORD
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
