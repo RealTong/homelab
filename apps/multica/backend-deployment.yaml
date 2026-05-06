@@ -30,21 +30,6 @@ spec:
                 secretKeyRef:
                   name: multica-secret
                   key: JWT_SECRET
-            - name: RESEND_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: multica-secret
-                  key: RESEND_API_KEY
-            - name: ALLOWED_EMAILS
-              valueFrom:
-                secretKeyRef:
-                  name: multica-secret
-                  key: ALLOWED_EMAILS
-            - name: REALTIME_METRICS_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: multica-secret
-                  key: REALTIME_METRICS_TOKEN
             - name: PORT
               value: "8080"
             - name: APP_ENV
