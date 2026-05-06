@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multica-backend
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multica-backend
+  template:
+    metadata:
+      labels:
+        app: multica-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/multica-ai/multica-backend:v0.2.26
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: multica-secret
+                  key: DATABASE_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: multica-secret
+                  key: JWT_SECRET
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: multica-secret
+                  key: RESEND_API_KEY
+            - name: ALLOWED_EMAILS
+              valueFrom:
+                secretKeyRef:
+                  name: multica-secret
+                  key: ALLOWED_EMAILS
+            - name: REALTIME_METRICS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: multica-secret
+                  key: REALTIME_METRICS_TOKEN
+            - name: PORT
+              value: "8080"
+            - name: APP_ENV
+              value: production
+            - name: FRONTEND_ORIGIN
+              value: https://multica.realtong.cn
+            - name: CORS_ALLOWED_ORIGINS
+              value: https://multica.realtong.cn
+            - name: MULTICA_APP_URL
+              value: https://multica.realtong.cn
+            - name: LOCAL_UPLOAD_DIR
+              value: /app/data/uploads
+            - name: LOCAL_UPLOAD_BASE_URL
+              value: https://multica.realtong.cn
+            - name: RESEND_FROM_EMAIL
+              value: noreply@realtong.cn
+            - name: GOOGLE_CLIENT_ID
+              value: ""
+            - name: GOOGLE_REDIRECT_URI
+              value: https://multica.realtong.cn/auth/callback
+            - name: COOKIE_DOMAIN
+              value: ""
+            - name: ALLOW_SIGNUP
+              value: "true"
+          volumeMounts:
+            - name: backend-uploads
+              mountPath: /app/data/uploads
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+      volumes:
+        - name: backend-uploads
+          persistentVolumeClaim:
+            claimName: multica-uploads-pvc
