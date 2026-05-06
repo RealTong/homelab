@@ -18,7 +18,18 @@ spec:
   tls:
     - hosts:
         - multica.realtong.cn
+        - multica-api.realtong.cn
   rules:
+    - host: multica-api.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: multica-backend
+                port:
+                  number: 8080
     - host: multica.realtong.cn
       http:
         paths:
@@ -44,6 +55,27 @@ spec:
                 port:
                   number: 8080
           - path: /uploads
+            pathType: Prefix
+            backend:
+              service:
+                name: multica-backend
+                port:
+                  number: 8080
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: multica-backend
+                port:
+                  number: 8080
+          - path: /healthz
+            pathType: Prefix
+            backend:
+              service:
+                name: multica-backend
+                port:
+                  number: 8080
+          - path: /readyz
             pathType: Prefix
             backend:
               service:
