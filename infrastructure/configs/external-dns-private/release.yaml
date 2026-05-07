@@ -54,11 +54,11 @@ spec:
         livenessProbe:
           httpGet:
             path: /healthz
-            port: http-webhook
+            port: 8888
         readinessProbe:
           httpGet:
             path: /healthz
-            port: http-webhook
+            port: 8888
     extraArgs:
       - --webhook-provider-url=http://localhost:8888
       - --ingress-class=nginx
