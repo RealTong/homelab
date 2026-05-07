@@ -54,23 +54,23 @@ spec:
             - name: APP_ENV
               value: production
             - name: FRONTEND_ORIGIN
-              value: https://multica.realtong.cn
+              value: https://agents.realtong.cn
             - name: CORS_ALLOWED_ORIGINS
-              value: https://multica.realtong.cn
+              value: https://agents.realtong.cn
             - name: ALLOWED_ORIGINS
-              value: https://multica.realtong.cn,https://multica-api.realtong.cn
+              value: https://agents.realtong.cn,https://agents-api.realtong.cn
             - name: MULTICA_APP_URL
-              value: https://multica.realtong.cn
+              value: https://agents.realtong.cn
             - name: LOCAL_UPLOAD_DIR
               value: /app/data/uploads
             - name: LOCAL_UPLOAD_BASE_URL
-              value: https://multica.realtong.cn
+              value: https://agents.realtong.cn
             - name: RESEND_FROM_EMAIL
               value: noreply@realtong.cn
             - name: GOOGLE_CLIENT_ID
               value: ""
             - name: GOOGLE_REDIRECT_URI
-              value: https://multica.realtong.cn/auth/callback
+              value: https://agents.realtong.cn/auth/callback
             - name: COOKIE_DOMAIN
               value: ""
             - name: ALLOW_SIGNUP

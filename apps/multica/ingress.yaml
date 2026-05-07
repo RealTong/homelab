@@ -6,7 +6,7 @@ metadata:
   annotations:
     glance/icon: simple-icons:openai
     glance/name: "Multica"
-    glance/url: "https://multica.realtong.cn"
+    glance/url: "https://agents.realtong.cn"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
@@ -17,10 +17,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - multica.realtong.cn
-        - multica-api.realtong.cn
+        - agents.realtong.cn
+        - agents-api.realtong.cn
   rules:
-    - host: multica-api.realtong.cn
+    - host: agents-api.realtong.cn
       http:
         paths:
           - path: /
@@ -30,7 +30,7 @@ spec:
                 name: multica-backend
                 port:
                   number: 8080
-    - host: multica.realtong.cn
+    - host: agents.realtong.cn
       http:
         paths:
           - path: /api
