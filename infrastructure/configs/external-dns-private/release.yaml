@@ -1,0 +1,70 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: external-dns-private
+  namespace: external-dns
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: external-dns
+      version: "1.20.x"
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: flux-system
+  values:
+    fullnameOverride: external-dns-private
+    sources:
+      - ingress
+    policy: sync
+    registry: noop
+    domainFilters:
+      - realtong.cn
+    managedRecordTypes:
+      - A
+    triggerLoopOnEvent: true
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/zekker6/external-dns-provider-adguard
+          tag: v1.5.1
+          pullPolicy: IfNotPresent
+        env:
+          - name: ADGUARD_HOME_URL
+            value: http://homelab.homelab.svc.cluster.local:3000/control/
+          - name: ADGUARD_HOME_USER
+            valueFrom:
+              secretKeyRef:
+                name: adguard-home-credentials
+                key: ADGUARD_HOME_USER
+          - name: ADGUARD_HOME_PASS
+            valueFrom:
+              secretKeyRef:
+                name: adguard-home-credentials
+                key: ADGUARD_HOME_PASS
+          - name: ADGUARD_HOME_MANAGED_BY_REF
+            value: realtong-homelab-private
+        securityContext:
+          runAsUser: 65534
+          runAsGroup: 65534
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+              - ALL
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+    extraArgs:
+      - --webhook-provider-url=http://localhost:8888
+      - --ingress-class=nginx
+      - --default-targets=10.0.0.145
+      - --force-default-targets
