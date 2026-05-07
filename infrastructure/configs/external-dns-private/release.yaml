@@ -35,15 +35,9 @@ spec:
           - name: ADGUARD_HOME_URL
             value: http://homelab.homelab.svc.cluster.local:3000/control/
           - name: ADGUARD_HOME_USER
-            valueFrom:
-              secretKeyRef:
-                name: adguard-home-credentials
-                key: ADGUARD_HOME_USER
+            value: ""
           - name: ADGUARD_HOME_PASS
-            valueFrom:
-              secretKeyRef:
-                name: adguard-home-credentials
-                key: ADGUARD_HOME_PASS
+            value: ""
           - name: ADGUARD_HOME_MANAGED_BY_REF
             value: realtong-homelab-private
         securityContext:
