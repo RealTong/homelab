@@ -44,6 +44,7 @@ spec:
         default-ssl-certificate: default/realtong-cn-wildcard-tls
       config:
         custom-http-errors: "404,500,502,503,504"
+        enable-underscores-in-headers: "true"
     defaultBackend:
       enabled: true
       image:
