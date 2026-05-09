@@ -70,7 +70,7 @@ spec:
             - name: REDIS_ENABLE_TLS
               value: "false"
             - name: ADMIN_EMAIL
-              value: admin@realtong.cn
+              value: i@realtong.cn
             - name: JWT_EXPIRE_HOUR
               value: "24"
             - name: DATABASE_PASSWORD
