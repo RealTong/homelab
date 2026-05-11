@@ -9,8 +9,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate
-    rollingUpdate: null
+    type: RollingUpdate
   selector:
     matchLabels:
       app: nine-router
