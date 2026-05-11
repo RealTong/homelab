@@ -33,3 +33,4 @@ resources:
   - ./immich/
   - ./multica/
   - ./sub2api/
+  - ./9router/

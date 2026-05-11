@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nine-router
+  namespace: homelab
+  annotations:
+    glance/icon: simple-icons:openai
+    glance/name: "9Router"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nine-router
+  template:
+    metadata:
+      labels:
+        app: nine-router
+    spec:
+      containers:
+        - name: nine-router
+          image: ghcr.io/realtong/9router:0.4.29
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 20128
+          envFrom:
+            - secretRef:
+                name: nine-router-secret
+          env:
+            - name: PORT
+              value: "20128"
+            - name: HOSTNAME
+              value: "0.0.0.0"
+            - name: DATA_DIR
+              value: /app/data
+            - name: BASE_URL
+              value: https://9router.realtong.cn
+            - name: NEXT_PUBLIC_BASE_URL
+              value: https://9router.realtong.cn
+            - name: CLOUD_URL
+              value: https://9router.com
+            - name: NEXT_PUBLIC_CLOUD_URL
+              value: https://9router.com
+            - name: AUTH_COOKIE_SECURE
+              value: "true"
+            - name: ENABLE_REQUEST_LOGS
+              value: "false"
+            - name: OBSERVABILITY_ENABLED
+              value: "true"
+            - name: REQUIRE_API_KEY
+              value: "false"
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nine-router-data
