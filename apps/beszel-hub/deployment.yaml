@@ -39,4 +39,4 @@ spec:
       volumes:
         - name: beszel-data
           persistentVolumeClaim:
-            claimName: beszel-hub-pvc
+            claimName: beszel-hub-local-pvc

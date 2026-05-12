@@ -1,14 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: beszel-hub-pvc
+  name: beszel-hub-local-pvc
   namespace: observability
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
       storage: 256Mi
-  storageClassName: nfs-client
-  volumeName: pvc-ac331425-a917-4742-9b7c-73eba63a4c5b
-  volumeMode: Filesystem
+  storageClassName: local-path
