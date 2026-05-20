@@ -13,7 +13,7 @@ spec:
             labels:
                 app: kite
         spec:
-            serviceAccountName: cluster-admin-sa
+            serviceAccountName: kite
             nodeSelector:
                 kubernetes.io/hostname: "realtong-server"
             containers:
