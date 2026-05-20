@@ -14,6 +14,8 @@ spec:
   tls:
     - hosts:
         - mp.realtong.cn
+    - hosts:
+        - emby.realtong.cn
   rules:
     - host: mp.realtong.cn
       http:
@@ -25,3 +27,13 @@ spec:
                 name: moviepilot-external
                 port:
                   number: 13000
+    - host: emby.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: emby-external
+                port:
+                  number: 28096
