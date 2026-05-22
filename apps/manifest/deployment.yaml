@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: manifest
-          image: manifestdotbuild/manifest:6.3.0
+          image: manifestdotbuild/manifest:6.6.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3001
