@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/multica-ai/multica-backend:v0.3.5
+          image: ghcr.io/multica-ai/multica-backend:v0.3.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
