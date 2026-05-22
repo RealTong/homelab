@@ -17,7 +17,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       containers:
       - name: portainer
-        image: portainer/portainer-ce:2.42.0
+        image: portainer/portainer-ce:2.41.1
         imagePullPolicy: Always
         env:
         ports:
