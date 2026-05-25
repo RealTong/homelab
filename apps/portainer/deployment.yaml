@@ -12,7 +12,7 @@ spec:
       labels:
         app: portainer
     spec:
-      serviceAccountName: cluster-admin-sa
+      serviceAccountName: portainer
       nodeSelector:
         kubernetes.io/hostname: "realtong-server"
       containers:

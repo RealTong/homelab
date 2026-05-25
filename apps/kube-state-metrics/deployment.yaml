@@ -12,10 +12,14 @@ spec:
       labels:
         app: kube-state-metrics
     spec: 
-      serviceAccountName: cluster-admin-sa
+      serviceAccountName: kube-state-metrics
       containers:
         - name: kube-state-metrics 
           image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.18.0
+          args:
+            # Exclude the secrets collector so this observability workload does
+            # not need RBAC that can read Kubernetes Secret data.
+            - --resources=certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpoints,endpointslices,horizontalpodautoscalers,ingresses,jobs,leases,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,services,statefulsets,storageclasses,validatingwebhookconfigurations,volumeattachments
           ports:
             - containerPort: 8080
           resources:
