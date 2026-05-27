@@ -22,7 +22,7 @@ spec:
         kubernetes.io/hostname: "k3s-agent-1"
       containers:
         - name: afilmory
-          image: ghcr.io/realtong/afilmory:4843875-runtime
+          image: ghcr.io/realtong/afilmory:4843875-runtime-r2
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ

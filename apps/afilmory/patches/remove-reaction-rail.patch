@@ -1,0 +1,20 @@
+diff --git a/apps/web/src/modules/viewer/PhotoViewer.tsx b/apps/web/src/modules/viewer/PhotoViewer.tsx
+index 9014cdd..f10617f 100644
+--- a/apps/web/src/modules/viewer/PhotoViewer.tsx
++++ b/apps/web/src/modules/viewer/PhotoViewer.tsx
+@@ -30,7 +30,6 @@ import { PhotoInspector } from '~/modules/inspector/PhotoInspector'
+ import { ShareModal } from '~/modules/social/ShareModal'
+ import type { PhotoManifest } from '~/types/photo'
+ 
+-import { ReactionRail } from '../social'
+ import { resolvePhotoViewerEntryState, shouldHideCurrentViewerImage } from './entry-animation-state'
+ import { GalleryThumbnail } from './GalleryThumbnail'
+ import { MobilePhotoInspectorSheet } from './MobilePhotoInspectorSheet'
+@@ -510,7 +509,6 @@ export const PhotoViewer = ({
+                                 className="flex items-center justify-center"
+                                 virtualIndex={index}
+                               >
+-                                <ReactionRail photoId={photo.id} />
+                                 <m.div
+                                   initial={
+                                     isCurrentImage && entryTransition?.variant === 'entry'

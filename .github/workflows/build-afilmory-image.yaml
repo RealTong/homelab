@@ -11,6 +11,7 @@ on:
       - apps/afilmory/start.sh
       - apps/afilmory/config.json
       - apps/afilmory/builder.config.ts
+      - apps/afilmory/patches/**
 
 permissions:
   contents: read
@@ -43,7 +44,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/realtong/afilmory:4843875-runtime
+            ghcr.io/realtong/afilmory:4843875-runtime-r2
             ghcr.io/realtong/afilmory:latest
           build-args: |
             AFILMORY_REF=4843875f26f48343b08814e3282b3c4565a78c58

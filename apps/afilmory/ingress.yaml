@@ -9,6 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   tls:
@@ -18,8 +19,15 @@ spec:
     - host: art.realtong.cn
       http:
         paths:
-          - path: /photos
-            pathType: Prefix
+          - path: /photos/[^/.]+$
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: afilmory
+                port:
+                  number: 3000
+          - path: /photos(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: afilmory

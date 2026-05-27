@@ -13,11 +13,13 @@ RUN git init . \
   && git checkout FETCH_HEAD \
   && git rev-parse HEAD > /app/AFILMORY_COMMIT
 
+COPY patches/ ./patches/
 COPY config.json ./config.json
 COPY builder.config.ts ./builder.config.ts
 COPY start.sh /usr/local/bin/afilmory-start
 
 RUN chmod +x /usr/local/bin/afilmory-start \
+  && git apply ./patches/remove-reaction-rail.patch \
   && sh ./scripts/preinstall.sh \
   && pnpm install --frozen-lockfile \
   && pnpm store prune
