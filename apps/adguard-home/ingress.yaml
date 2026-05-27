@@ -14,8 +14,19 @@ spec:
   tls:
     - hosts:
         - adg.realtong.cn
+        - dns.realtong.cn
   rules:
     - host: adg.realtong.cn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: homelab
+                port:
+                  number: 3000
+    - host: dns.realtong.cn
       http:
         paths:
           - path: /
