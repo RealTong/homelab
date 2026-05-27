@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: afilmory
+  namespace: homelab
+spec:
+  selector:
+    app: afilmory
+  ports:
+    - name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+    - name: photos
+      protocol: TCP
+      port: 8080
+      targetPort: 80

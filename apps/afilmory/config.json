@@ -1,0 +1,20 @@
+{
+  "name": "RealTong Photo Gallery",
+  "title": "RealTong Photo Gallery",
+  "description": "Capturing beautiful moments in life.",
+  "url": "https://art.realtong.cn",
+  "accentColor": "#fb7185",
+  "ogImage": {
+    "width": 1200,
+    "height": 630
+  },
+  "author": {
+    "name": "RealTong",
+    "url": "https://realtong.cn/",
+    "avatar": "https://realtong.cn/favicon.ico"
+  },
+  "social": {},
+  "extra": {
+    "accessRepo": false
+  }
+}

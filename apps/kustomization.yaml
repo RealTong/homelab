@@ -31,5 +31,6 @@ resources:
   - ./pve/
   - ./qui/
   - ./immich/
+  - ./afilmory/
   - ./multica/
   - ./9router/

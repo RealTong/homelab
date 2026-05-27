@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: afilmory
+  namespace: homelab
+  annotations:
+    glance/icon: simple-icons:artifacthub
+    glance/name: "Afilmory"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: afilmory
+  template:
+    metadata:
+      labels:
+        app: afilmory
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "k3s-agent-1"
+      containers:
+        - name: afilmory
+          image: ghcr.io/realtong/afilmory:4843875-runtime
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "3000"
+            - name: PHOTO_BASE_PATH
+              value: /photos
+            - name: PHOTO_BASE_URL
+              value: /photos
+            - name: BUILDER_CONCURRENCY
+              value: "2"
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - name: photo-library
+              mountPath: /photos
+              readOnly: true
+          startupProbe:
+            httpGet:
+              path: /
+              port: 3000
+            failureThreshold: 180
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+            limits:
+              cpu: 4000m
+              memory: 8Gi
+        - name: photo-static
+          image: nginx:1.29-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: photos
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: photo-library
+              mountPath: /usr/share/nginx/html/photos
+              readOnly: true
+          resources:
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: photo-library
+          persistentVolumeClaim:
+            claimName: immich-external-library-pvc
