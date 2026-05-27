@@ -26,7 +26,7 @@ spec:
                 name: afilmory
                 port:
                   number: 3000
-          - path: /photos(/|$)(.*)
+          - path: /photos/.+\.[^/]+$
             pathType: ImplementationSpecific
             backend:
               service:
