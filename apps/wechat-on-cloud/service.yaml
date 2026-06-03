@@ -1,0 +1,33 @@
+# WechatOnCloud runs as a Docker Compose service on a cluster node (not a K8s pod),
+# because it requires docker.sock to dynamically create/manage WeChat instance containers.
+# This Service + Endpoints pair bridges it into the K8s networking layer.
+#
+# IMPORTANT: Update the Endpoints IP to match the node where you deployed WechatOnCloud.
+apiVersion: v1
+kind: Service
+metadata:
+  name: wechat-on-cloud
+  namespace: homelab
+  labels:
+    app: wechat-on-cloud
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 36080
+      targetPort: 36080
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: wechat-on-cloud
+  namespace: homelab
+subsets:
+  - addresses:
+      # Change this to the internal IP of the node running WechatOnCloud
+      - ip: 10.0.3.3
+    ports:
+      - name: http
+        port: 36080
+        protocol: TCP
