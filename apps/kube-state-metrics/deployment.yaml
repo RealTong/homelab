@@ -15,7 +15,7 @@ spec:
       serviceAccountName: kube-state-metrics
       containers:
         - name: kube-state-metrics 
-          image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.18.0
+          image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.19.1
           args:
             # Exclude the secrets collector so this observability workload does
             # not need RBAC that can read Kubernetes Secret data.
