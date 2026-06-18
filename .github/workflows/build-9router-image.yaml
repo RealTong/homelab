@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out 9Router
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: decolua/9router
           ref: 7ad538bcf248a563e78f984bf64e66286058917f
