@@ -15,7 +15,7 @@ spec:
       # Pin to the first release after v2.4.1. v2.5.0 includes 1Password
       # provider fixes; avoid floating "2.4.x" so Flux cannot remain on the
       # broken runtime that makes all 1Password-backed ExternalSecrets fail.
-      version: "2.5.0"
+      version: "2.6.0"
       sourceRef:
         kind: HelmRepository
         name: external-secrets
