@@ -10,7 +10,6 @@ resources:
   - ./glance/
   - ./prometheus/
   - ./glance-k8s/
-  - ./openstatus/
   - ./kube-state-metrics/
   - ./portainer/
   - ./vaultwarden/
