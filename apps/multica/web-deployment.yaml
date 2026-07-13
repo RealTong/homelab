@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/multica-ai/multica-web:v0.3.38
+          image: ghcr.io/multica-ai/multica-web:v0.4.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
