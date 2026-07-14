@@ -31,6 +31,5 @@ resources:
   - ./qui/
   - ./immich/
   - ./afilmory/
-  - ./multica/
   - ./9router/
   - ./wechat-on-cloud/
