@@ -17,7 +17,7 @@ spec:
         kubernetes.io/hostname: "realtong-server"
       containers:
         - name: qui
-          image: ghcr.io/autobrr/qui:v1.22.0
+          image: ghcr.io/autobrr/qui:v1.23.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7476
