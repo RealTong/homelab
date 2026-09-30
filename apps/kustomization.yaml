@@ -18,7 +18,6 @@ resources:
   - ./redis/
   - ./manifest/
   - ./asspp/
-  - ./portfolio-ibkr/
   - ./clickhouse/
   - ./neko-master/
   - ./synology-media-proxy/
