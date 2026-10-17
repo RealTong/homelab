@@ -16,15 +16,24 @@ spec:
         app: prometheus
       annotations:
         # subPath ConfigMap mounts are not live-updated; bump to restart on config/rule changes
-        checksum/config: "alerting-v2"
+        checksum/config: "alerting-v3"
     spec:
       # Rules are evaluated here. Prefer a worker so a frozen control plane
       # (realtong-server) does not take the alert path down with it. The TSDB
       # PVC is nfs-client ReadWriteMany, so the pod can move.
       affinity:
         nodeAffinity:
+          # Prefer k3s-agent-1. k3s-agent-2 is an OrbStack VM on a Mac that may
+          # sleep, which would silently stop rule evaluation. Still avoid the control
+          # plane (realtong-server) so a frozen server doesn't take alerting down.
           preferredDuringSchedulingIgnoredDuringExecution:
             - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values: ["k3s-agent-1"]
+            - weight: 50
               preference:
                 matchExpressions:
                   - key: node-role.kubernetes.io/control-plane
