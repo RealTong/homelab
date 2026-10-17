@@ -38,7 +38,7 @@ data:
             annotations:
               summary: "Node {{ $labels.node }} rebooted in the last 30m"
           - alert: NodeFilesystemAlmostFull
-            expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|ramfs|nfs.*"} / node_filesystem_size_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|ramfs|nfs.*"}) < 0.10
+            expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|ramfs|nfs.*|virtiofs"} / node_filesystem_size_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|ramfs|nfs.*|virtiofs"}) < 0.10
             for: 15m
             labels:
               severity: warning

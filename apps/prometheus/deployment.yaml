@@ -16,7 +16,7 @@ spec:
         app: prometheus
       annotations:
         # subPath ConfigMap mounts are not live-updated; bump to restart on config/rule changes
-        checksum/config: "alerting-v2"
+        checksum/config: "alerting-v3"
     spec:
       # Rules are evaluated here. Prefer a worker so a frozen control plane
       # (realtong-server) does not take the alert path down with it. The TSDB
