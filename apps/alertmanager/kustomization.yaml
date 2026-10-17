@@ -3,5 +3,6 @@ kind: Kustomization
 namespace: observability
 resources:
   - configmap.yaml
+  - external-secret.yaml
   - deployment.yaml
   - service.yaml

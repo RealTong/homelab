@@ -5,21 +5,32 @@ metadata:
   namespace: observability
 data:
   alertmanager.yml: |
-    # No notification receiver is configured yet (decision pending).
-    # Alerts are visible in the Alertmanager / Prometheus UIs only.
-    # To notify the existing Flux Telegram chat, add a Secret with the bot
-    # token (e.g. ExternalSecret from 1Password item Telegram/BOT_TOKEN),
-    # mount it, and replace the "null" receiver with:
-    #   - name: telegram
-    #     telegram_configs:
-    #       - bot_token_file: /etc/alertmanager/secrets/token
-    #         chat_id: <chat id>
-    #         send_resolved: true
+    # Same Telegram bot and chat as the Flux notification Provider
+    # (infrastructure/configs/notifications). The bot token is mounted from
+    # Secret/alertmanager-telegram, synced from 1Password item Telegram/BOT_TOKEN.
     route:
-      receiver: "null"
+      receiver: telegram
       group_by: ["alertname", "namespace", "node"]
       group_wait: 30s
       group_interval: 5m
       repeat_interval: 4h
+      routes:
+        # A frozen control plane can sit for hours; remind sooner than the default.
+        - matchers:
+            - severity = critical
+          receiver: telegram
+          repeat_interval: 1h
+    inhibit_rules:
+      # GitOps controllers cannot reconcile while the API server is unreachable.
+      # Keep that outage to the API-server notification.
+      - source_matchers:
+          - alertname = KubeAPIServerDown
+        target_matchers:
+          - alertname =~ "FluxControllerDown|ExternalSecretsControllerDown|FluxReconcileErrors|ExternalSecretNotReady"
     receivers:
-      - name: "null"
+      - name: telegram
+        telegram_configs:
+          - bot_token_file: /etc/alertmanager/secrets/token
+            # infrastructure/configs/notifications/provider.yaml spec.channel
+            chat_id: -1003474594707
+            send_resolved: true

@@ -17,7 +17,7 @@ spec:
         app: alertmanager
       annotations:
         # bump to roll the pod when the config changes
-        checksum/config: "v1"
+        checksum/config: "telegram-v1"
     spec:
       # Keep Alertmanager off the control-plane node so it can still notify
       # when realtong-server (single API server) is down.
@@ -37,6 +37,7 @@ spec:
       containers:
         - name: alertmanager
           image: quay.io/prometheus/alertmanager:v0.34.1
+          imagePullPolicy: IfNotPresent
           args:
             - --config.file=/etc/alertmanager/alertmanager.yml
             - --storage.path=/alertmanager
@@ -68,11 +69,21 @@ spec:
             - name: config
               mountPath: /etc/alertmanager
               readOnly: true
+            - name: telegram-token
+              mountPath: /etc/alertmanager/secrets
+              readOnly: true
             - name: data
               mountPath: /alertmanager
       volumes:
         - name: config
           configMap:
             name: alertmanager-config
+        - name: telegram-token
+          secret:
+            secretName: alertmanager-telegram
+            defaultMode: 0444
+            items:
+              - key: token
+                path: token
         - name: data
           emptyDir: {}

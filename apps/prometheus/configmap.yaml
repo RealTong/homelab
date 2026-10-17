@@ -76,7 +76,17 @@ data:
                 - source_labels: [__meta_kubernetes_pod_container_port_name]
                   regex: http-prom
                   action: keep
+                # controller-runtime already exports a `controller` label (the reconciler
+                # name) which overrides a target label of the same name. Keep the
+                # Deployment name on flux_controller so alert rules can say which
+                # binary is failing.
+                - source_labels: [__meta_kubernetes_pod_label_app]
+                  target_label: flux_controller
                 - source_labels: [__meta_kubernetes_pod_label_app]
                   target_label: controller
                 - source_labels: [__meta_kubernetes_pod_name]
                   target_label: pod
+
+            - job_name: "alertmanager"
+              static_configs:
+                - targets: ["alertmanager.observability.svc.cluster.local:9093"]

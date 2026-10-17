@@ -38,7 +38,7 @@ data:
             annotations:
               summary: "Node {{ $labels.node }} rebooted in the last 30m"
           - alert: NodeFilesystemAlmostFull
-            expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|nfs.*"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|nfs.*"}) < 0.10
+            expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|ramfs|nfs.*"} / node_filesystem_size_bytes{fstype!~"tmpfs|devtmpfs|overlay|squashfs|ramfs|nfs.*"}) < 0.10
             for: 15m
             labels:
               severity: warning
@@ -90,12 +90,12 @@ data:
             annotations:
               summary: "external-secrets controller metrics are not being scraped"
           - alert: FluxReconcileErrors
-            expr: sum by (controller, namespace) (increase(controller_runtime_reconcile_errors_total{job="flux-system"}[15m])) > 0
+            expr: sum by (controller, flux_controller) (increase(controller_runtime_reconcile_errors_total{job="flux-system"}[15m])) > 0
             for: 30m
             labels:
               severity: warning
             annotations:
-              summary: "Flux {{ $labels.controller }} has had reconcile errors for 30m"
+              summary: "Flux {{ $labels.flux_controller }} ({{ $labels.controller }}) has had reconcile errors for 30m"
               description: "Run: flux get all -A --status-selector ready=false"
           - alert: FluxControllerDown
             expr: absent(up{job="flux-system"} == 1)
