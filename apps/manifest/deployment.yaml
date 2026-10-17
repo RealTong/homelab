@@ -38,6 +38,16 @@ spec:
               value: "true"
             - name: SEED_DATA
               value: "false"
+            # 6.28.9 cloud post-deploy backfill logs "A direct PostgreSQL URL
+            # is required…" every 30s unless MIGRATION_DATABASE_URL,
+            # DATABASE_UNPOOLED_URL, or BACKFILL_DATABASE_URL is set
+            # (resolveRequestBackfillDatabaseUrl). In-cluster postgres is
+            # already direct, so reuse DATABASE_URL.
+            - name: BACKFILL_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: manifest-secret
+                  key: DATABASE_URL
           readinessProbe:
             httpGet:
               path: /api/v1/health
