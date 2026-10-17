@@ -6,3 +6,5 @@ resources:
   - pvc.yaml
   - configmap.yaml
   - service.yaml
+  - rbac.yaml
+  - rules.yaml

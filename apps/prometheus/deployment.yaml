@@ -14,7 +14,11 @@ spec:
     metadata:
       labels:
         app: prometheus
+      annotations:
+        # subPath ConfigMap mounts are not live-updated; bump to restart on config/rule changes
+        checksum/config: "alerting-v1"
     spec:
+      serviceAccountName: prometheus
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
@@ -37,6 +41,9 @@ spec:
               subPath: prometheus.yml
             - name: tmp-volume
               mountPath: /tmp
+            - name: prometheus-rules
+              mountPath: /etc/prometheus/rules
+              readOnly: true
           resources:
             requests:
               cpu: 250m
@@ -56,3 +63,6 @@ spec:
               path: prometheus.yml
         - name: tmp-volume
           emptyDir: {}
+        - name: prometheus-rules
+          configMap:
+            name: prometheus-rules

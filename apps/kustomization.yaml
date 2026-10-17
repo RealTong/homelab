@@ -9,6 +9,8 @@ resources:
   - ./beszel-hub/
   - ./glance/
   - ./prometheus/
+  - ./alertmanager/
+  - ./node-exporter/
   - ./glance-k8s/
   - ./kube-state-metrics/
   - ./portainer/

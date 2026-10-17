@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: observability
+data:
+  homelab.yml: |
+    groups:
+      - name: homelab-cluster
+        rules:
+          - alert: KubeAPIServerDown
+            expr: up{job="apiserver"} == 0 or absent(up{job="apiserver"})
+            for: 3m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Kubernetes API server (realtong-server) unreachable"
+              description: "Prometheus has not been able to reach https://kubernetes.default.svc for 3m. The single control plane may be frozen (see 2026-10-17 incident)."
+          - alert: NodeExporterDown
+            expr: up{job="node-exporter"} == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Node {{ $labels.node }} is not answering node-exporter scrapes"
+              description: "node-exporter on {{ $labels.node }} has been unreachable for 5m (node down, frozen, or network partition)."
+          - alert: KubeNodeNotReady
+            expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Node {{ $labels.node }} is NotReady"
+          - alert: NodeRebooted
+            expr: changes(node_boot_time_seconds[30m]) > 0
+            labels:
+              severity: warning
+            annotations:
+              summary: "Node {{ $labels.node }} rebooted in the last 30m"
+          - alert: NodeFilesystemAlmostFull
+            expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|nfs.*"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|nfs.*"}) < 0.10
+            for: 15m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.node }}:{{ $labels.mountpoint }} has <10% free space"
+          - alert: NodeMemoryLow
+            expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.10
+            for: 15m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.node }} has <10% memory available"
+          - alert: KubePodRestartingFrequently
+            expr: increase(kube_pod_container_status_restarts_total[1h]) > 5
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) restarted >5 times in 1h"
+          - alert: KubePodCrashLooping
+            expr: max by (namespace, pod, container) (kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}) == 1
+            for: 15m
+            labels:
+              severity: warning
+            annotations:
+              summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in CrashLoopBackOff"
+          - alert: KubePersistentVolumeClaimLost
+            expr: kube_persistentvolumeclaim_status_phase{phase="Lost"} == 1
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} is Lost"
+      - name: homelab-gitops
+        rules:
+          - alert: ExternalSecretNotReady
+            expr: max by (namespace, name) (externalsecret_status_condition{condition="Ready",status="False"}) == 1
+            for: 15m
+            labels:
+              severity: warning
+            annotations:
+              summary: "ExternalSecret {{ $labels.namespace }}/{{ $labels.name }} not ready for 15m"
+              description: "Check the external-secrets controller logs (1Password SDK 'wasm error' => restart the controller)."
+          - alert: ExternalSecretsControllerDown
+            expr: absent(up{job="external-secrets"} == 1)
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "external-secrets controller metrics are not being scraped"
+          - alert: FluxReconcileErrors
+            expr: sum by (controller, namespace) (increase(controller_runtime_reconcile_errors_total{job="flux-system"}[15m])) > 0
+            for: 30m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Flux {{ $labels.controller }} has had reconcile errors for 30m"
+              description: "Run: flux get all -A --status-selector ready=false"
+          - alert: FluxControllerDown
+            expr: absent(up{job="flux-system"} == 1)
+            for: 10m
+            labels:
+              severity: critical
+            annotations:
+              summary: "No Flux controller metrics are being scraped"
