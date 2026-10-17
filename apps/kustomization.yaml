@@ -34,3 +34,4 @@ resources:
   - ./afilmory/
   - ./9router/
   - ./wechat-on-cloud/
+  - ./cloudflared/
