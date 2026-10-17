@@ -1,0 +1,94 @@
+# Cloudflare Tunnel connector (tunnel "RealTong's CFZT").
+# Previously hand-deployed with the token in plain-text args; now managed by Flux
+# with the token from 1Password (Homelab/CloudFlare/TUNNEL_TOKEN) via ExternalSecret.
+# hostNetwork + pinned to realtong-server: ingress rules target LAN IPs (10.0.0.x),
+# and the tunnel must egress from the host network.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: homelab
+  annotations:
+    glance/icon: di:cloudflare
+    glance/name: Cloudflare Tunnel
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: cloudflared # immutable, keep as live
+  # hostNetwork + fixed metrics port: a surge pod would collide on :20241,
+  # so replace in place (maxSurge 0). Not switching to type Recreate to avoid
+  # a rollingUpdate/Recreate field-ownership conflict with the hand-applied object.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+        name: cloudflared
+    spec:
+      hostNetwork: true
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 10.0.0.1
+          - 10.43.0.10
+        searches:
+          - homelab.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+      nodeSelector:
+        kubernetes.io/hostname: realtong-server
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:2026.10.1@sha256:a15a3b50b8dabd57ac2090e9484c0247dba9dfa1f0df4d298d4317f9d69eb2d5
+          imagePullPolicy: IfNotPresent
+          args:
+            - tunnel
+            - --no-autoupdate
+            - --protocol
+            - http2
+            - --metrics
+            - 0.0.0.0:20241
+            - run
+          env:
+            - name: TUNNEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflared-token
+                  key: TUNNEL_TOKEN
+          ports:
+            - name: metrics
+              containerPort: 20241
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 20241
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 20241
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
