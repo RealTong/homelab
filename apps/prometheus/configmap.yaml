@@ -9,7 +9,84 @@ data:
             scrape_interval: 15s
             scrape_timeout: 10s
             evaluation_interval: 15s
+        rule_files:
+            - /etc/prometheus/rules/*.yml
+        alerting:
+            alertmanagers:
+                - static_configs:
+                    - targets: ["alertmanager.observability.svc.cluster.local:9093"]
         scrape_configs:
             - job_name: "prometheus-kube-state-metrics"
               static_configs:
                 - targets: ["kube-state-metrics.observability.svc.cluster.local:8080"]
+
+            # node-exporter DaemonSet (hostNetwork, so pod IP == node IP)
+            - job_name: "node-exporter"
+              kubernetes_sd_configs:
+                - role: pod
+                  namespaces:
+                    names: ["observability"]
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_label_app]
+                  regex: node-exporter
+                  action: keep
+                - source_labels: [__meta_kubernetes_pod_ip]
+                  target_label: __address__
+                  replacement: "$1:9100"
+                - source_labels: [__meta_kubernetes_pod_node_name]
+                  target_label: node
+                - source_labels: [__meta_kubernetes_pod_node_name]
+                  target_label: instance
+
+            # API server liveness: only the synthetic "up"/scrape_* series are kept.
+            - job_name: "apiserver"
+              scrape_interval: 30s
+              scheme: https
+              authorization:
+                credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+              tls_config:
+                ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              static_configs:
+                - targets: ["kubernetes.default.svc:443"]
+              metric_relabel_configs:
+                - source_labels: [__name__]
+                  regex: ".+"
+                  action: drop
+
+            # external-secrets controller metrics (externalsecret_status_condition, ...)
+            - job_name: "external-secrets"
+              kubernetes_sd_configs:
+                - role: pod
+                  namespaces:
+                    names: ["external-secrets"]
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name, __meta_kubernetes_pod_container_port_name]
+                  regex: "external-secrets;metrics"
+                  action: keep
+                - source_labels: [__meta_kubernetes_pod_name]
+                  target_label: pod
+
+            # Flux controllers (controller-runtime metrics on the http-prom port)
+            - job_name: "flux-system"
+              kubernetes_sd_configs:
+                - role: pod
+                  namespaces:
+                    names: ["flux-system"]
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_pod_container_port_name]
+                  regex: http-prom
+                  action: keep
+                # controller-runtime already exports a `controller` label (the reconciler
+                # name) which overrides a target label of the same name. Keep the
+                # Deployment name on flux_controller so alert rules can say which
+                # binary is failing.
+                - source_labels: [__meta_kubernetes_pod_label_app]
+                  target_label: flux_controller
+                - source_labels: [__meta_kubernetes_pod_label_app]
+                  target_label: controller
+                - source_labels: [__meta_kubernetes_pod_name]
+                  target_label: pod
+
+            - job_name: "alertmanager"
+              static_configs:
+                - targets: ["alertmanager.observability.svc.cluster.local:9093"]
