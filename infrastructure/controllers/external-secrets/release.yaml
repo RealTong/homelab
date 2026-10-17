@@ -12,11 +12,23 @@ spec:
   chart:
     spec:
       chart: external-secrets
-      # Pin to the first release after v2.4.1. v2.5.0 includes 1Password
-      # provider fixes; avoid floating "2.4.x" so Flux cannot remain on the
-      # broken runtime that makes all 1Password-backed ExternalSecrets fail.
-      version: "2.11.0"
+      # Pinned; Renovate bumps it. NOTE: onepassword-sdk-go v0.4.1 (all ESO
+      # releases up to 2.13.0) can wedge its shared WASM core after a transient
+      # DNS/network error -> every ExternalSecret fails with "wasm error: out of
+      # bounds memory access" until the controller pod restarts.
+      # Upstream: external-secrets#6941, onepassword-sdk-go#288.
+      version: "2.13.0"
       sourceRef:
         kind: HelmRepository
         name: external-secrets
         namespace: flux-system
+  values:
+    # Normal usage is ~200Mi; the wedged SDK leaks memory (seen at 2.7Gi).
+    # The limit makes the kubelet OOM-kill and restart a leaking controller,
+    # which also resets the broken 1Password WASM core.
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        memory: 768Mi
