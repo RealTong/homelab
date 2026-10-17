@@ -29,7 +29,7 @@ spec:
       webhook:
         image:
           repository: ghcr.io/zekker6/external-dns-provider-adguard
-          tag: v1.5.1
+          tag: v1.5.2
           pullPolicy: IfNotPresent
         env:
           - name: ADGUARD_HOME_URL
