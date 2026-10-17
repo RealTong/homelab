@@ -24,13 +24,19 @@ spec:
             cpu: "100m"
             memory: "128Mi"
           limits:
-            cpu: "100m"
+            # 100m CPU limit throttled the process enough that 1s probes timed
+            # out (700+ liveness failures). Allow bursts and give probes slack.
+            cpu: "500m"
             memory: "128Mi"
         livenessProbe:
           httpGet:
             path: /healthz
             port: 8080
+          timeoutSeconds: 5
+          periodSeconds: 20
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /healthz
             port: 8080
+          timeoutSeconds: 5
