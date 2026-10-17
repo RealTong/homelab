@@ -7,6 +7,15 @@ metadata:
     glance/icon: di:prometheus
     glance/name: "Prometheus"
 spec:
+  # One writer on the shared NFS TSDB: stop the old pod before starting the new
+  # one (the default surge crash-looped on the TSDB lock during the #289 move).
+  # Same effect as Recreate, without the SSA type switch that the defaulted
+  # rollingUpdate field blocks.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: prometheus
