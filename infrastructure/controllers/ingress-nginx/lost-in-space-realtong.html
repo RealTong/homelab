@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="robots" content="nofollow,noarchive,noindex">
-  <title>{{ message }}</title>
+  <title>{{ .Message }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- {{ if or (eq code 408) (eq code 425) (eq code 429) (eq code 500) (eq code 502) (eq code 503) (eq code 504) }} -->
+  <!-- {{ if or (eq .StatusCode 408) (eq .StatusCode 425) (eq .StatusCode 429) (eq .StatusCode 500) (eq .StatusCode 502) (eq .StatusCode 503) (eq .StatusCode 504) }} -->
   <meta http-equiv="refresh" content="30">
   <!-- {{ end }} -->
-  <meta name="title" content="{{ code }}: {{ message | escape }}">
-  <meta name="description" content="{{ description | escape }}">
-  <meta property="og:title" content="{{ code }}: {{ message | escape }}">
-  <meta property="og:description" content="{{ description | escape }}">
-  <meta property="twitter:title" content="{{ code }}: {{ message | escape }}">
-  <meta property="twitter:description" content="{{ description | escape }}">
+  <meta name="title" content="{{ .StatusCode }}: {{ .Message | escape }}">
+  <meta name="description" content="{{ .Description | escape }}">
+  <meta property="og:title" content="{{ .StatusCode }}: {{ .Message | escape }}">
+  <meta property="og:description" content="{{ .Description | escape }}">
+  <meta property="twitter:title" content="{{ .StatusCode }}: {{ .Message | escape }}">
+  <meta property="twitter:description" content="{{ .Description | escape }}">
   <style>
     /** Codepen: https://codepen.io/kdbkapsere/pen/oNXLbqQ */
 
@@ -98,7 +98,7 @@
       font-weight: bold;
     }
 
-    /* {{ if show_details }} */
+    /* {{ if .Config.ShowRequestDetails }} */
     .details {
       list-style: none;
       padding-left: 0;
@@ -420,22 +420,22 @@
     </svg>
   </div>
   <div class="content">
-    <h1>{{code}}</h1>
-    <h2><span data-l10n>UH OH</span>! <span data-l10n>{{ message }}</span></h2>
-    <p data-l10n>{{ description }}</p>
+    <h1>{{ .StatusCode }}</h1>
+    <h2><span data-l10n>UH OH</span>! <span data-l10n>{{ .Message }}</span></h2>
+    <p data-l10n>{{ .Description }}</p>
 
-    <!-- {{- if show_details -}} -->
+    <!-- {{- if .Config.ShowRequestDetails -}} -->
     <ul class="details">
-      <!-- {{- if host -}} -->
-      <li><span data-l10n>Host</span>: <code>{{ host }}</code></li>
-      <!-- {{- end }}{{ if original_uri -}} -->
-      <li><span data-l10n>Original URI</span>: <code>{{ original_uri }}</code></li>
-      <!-- {{- end }}{{ if forwarded_for -}} -->
-      <li><span data-l10n>来源 IP</span>: <code>{{ index (strFields (strReplace forwarded_for "," " ")) 0 }}</code></li>
-      <!-- {{- end }}{{ if request_id -}} -->
-      <li><span data-l10n>Request ID</span>: <code>{{ request_id }}</code></li>
+      <!-- {{- if .Host -}} -->
+      <li><span data-l10n>Host</span>: <code>{{ .Host | escape }}</code></li>
+      <!-- {{- end }}{{ if .OriginalURI -}} -->
+      <li><span data-l10n>Original URI</span>: <code>{{ .OriginalURI | escape }}</code></li>
+      <!-- {{- end }}{{ if .ForwardedFor -}} -->
+      <li><span data-l10n>来源 IP</span>: <code>{{ index (fields (replace "," " " .ForwardedFor)) 0 | escape }}</code></li>
+      <!-- {{- end }}{{ if .RequestID -}} -->
+      <li><span data-l10n>Request ID</span>: <code>{{ .RequestID | escape }}</code></li>
       <!-- {{- end -}} -->
-      <li><span data-l10n>Timestamp</span>: <code id="request-timestamp" data-unix="{{ nowUnix }}">{{ nowUnix }}</code></li>
+      <li><span data-l10n>Timestamp</span>: <code id="request-timestamp" data-unix="{{ now.Unix }}">{{ now.Unix }}</code></li>
     </ul>
     <!-- {{- end -}} -->
   </div>
@@ -469,7 +469,7 @@
   })()
 </script>
 
-<!-- {{- if l10n_enabled -}} -->
+<!-- {{- if not .Config.L10nDisabled -}} -->
 <script>// {{ l10nScript }}</script>
 <!-- {{- end -}} -->
 </body>
