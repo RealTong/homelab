@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: asspp
-          image: ghcr.io/lakr233/assppweb:latest@sha256:a587c2d8d462f927ee397dc4920dd1fa00f901430acbf29df7be90b8294bc0cf
+          image: ghcr.io/lakr233/assppweb:latest@sha256:4e01f1e7118ae4b3d280393a04602b0ab561a5e447e6e58f578ca43c6c792b9f
           imagePullPolicy: Always
           ports:
             - name: http
