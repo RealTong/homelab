@@ -17,7 +17,7 @@ spec:
       # DNS/network error -> every ExternalSecret fails with "wasm error: out of
       # bounds memory access" until the controller pod restarts.
       # Upstream: external-secrets#6941, onepassword-sdk-go#288.
-      version: "2.13.0"
+      version: "2.14.0"
       sourceRef:
         kind: HelmRepository
         name: external-secrets
