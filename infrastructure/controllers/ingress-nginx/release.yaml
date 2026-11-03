@@ -50,7 +50,7 @@ spec:
       image:
         registry: ghcr.io
         image: tarampampam/error-pages
-        tag: "4.2.6"
+        tag: "4.2.7"
       extraVolumeMounts:
         - name: error-pages-templates
           mountPath: /opt/error-pages
